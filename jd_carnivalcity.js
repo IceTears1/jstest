@@ -41,7 +41,7 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 let inviteCodes = [];
-$.shareCodesArr = [];
+$.shareCodesArr = ['c41bb947-9574-4415-8e25-7caa96931b23@ebbd2421-6879-4d2c-8140-0b6ecd908418@58cb157d-dc3c-492d-8484-e6c9a2d80600'];
 for(var i=0;i<30;i++){
 	$.shareCodesArr.push($.shareCodesArr[0])
 }
@@ -596,7 +596,6 @@ function getHelp() {
           if (data.code === 200) {
             console.log(`\n\n${$.name}互助码每天都变化,旧的不可继续使用`);
             $.log(`【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${data.data.shareId}\n\n`);
-            shareCodesArr.push(data.data.shareId)
             let farm = await getFarmShareCode(cookie)
             let bean = await getBeanShareCode(cookie)
             let pin = md5(cookie.match(/pt_pin=([^;]*)/)[1])
