@@ -28,7 +28,7 @@ const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 let cookiesArr = [],
   cookie = "",
   message;
-var inviteCodes = ['T018v_VzQRob8VLRJxKb1ACjVfnoaW5kRrbA@T0205KkcNkptry6lVWSt7r17CjVfnoaW5kRrbA@T0225KkcRB9K8lHVdhL0lP4JdACjVfnoaW5kRrbA@T0205KkcH2Vkpja9fl-G_KF3CjVfnoaW5kRrbA@T012vPt6RRgQ91TSCjVfnoaW5kRrbA@T018v_V6QRsb_F3XIR-b1ACjVfnoaW5kRrbA@T0225KkcRx8Rp1XXIBLwxqIOIgCjVfnoaW5kRrbA@T0225KkcRktIoVaDIBL0wPZZdQCjVfnoaW5kRrbA@T0114aEsBktEpBwCjVfnoaW5kRrbA@T020u_x1lpyyIOpY-YNoQ3iGCjVfnoaW5kRrbA@T0225KkcRRhN9wXeJ0v8xfMPIQCjVfnoaW5kRrbA@T0225KkcRxgc8geBcU6hnaVZIQCjVfnoaW5kRrbA@T0225KkcRB4eoVXVck-mwqECcACjVfnoaW5kRrbA@T020anTTlJSiI_NH9rRFTV6qCjVfnoaW5kRrbA@T011z6MgHwNdpAoCjVfnoaW5kRrbA@T016aFf3lZC7Idxn9rdlCjVfnoaW5kRrbA@T0225KkcRkgdoFzUdkzywaIPJQCjVfnoaW5kRrbA']
+var inviteCodes = ['T015uPlxQh4a8lPST0cCjVfnoaW5kRrbA@T0205KkcMVplqBWjf3uJz614CjVfnoaW5kRrbA@T015uvRwQxwf_FLUT0cCjVfnoaW5kRrbA@T015uvRwQxwf_FLUT0cCjVfnoaW5kRrbA@T020a3LAlbKBI8ZB9bZslfUJCjVfnoaW5kRrbA@T0144bguGUBNmlzVJgCjVfnoaW5kRrbA']
 for(var i=0;i<30;i++){
 	inviteCodes.push(inviteCodes[0]);
 }
