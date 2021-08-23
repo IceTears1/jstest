@@ -1,17 +1,32 @@
 /*
 发财大赢家助力
 更新时间：2021-7-15
-0 6,13,20 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_dyj_help.js
+40 5,10,15,20,23 * * * https://raw.githubusercontent.com/cdle/jd_study/main/jd_dyj_help.js
 */
 const $ = new Env("发财大赢家助力")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 let cookiesArr = []
-let pins = process.env.dyjHelpPins ?? ""
+let pins = process.env.dyjHelpPins ?? "jd_FdDjJBENiJzA,18014246678_p,jd_41c752f800930,jd_oKMcRZnuBXfM"
 let cookie = ''
 let helps = [{
     id: 0,
-    redEnvelopeId: 'ef00773be4044e67b25fd4dec47b5e5e43081628179826381',
+    redEnvelopeId: '8e2cc468bef446d691009057bdac478183511629563206216',
     markedPin: 'Z0qecRq3mNfmoDe_qwpUHg'
+  },
+  {
+    id: 1,
+    redEnvelopeId: 'c6e26b7747fe44dba023fc859745131397891629563206533',
+    markedPin: 'imCfdYcAa9M7nkcDwm9zzA'
+  },
+  {
+    id: 2,
+    redEnvelopeId: '8ebdeb36fc53458e94d086c41fbcad0d81501629563206784',
+    markedPin: 'KP3aFX8LlEEi2diuiFQtmJBAtkibXfaQvwbtdUNQ0wQ'
+  },
+  {
+    id: 3,
+    redEnvelopeId: '6595568340de4b0f997cd4231596536541081629563207029',
+    markedPin: 'ZMxmyFVYg_obJXQ8HllQXA'
   }]
 let tools = []
 
@@ -38,10 +53,10 @@ let tools = []
                amount = data?.data?.amount
                helps.push({id: i, redEnvelopeId: redEnvelopeId, markedPin: markedPin})
           }
-			   
           tools.push({id: i, cookie: cookie})  
     }
 		  console.log(helps)
+	
     while (helps.length && tools.length) {
           tool = tools.pop()
           cookie = tool.cookie
