@@ -1,9 +1,7 @@
 /*
+cron "2 0 * * *" jd_dpqd.js
 店铺签到，各类店铺签到，有新的店铺直接添加token即可
 搬运cui521大佬脚本，请勿外传！！！
-[Script]
-cron "26 1,9 * * *" script-path=https://github.com/acoolbook/scripts/edit/main/jd_dpqd1.js, tag=店铺签到
-
 */
 const $ = new Env('店铺签到');
 
@@ -12,29 +10,37 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
+
 const JD_API_HOST = 'https://api.m.jd.com/api?appid=interCenter_shopSign';
 
 let activityId=''
 let vender=''
 let num=0
 let shopname=''
+
 const token=[
-  
-  'E528907E4FEC60FC75CBFE1BAFA95F8D',//7天，40豆；15天，100豆；30天，100豆;
-  '9BABD41E5674FD5791963D5366BEC634',//每日，1豆；5天，10豆；21天，100豆;
-  'A133DE5D8D1A5A612F49CBE1D9BCE7AA',//每日，2豆；20天，5元e卡；
-  'E9E4861F0B12E5E483C949C818E3EAB8',//每日，1豆；10天，20豆；20天，50豆；
-  '83E9B38C310EB5D26657977EF8FECA0F',//7天，20积分；15天，30豆；
-  '7DE1E4B12326576BF7C5D347CC909451',//每日，10豆；7天，100豆；
-  '513B43DB672C8C7B0D975DB75328A131',//每日，5豆；26天，88豆；
-  '5BB2C6C6332AD842011240152F7550EB',//每日，6豆；7天，100豆；
-  '6C6B2702DDAAEDEBE5E68E41B6264CF6',//每日，5豆；7天，200积分；
-  'CDC56C42F64CA34677E5894F28AF4871',//每日，100分；1天，200分、2豆；2天，1000分、25-3券；
-  '2075567CC6ED0F30EAFFCF901F6C486D',//每日，2豆；10天，100豆；
-  'CAF5BA5BF6B8317E282FCBF9F5C00B0E',//每日，2豆；5天，10豆；10天，20豆；15天，25豆；
-  
+
+'020E4A5B75AE493CDF3020628CA72FDE',//3天，10豆；5天，20豆；7天，35豆；
+'ACD7EB42FB65AF1A447AEB329235DE04',//每日，3豆；15天，100豆；
+'5BB2C6C6332AD842011240152F7550EB',//每日，6豆；7天，100豆；
+'6C6B2702DDAAEDEBE5E68E41B6264CF6',//每日，5豆；7天，200积分；
+'CDC56C42F64CA34677E5894F28AF4871',//每日，100分；1天，200分、2豆；2天，1000分、25-3券；
+'2075567CC6ED0F30EAFFCF901F6C486D',//每日，2豆；10天，100豆；
+'CAF5BA5BF6B8317E282FCBF9F5C00B0E',//每日，2豆；5天，10豆；10天，20豆；15天，25豆；
+'A133DE5D8D1A5A612F49CBE1D9BCE7AA',//每日，2豆；20天，5元e卡；
+'E9E4861F0B12E5E483C949C818E3EAB8',//每日，1豆；10天，20豆；20天，50豆；
+'8FD67D1FD193B5C19C277B7406106EDD',//每日，5豆；7天，100分、50豆；
+'A9F558F6789D649FEB6436A51D7A6059',//每日，10豆；3天，20分；7天100豆；
+'83E9B38C310EB5D26657977EF8FECA0F',//7天，20积分；15天，30豆；
+'7DE1E4B12326576BF7C5D347CC909451',//每日，10豆；7天，100豆；
+'513B43DB672C8C7B0D975DB75328A131',//每日，5豆；26天，88豆；
+'9BABD41E5674FD5791963D5366BEC634',//每日，1豆；5天，10豆；21天，100豆;
+'EFFD0BF4069A8B6882A55FB07ACDA60F',//10天，30豆；20天，60豆；30天，100豆;
+
 ]
 //IOS等用户直接用NobyDa的jd cookie
+
+$.TokenList =[];
 
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -56,6 +62,15 @@ if ($.isNode()) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
+  
+	$.TokenLists = []
+  
+        $.innerTokenList = await getStoreTokee('https://zy.kejiwanjia.com/jd_dpqiandao.php');
+        //$.innerTokenList = token
+	
+	$.TokenLists.push(...$.TokenList,...$.innerTokenList);
+
+	
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -74,8 +89,9 @@ if ($.isNode()) {
         }
         continue
       }
-      await dpqd()
-      await showMsg()
+      await babel_diy_zeus();
+	  await showMsg()
+      //if(i  <1 ) {await showMsg()}
     }
   }
 })()
@@ -87,16 +103,19 @@ if ($.isNode()) {
     })
 
 //开始店铺签到
-async function dpqd(){
-  for (var j = 0; j < token.length; j++) {
+async function babel_diy_zeus(){
+	
+  for (var j = 0; j < $.TokenLists.length; j++) {
+	  
+	await $.wait(3000);  
     num=j+1
-    if (token[j]=='') {continue}
-    await getvenderId(token[j])
+    if ($.TokenLists[j]=='') {continue}
+    await getvenderId($.TokenLists[j])
     if (vender=='') {continue}
     await getvenderName(vender)
-    await getActivityInfo(token[j],vender)
-    await signCollectGift(token[j],vender,activityId)
-    await taskUrl(token[j],vender)
+    await getActivityInfo($.TokenLists[j],vender)
+    await signCollectGift($.TokenLists[j],vender,activityId)
+    await taskUrl($.TokenLists[j],vender)
   }
 }
 
@@ -341,6 +360,45 @@ function jsonParse(str) {
       return [];
     }
   }
+}
+
+function getStoreTokee(url) {
+  return new Promise(async resolve => {
+    const options = {
+      "url": `${url}?${new Date()}`,
+      "timeout": 10000,
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
+      }
+    };
+    if ($.isNode() && process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
+      const tunnel = require("tunnel");
+      const agent = {
+        https: tunnel.httpsOverHttp({
+          proxy: {
+            host: process.env.TG_PROXY_HOST,
+            port: process.env.TG_PROXY_PORT * 1
+          }
+        })
+      }
+      Object.assign(options, { agent })
+    }
+    let res = []
+    $.get(options, async (err, resp, data) => {
+      try {
+        if (err) {
+        } else {
+          if (data) res = JSON.parse(data)
+        }
+      } catch (e) {
+        // $.logErr(e, resp)
+      } finally {
+        resolve(res || []);
+      }
+    })
+    await $.wait(10000)
+    resolve(res);
+  })
 }
 
 // prettier-ignore
