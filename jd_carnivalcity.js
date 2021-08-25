@@ -41,11 +41,12 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 let inviteCodes = [];
+
+
 let defaultShareCodeArr = ['809500e4-c75b-42f1-932c-60d5ee87220a@19a77856-9e79-4a05-aad9-0d5c59365c7c@a7e55ad6-0733-4d92-98b7-7b42c2fc0aac@c7259f44-702a-44dc-8d3f-b0d23fbf250b'];
 //$.shareCodesArr = ['809500e4-c75b-42f1-932c-60d5ee87220a@19a77856-9e79-4a05-aad9-0d5c59365c7c@a7e55ad6-0733-4d92-98b7-7b42c2fc0aac@c7259f44-702a-44dc-8d3f-b0d23fbf250b'];
 $.shareCodesArr = [];
-
-console.log(`\na11111 ${$.shareCodesArr}\n`);
+// console.log(`\na11111 ${$.shareCodesArr}\n`);
 let aaa = '';
 if (process.env.CarnivaicityShareCodesArr) {
   aaa = process.env.CarnivaicityShareCodesArr;
@@ -58,9 +59,9 @@ for(var i=0;i<30;i++){
     // $.shareCodesArr.push($.shareCodesArr[0])
     $.shareCodesArr.push(defaultShareCodeArr);
   }
-	
 }
-console.log(`\na2222 ${$.shareCodesArr}\n`);
+// console.log(`\na2222 ${$.shareCodesArr}\n`);
+
 const JD_API_HOST = 'https://api.m.jd.com/api';
 const activeEndTime = '2021/08/28 00:00:00+08:00';//活动结束时间
 let nowTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000;
