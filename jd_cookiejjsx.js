@@ -1,6 +1,6 @@
 // [task_local]
-// 23 8,21 * * * ?
-const $ = new Env('cookie即将失效通知');
+// 22 9,20 * * * ?
+const $ = new Env('cookie即将过期通知');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -9,6 +9,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 let allMessage = '';
+let qcMessage = '';
 let tswb = '';//变量 你想要自定义发送的文本内容 如 老弟 你的CK实效了 打开*******5701 扫码更新
 let fs = require('fs');
 
@@ -57,29 +58,38 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
             await GetJDUserInfoUnion();
         }
     }*/
-	  try {
-	    const date = fs.readFileSync('/ql/db/env.db','utf-8')
-	    const lines = date.split(/\r?\n/)
-	    lines.forEach((line) => {
-	    	//console.log(line)
-		    var obj = JSON.parse(line);
-		    //console.log(obj)
-		    uptime = obj.timestamp;
-		    //console.log(uptime)
-		    if(uptime) {
-			    var day1 = new Date(); 
-				  //console.log("当前时间"+day1);
-          var day2 = new Date(uptime);
-          var difference= Math.abs(day1-day2);
-          days = difference/(1000 * 3600 * 24);
-          console.log(days);
-			    if(30 - days<3) {
-			    	allMessage +=  `\n京东账号 ${obj.remarks} 还有 ${30 - days} 天过期\n`;
-			    	console.log(`\n京东账号${obj.remarks}还有${30 - days}天过期，请及时更新cookie\n`);
-			    }
-		    }
-	    });
-	  } catch (e) {
+    try {
+        const date = fs.readFileSync('/ql/db/env.db','utf-8')
+        const lines = date.split(/\r?\n/)
+        lines.forEach((line) => {
+            //console.log(line)
+            var obj = JSON.parse(line);
+            //console.log(obj)
+            uptime = obj.timestamp;
+            //console.log(uptime)
+            var a = qcMessage.indexOf(obj.remarks)
+	    
+            if(uptime && a===-1) {
+                qcMessage += obj.remarks 
+                var day1 = new Date(); 
+                console.log("\n\n当前时间为："+day1);
+                var day2 = new Date(uptime);
+                console.log(`\n${obj.remarks}上次更新cookie时间为：`+day2);
+                var difference= Math.abs(day1-day2);
+                days = difference/(1000 * 3600 * 24);
+                console.log(days);
+                if(30 - days < 5 && days < 30) {
+                    //var a = allMessage.indexOf(obj.remarks)
+                    //if (a === -1) {
+                    var gqday = 30 - days
+                    gqday = gqday.toFixed(2)
+                    allMessage +=  `\n京东账号 ${obj.remarks}还有 ${gqday} 天过期，请及时扫码更新\n`;
+                    console.log(`\n京东账号${obj.remarks}还有${gqday}天过期，请及时更新cookie\n`);
+                    //}
+                }
+            }
+        });
+    } catch (e) {
 	//console.log(e)
     }
     if ($.isNode() && allMessage) {

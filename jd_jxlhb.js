@@ -47,16 +47,12 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
       '助力逻辑：先自己京东账号相互助力，如有剩余助力机会，则助力作者\n' +
       '温馨提示：如提示助力火爆，可尝试寻找京东客服')
   let res = []
-  //res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jxhb.json')
-  if (!res) {
-    //$.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jxhb.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
-    //await $.wait(1000)
-    //res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jxhb.json')
-  }
+  res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jxhb.json')
+
   if (res && res.activeId) $.activeId = res.activeId;
-  //$.authorMyShareIds = [...((res && res.codes) || [])];
+  $.authorMyShareIds = []//[...((res && res.codes) || [])];
   //开启红包,获取互助码
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 7; i++) {
     cookie = cookiesArr[i];
     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
     $.index = i + 1;
@@ -89,22 +85,13 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
       if (!code) continue;
       if ($.UserName === code['userName']) continue;
       console.log(`【${$.UserName}】去助力【${code['userName']}】邀请码：${code['strUserPin']}`);
+      await $.wait(1000);
       await enrollFriend(code['strUserPin']);
       await $.wait(1000);
       if ($.max) continue
       if (!$.canHelp) break
     }
-    if ($.canHelp) {
-      console.log(`\n【${$.UserName}】有剩余助力机会，开始助力作者\n`)
-      for (let item of $.authorMyShareIds) {
-        if (!item) continue;
-        console.log(`【${$.UserName}】去助力作者的邀请码：${item}`);
-        //await enrollFriend(item);
-        //await $.wait(2000);
-        if ($.max) continue
-        if (!$.canHelp) break
-      }
-    }
+
   }
   //拆红包
   for (let i = 0; i < cookiesArr.length; i++) {
@@ -115,8 +102,9 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
     for (let grade of $.grades) {
       if (!$.packetIdArr[i]) continue;
       console.log(`\n【${$.UserName}】去拆第${grade}个红包`);
+      await $.wait(4000);
       await openRedPack($.packetIdArr[i]['strUserPin'], grade);
-      await $.wait(1000);
+      await $.wait(3000);
     }
   }
 })()
@@ -220,6 +208,7 @@ function enrollFriend(strPin) {
           if (data.iRet === 0) {
             //{"Data":{"prizeInfo":[]},"iRet":0,"sErrMsg":"成功"}
             console.log(`助力成功🎉:${data.sErrMsg}\n`);
+            //await $.wait(1500);
             // if (data.Data.strUserPin) $.packetIdArr.push(data.Data.strUserPin);
           } else {
             if (data.iRet === 2000) $.canHelp = false;//未登录
