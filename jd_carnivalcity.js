@@ -45,7 +45,7 @@ let inviteCodes = [];
 $.shareCodesArr = ['809500e4-c75b-42f1-932c-60d5ee87220a@19a77856-9e79-4a05-aad9-0d5c59365c7c@a7e55ad6-0733-4d92-98b7-7b42c2fc0aac@c7259f44-702a-44dc-8d3f-b0d23fbf250b'];
 console.log(`\na11111 ${$.shareCodesArr}\n`);
 if (process.env.CarnivaicityShareCodesArr) {
-  shareCodesArr = process.env.CarnivaicityShareCodesArr;
+  $.shareCodesArr = process.env.CarnivaicityShareCodesArr;
 }
 console.log(`\na222222 ${$.shareCodesArr}\n`);
 for(var i=0;i<30;i++){
