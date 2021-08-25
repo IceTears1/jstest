@@ -45,7 +45,10 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 let inviteCodes = [];
+
 $.shareCodesArr = ['809500e4-c75b-42f1-932c-60d5ee87220a@19a77856-9e79-4a05-aad9-0d5c59365c7c@a7e55ad6-0733-4d92-98b7-7b42c2fc0aac@c7259f44-702a-44dc-8d3f-b0d23fbf250b'];
+
+
 
 for(var i=0;i<30;i++){
 	$.shareCodesArr.push($.shareCodesArr[0])
