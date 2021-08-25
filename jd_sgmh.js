@@ -41,7 +41,8 @@ var inviteCodes = [];
 let aaa = '';
 if (process.env.SGMHShareCodesArr) {
   aaa = process.env.SGMHShareCodesArr;
-inviteCodes = aaa.split('&')
+  console.log(`\n1111${$.aaa}\n`);
+inviteCodes = aaa.split("&")
 }
 console.log(`\nasdasd号${$.inviteCodes}\n`);
 
