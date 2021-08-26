@@ -149,7 +149,7 @@ async function showMsg() {
     ReturnMessage+=`${$.message}\n\n`;
     allMessage+=ReturnMessage;
     $.msg($.name, '', ReturnMessage , {"open-url": "https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean"});
-    if ($.index===15) {
+    if ($.index===8) {
         await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
     }
 }
