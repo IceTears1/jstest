@@ -18,8 +18,13 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
+<<<<<<< HEAD
 let yqm = 'MgCTSu7S+fppyMY8Y+rYfg==';
 let zdtx = true //设置为true自动抢提现100
+=======
+let yqm = 'ghNQyGlIWbUdlPK/1zsTFQ==';
+let zdtx = false //设置为true自动抢提现100
+>>>>>>> 042a8544c6248bec403feb29907b660b51bc9a7f
 if (process.env.yqm) {
   yqm = process.env.yqm;
 }
@@ -82,6 +87,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
     $.done();
   })
 function helpme() {
+	console.log(yqm)
     return new Promise(async (resolve) => {
 
                 let options = {

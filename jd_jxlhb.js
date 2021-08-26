@@ -32,7 +32,7 @@ if ($.isNode()) {
 } else {
   cookiesArr = [$.getdata("CookieJD"), $.getdata("CookieJD2"), ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
-$.packetIdArr = [];
+$.packetIdArr = [{"strUserPin":"m0LuttwFQMorELxcDKqZaff_lyKVTLcIMAZu-7GEXZV1Ffe2U484vy5GrKcjlRVW","userName":"18014246678_p"},{"strUserPin":"m0LuttwFQMorELxcDKqZaWTczu5K5S36ubVUGEvE8n32Txssnwy2oDrMJXIUUCvh","userName":"jd_FdDjJBENiJzA"},{"strUserPin":"m0LuttwFQMorELxcDKqZaQ25WpYvDp7iWfrQFLQQZtGD5Kk19Xjfk-LkqEHM_MhW","userName":"jd_41c752f800930"},{"strUserPin":"m0LuttwFQMorELxcDKqZaSppKZ2IKvOUV9I4tiNNX9GeUuXHgMxnhU_3NSne1uUK","userName":"jd_oKMcRZnuBXfM"},{"strUserPin":"m0LuttwFQMorELxcDKqZaU7J_QMScuDxWLwRQUsyetI","userName":"269569205"},{"strUserPin":"m0LuttwFQMorELxcDKqZaXh-9PKBceyCWQrKw2hAS3d1Ffe2U484vy5GrKcjlRVW","userName":"18915299015_p"},{"strUserPin":"m0LuttwFQMorELxcDKqZaWBtOaOJWgeCH8Vai3sx_QbDsFR7R9lUgnGhMIeJpyAi","userName":"jd_718b10084be4f"}];
 $.activeId = '489177';
 const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
 
