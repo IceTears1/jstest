@@ -26,25 +26,7 @@ let message = '', allMessage = '';
 let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let appId = '1E1NXxq0';
-$.shareCode = [
-  {
-    code: 'T018v_VzQRob8VLRJxKb1ACTJQmq67yR55awQ',
-    use: '18014246678_p'
-  },
-  {
-    code: 'T0225KkcRB9K8lHVdhL0lP4JdACTJQmq67yR55awQ',
-    use: 'jd_41c752f800930'
-  },
-  {
-    code: 'T0205KkcH2Vkpja9fl-G_KF3CTJQmq67yR55awQ',
-    use: 'jd_oKMcRZnuBXfM'
-  },
-  { code: 'T012vPt6RRgQ91TSCTJQmq67yR55awQ', use: '269569205' },
-  {
-    code: 'T018v_V6QRsb_F3XIR-b1ACTJQmq67yR55awQ',
-    use: '18915299015_p'
-  }
-];
+$.shareCode = [];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -80,12 +62,13 @@ if ($.isNode()) {
 	  console.log( $.shareCode)
     }
   }
-  let res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/wish.json')
-  if (!res) {
-    $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/wish.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
-    await $.wait(1000)
-    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/wish.json')
-  }
+  let res = [];
+  // await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/wish.json')
+  // if (!res) {
+  //   $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/wish.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+  //   await $.wait(1000)
+  //   res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/wish.json')
+  // }
   //$.shareCode = [...$.shareCode, ...(res || [])]
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
