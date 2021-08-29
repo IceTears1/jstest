@@ -1,6 +1,6 @@
 // [task_local]
 // 22 9,20 * * * ?
-const $ = new Env('cookie即将过期通知');
+const $ = new Env('cokie即将过期通知');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
