@@ -1,6 +1,6 @@
 // [task_local]
 // 0 0 1/6 * * ?
-const $ = new Env('cookie失效通知');
+const $ = new Env('cokie已经失效通知');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
