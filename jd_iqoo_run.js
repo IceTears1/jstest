@@ -1,6 +1,6 @@
 /**
  * 写着玩的，没水了，跑个寂寞，有很低的几率抽实物，愿意跑的跑，PS：被菜狗薅干的
- cron 12 12 28-31,1-12 8,9 * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_iqoo_run.js
+ cron 22 12,18 28-31,1-12 8,9 * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_iqoo_run.js
  * */
 const $ = new Env('iqoo生而为赢酷跑');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -20,11 +20,11 @@ if ($.isNode()) {
 }
 !(async () => {
     let res = [];
-    try{res = await getAuthorShareCode('');}catch (e) {}
+    /*try{res = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/iqooCode.json');}catch (e) {}
     if(!res){
-        try{res = await getAuthorShareCode('');}catch (e) {}
+        try{res = await getAuthorShareCode('https://gitee.com/star267/share-code/raw/master/iqooCode.json');}catch (e) {}
         if(!res){res = [{"id":"902082602","uid":""},{"id":"902082601","uid":""}];}
-    }
+    }*/
     res = [{"id":"902082602","uid":""},{"id":"902082601","uid":""}];
     if(res.length === 0){console.log(`获取活动列表失败`)};
     if (!cookiesArr[0]) {
@@ -97,7 +97,7 @@ async function main() {
     console.log(`获取活动详情成功`);
     $.uid = $.activityData.uid;
     console.log(`助力码：`+$.uid);
-    if($.shareUuid !== ''){
+    if($.shareUuid !== '' && $.activityData.openCardStatus === 0){
         //await takePostRequest('myfriends');
         //await $.wait(2000);
         console.log(`执行助力`);

@@ -13,28 +13,20 @@ const $ = new Env('财富大陆');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 // const notify = $.isNode() ? require('./sendNotify') : '';
 $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
-let UA = `jdapp;iPhone;10.0.5;${Math.ceil(Math.random()*2+12)}.${Math.ceil(Math.random()*4)};${randomString(40)};`
+let UA = `jdpingou;iPhone;5.2.2;14.3;${randomString(40)};network/wifi;model/iPhone12,1;appBuild/100630;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/1;pap/JA2019_3111789;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`
 function randomString(e) {
   e = e || 32;
-  let t = "abcdefhijkmnprstwxyz2345678", a = t.length, n = "";
+  let t = "abcdef0123456789", a = t.length, n = "";
   for (i = 0; i < e; i++)
     n += t.charAt(Math.floor(Math.random() * a));
   return n
 }
-$.InviteList =  ["F23226A0E168CB913AA69AAEFD2C5E678EB154AC03E9086890E68991ED6174B2",
-"078588C361509E29916CCDA9265D316D8C780FB83134C92B7266DFC4612F07CC",
-"C0028153A0BEBAFFF2CA8C8CBB71DFB17E2AC5D48F11FAC8DA3C0BCF3BD00674",
-"17F7E5B37B1EA804939C2C8BE3F35E1085C690FCBCF24A959F66355E2E64A87F",
-"E2618D1A71364A3E172E38194329EB3C47B22242D29B302092E24C8652E7DED5",
-"E2618D1A71364A3E172E38194329EB3C5C055E51ADBE8B77C80D890E92987B69",
-"F0CA50D50CE659E5A672C38F39A4C8124FD9AF9EA069DD5D9359A96B6D439C9A",
-"F0CA50D50CE659E5A672C38F39A4C8124FD9AF9EA069DD5D9359A96B6D439C9A",
-"9105AA37CA35BA769444D3F44F5F92C62CEEC37DFEE7FF0B0EFCAE7D8B73E7A6",]
+$.InviteList = []
 $.innerInviteList = [];
 const HelpAuthorFlag = false;//是否助力作者SH  true 助力，false 不助力
 
 // 热气球接客 每次运行接客次数
-let serviceNum = 30;// 每次运行接客次数
+let serviceNum = 40;// 每次运行接客次数
 if ($.isNode() && process.env.gua_wealth_island_serviceNum) {
   serviceNum = Number(process.env.gua_wealth_island_serviceNum);
 }
@@ -69,7 +61,7 @@ $.appId = 10032;
       $.index = i + 1;
       $.isLogin = true;
       console.log(`\n*****开始【京东账号${$.index}】${$.UserName}****\n`);
-      UA = `jdapp;iPhone;10.0.5;${Math.ceil(Math.random()*2+12)}.${Math.ceil(Math.random()*4)};${randomString(40)};`
+      UA = `jdpingou;iPhone;5.2.2;14.3;${randomString(40)};network/wifi;model/iPhone12,1;appBuild/100630;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/1;pap/JA2019_3111789;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`
       await run();
     }
   }
@@ -132,8 +124,9 @@ async function run() {
   }
 }
 async function GetHomePageInfo() {
-  let additional= `&ddwTaskId&strShareId&strMarkList=guider_step%2Ccollect_coin_auth%2Cguider_medal%2Cguider_over_flag%2Cbuild_food_full%2Cbuild_sea_full%2Cbuild_shop_full%2Cbuild_fun_full%2Cmedal_guider_show%2Cguide_guider_show%2Cguide_receive_vistor`
-  let stk= `_cfd_t,bizCode,ddwTaskId,dwEnv,ptag,source,strMarkList,strShareId,strZone`
+  let e = getJxAppToken()
+  let additional= `&strPgtimestamp=${e.strPgtimestamp}&strPhoneID=${e.strPhoneID}&strPgUUNum=${e.strPgUUNum}&ddwTaskId=&strShareId=&strMarkList=guider_step%2Ccollect_coin_auth%2Cguider_medal%2Cguider_over_flag%2Cbuild_food_full%2Cbuild_sea_full%2Cbuild_shop_full%2Cbuild_fun_full%2Cmedal_guider_show%2Cguide_guider_show%2Cguide_receive_vistor%2Cdaily_task%2Cguider_daily_task%2Ccfd_has_show_selef_point`
+  let stk= `_cfd_t,bizCode,ddwTaskId,dwEnv,ptag,source,strMarkList,strPgUUNum,strPgtimestamp,strPhoneID,strShareId,strVersion,strZone`
   $.HomeInfo = await taskGet(`user/QueryUserInfo`, stk, additional)
   if($.HomeInfo){
     $.Fund = $.HomeInfo.Fund || ''
@@ -334,8 +327,9 @@ async function sign(){
           }
         }
         if(flag){
-          let additional = `&ptag=&ddwCoin=${ddwCoin}&ddwMoney=${ddwMoney}&dwPrizeType=${dwPrizeType}&strPrizePool${strPrizePool && '='+strPrizePool ||''}&dwPrizeLv=${dwPrizeLv}`
-          let stk= `_cfd_t,bizCode,ddwCoin,ddwMoney,dwEnv,dwPrizeLv,dwPrizeType,ptag,source,strPrizePool,strZone`
+          let e = getJxAppToken()
+          let additional = `&ptag=&ddwCoin=${ddwCoin}&ddwMoney=${ddwMoney}&dwPrizeType=${dwPrizeType}&strPrizePool${strPrizePool && '='+strPrizePool ||''}&dwPrizeLv=${dwPrizeLv}&strPgtimestamp=${e.strPgtimestamp}&strPhoneID=${e.strPhoneID}&strPgUUNum=${e.strPgUUNum}`
+          let stk= `_cfd_t,bizCode,ddwCoin,ddwMoney,dwEnv,dwPrizeLv,dwPrizeType,ptag,source,strPrizePool,strPgUUNum,strPgtimestamp,strPhoneID,strZone`
           let res = await taskGet(`story/RewardSign`, stk, additional)
           await printRes(res, '签到')
         }
@@ -611,14 +605,12 @@ async function ActTask(){
         }
         if(item.dwAwardStatus == 2 && item.dwCompleteNum < item.dwTargetNum && [1,2].includes(item.dwOrderId)){
           await $.wait(1000)
-          if(item.dwOrderId == 2){
-            if(item.strTaskName.indexOf('热气球接待') > -1){
-              let b = (item.dwTargetNum-item.dwCompleteNum)
-              // 热气球接客
-              await service(b)
-              await $.wait((Number(item.dwLookTime) * 1000) || 1000)
-            }
-          }else if(item.dwOrderId == 1){
+          if(item.strTaskName.indexOf('热气球接待') > -1){
+            let b = (item.dwTargetNum-item.dwCompleteNum)
+            // 热气球接客
+            await service(b)
+            await $.wait((Number(item.dwLookTime) * 1000) || 1000)
+          }else if(item.dwPointType == 301){
             await $.wait((Number(item.dwLookTime) * 1000) || 1000)
             res = await taskGet('DoTask1', '_cfd_t,bizCode,configExtra,dwEnv,ptag,source,strZone,taskId', `&ptag=&taskId=${item.ddwTaskId}&configExtra=`)
           }
@@ -730,6 +722,23 @@ function printRes(res, msg=''){
     console.log(`${msg}失败:${res.sErrMsg}`)
   }else{
     console.log(`${msg}失败:${JSON.stringify(res)}`)
+  }
+}
+function getJxAppToken(){
+  function generateStr(e) {
+    e = e || 32;
+    let t = "abcdefghijklmnopqrstuvwxyz1234567890", a = t.length, n = "";
+    for (i = 0; i < e; i++)
+      n += t.charAt(Math.floor(Math.random() * a));
+    return n
+  }
+  let phoneId = generateStr(40);
+  let timestamp = Date.now().toString();
+  let pgUUNum = $.CryptoJS.MD5('' + decodeURIComponent($.UserName || '') + timestamp + phoneId + 'tPOamqCuk9NLgVPAljUyIHcPRmKlVxDy').toString($.CryptoJS.enc.MD5);
+  return {
+    'strPgtimestamp': timestamp,
+    'strPhoneID': phoneId,
+    'strPgUUNum': pgUUNum
   }
 }
 async function noviceTask(){
