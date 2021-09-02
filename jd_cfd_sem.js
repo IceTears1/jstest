@@ -26,7 +26,7 @@ $.innerInviteList = [];
 const HelpAuthorFlag = false;//是否助力作者SH  true 助力，false 不助力
 
 // 热气球接客 每次运行接客次数
-let serviceNum = 40;// 每次运行接客次数
+let serviceNum = 10;// 每次运行接客次数
 if ($.isNode() && process.env.gua_wealth_island_serviceNum) {
   serviceNum = Number(process.env.gua_wealth_island_serviceNum);
 }
@@ -378,8 +378,9 @@ async function signs(){
           }
         }
         if(flag){
-          let additional = `&ptag=&ddwCoin=${ddwCoin}&ddwMoney=${ddwMoney}&dwPrizeType=${dwPrizeType}&strPrizePool${strPrizePool && '='+strPrizePool ||''}&dwPrizeLv=${dwPrizeLv}`
-          let stk= `_cfd_t,bizCode,ddwCoin,ddwMoney,dwEnv,dwPrizeLv,dwPrizeType,ptag,source,strPrizePool,strZone`
+          let e = getJxAppToken()
+          let additional = `&ptag=&ddwCoin=${ddwCoin}&ddwMoney=${ddwMoney}&dwPrizeType=${dwPrizeType}&strPrizePool${strPrizePool && '='+strPrizePool ||''}&dwPrizeLv=${dwPrizeLv}&strPgtimestamp=${e.strPgtimestamp}&strPhoneID=${e.strPhoneID}&strPgUUNum=${e.strPgUUNum}`
+          let stk= `_cfd_t,bizCode,ddwCoin,ddwMoney,dwEnv,dwPrizeLv,dwPrizeType,ptag,source,strPrizePool,strPgUUNum,strPgtimestamp,strPhoneID,strZone`
           let res = await taskGet(`story/RewardSigns`, stk, additional)
           await printRes(res, '签到-小程序')
         }

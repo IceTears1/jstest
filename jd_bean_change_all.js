@@ -4,7 +4,7 @@ cron "30 10,22 * * *" jd_bean_change.js, tag:资产变化强化版by-ccwav
 
 //更新by ccwav,20210828
 
-const $ = new Env('京东资产变动通知');
+const $ = new Env('京东全部资产变动通知');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const JXUserAgent =  $.isNode() ? (process.env.JX_USER_AGENT ? process.env.JX_USER_AGENT : ``):``;
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -30,6 +30,9 @@ if ($.isNode()) {
     return;
   }
   for (let i = 0; i < cookiesArr.length; i++) {
+    if (i === 8) {
+        await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
+    }
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])

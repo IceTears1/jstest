@@ -186,8 +186,8 @@ today = datetime.datetime.now().strftime('%Y-%m-%d')
 pwd = os.path.dirname(os.path.abspath(__file__)) + os.sep
 
 ######
-openCardBean = 15
-sleepNum = 0.0
+openCardBean = 10
+sleepNum = 1.0
 record = True
 onlyRecord = False
 memory = False
