@@ -38,23 +38,23 @@ http-response ^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/addUser\?c
 http-request ^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/user\/detail\?openId= script-path=jd_joy_run.js, timeout=3600, tag=宠汪汪助力获取Token
 */
 const $ = new Env('宠汪汪赛跑');
-const zooFaker = require('./JDJRValidator_Pure');
+const zooFaker = require('./utils/JDJRValidator_Pure');
 $.get = zooFaker.injectToRequest2($.get.bind($));
 $.post = zooFaker.injectToRequest2($.post.bind($));
 //宠汪汪赛跑所需token，默认读取作者服务器的
 //需自行抓包，宠汪汪小程序获取token，点击`发现`或`我的`，寻找`^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/user\/detail\?openId=`获取token
-let jdJoyRunToken = process.env.JOY_RUN_TOKEN ?? "";
+let jdJoyRunToken = '';
 
 const isRequest = typeof $request != "undefined"
 const JD_BASE_API = `https://draw.jdfcloud.com//pet`;
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : {};
 //下面给出好友邀请助力的示例填写规则
-let invite_pins = ['jd_4613d00a6a0ef,jd_7eb844fa34b82,jd_7a9adfaa33e88,H189178,jd_sNwckLRthfIF,jd_7fe75a7dd251c'];
+let invite_pins = ["jd_4613d00a6a0ef","jd_7eb844fa34b82","jd_7a9adfaa33e88","H189178","jd_sNwckLRthfIF","jd_7fe75a7dd251c"];
 //下面给出好友赛跑助力的示例填写规则
-let run_pins = ['jd_4613d00a6a0ef,jd_7eb844fa34b82,jd_7a9adfaa33e88,H189178,jd_sNwckLRthfIF,jd_7fe75a7dd251c'];
+let run_pins = ["jd_4613d00a6a0ef","jd_7eb844fa34b82","jd_7a9adfaa33e88","H189178","jd_sNwckLRthfIF","jd_7fe75a7dd251c"];
 //friendsArr内置太多会导致IOS端部分软件重启,可PR过来(此处目的:帮别人助力可得30g狗粮)
-let friendsArr = ["jd_4613d00a6a0ef", "jd_7eb844fa34b82", "jd_7a9adfaa33e88", "H189178", "jd_sNwckLRthfIF", "jd_7fe75a7dd251c"]
+let friendsArr = ["jd_4613d00a6a0ef","jd_7eb844fa34b82","jd_7a9adfaa33e88","H189178","jd_sNwckLRthfIF","jd_7fe75a7dd251c"];
 
 
 //IOS等用户直接用NobyDa的jd cookie
@@ -114,8 +114,7 @@ async function main() {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  const readTokenRes = ''
-  // const readTokenRes = await readToken();
+  const readTokenRes = await readToken();
   if (readTokenRes && readTokenRes.code === 200) {
     $.LKYLToken = readTokenRes.data[0] || ($.isNode() ? (process.env.JOY_RUN_TOKEN ? process.env.JOY_RUN_TOKEN : jdJoyRunToken) : ($.getdata('jdJoyRunToken') || jdJoyRunToken));
   } else {
@@ -257,7 +256,7 @@ async function getToken() {
 }
 function readToken() {
   return new Promise(resolve => {
-    $.get({url: `http://share.turinglabs.net/api/v3/joy/query/1/`, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: `https://cdn.jdsign.cf/gettoken`,headers:{'Host':'jdsign.cf'}, 'timeout': 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
