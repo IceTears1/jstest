@@ -45,7 +45,6 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 let inviteCodes = [];
-<<<<<<< HEAD
 
 // $.shareCodesArr = ['809500e4-c75b-42f1-932c-60d5ee87220a@19a77856-9e79-4a05-aad9-0d5c59365c7c@a7e55ad6-0733-4d92-98b7-7b42c2fc0aac@c7259f44-702a-44dc-8d3f-b0d23fbf250b'];
 
@@ -64,9 +63,7 @@ if (process.env.CarnivaicityShareCodesArr) {
   aaa = process.env.CarnivaicityShareCodesArr;
 }
 
-=======
-$.shareCodesArr = ['a9b16830-e818-4dd1-9651-1c5121426900@3ee04cfe-9891-435a-8df9-c24e26f2e840@a2072fa2-ee94-46dc-8f1c-f8863c422731@698e43f0-7886-4704-b499-21b7c89c0396@11d6be7d-735f-4859-9be4-2ef7658ff090@9c933dd0-b35f-45ec-8bda-35771d9e2cb8@8674eecd-a959-4dff-81b9-e2284d5c4b39@45ded857-30d0-4a41-accc-3bffebf63310@6f8e1cff-f3c7-4d64-811d-b58fdfc0d756@34050114-de5d-430b-afa7-8e966a5eecf7@f57fdc91-2b4a-48e2-a340-9e2321b8345e@6d038913-e494-443a-8671-acde5dd21c2a@91f9dbfa-d7af-48cd-95c4-3680a3135eca@7a188d31-8a6c-4aac-8ab4-2d1b2ff4b451@ddf5e168-a4cf-4c7d-a9c5-f0239434dce2@79c55448-292b-444f-9948-de1cb4beade0'];
->>>>>>> 042a8544c6248bec403feb29907b660b51bc9a7f
+
 for(var i=0;i<30;i++){
   if (aaa.length != 0){
     $.shareCodesArr.push(aaa)
