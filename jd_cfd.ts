@@ -97,8 +97,39 @@ let UserName: string, index: number;
         strPhoneID: token.strPhoneID,
         strPgUUNum: token.strPgUUNum
       })
-    console.log('离线收益：', res.Business.ddwCoin)
+    let wallet: number = res.ddwCoinBalance
+    console.log('金币余额:', wallet)
+    console.log('离线收益:', res.Business.ddwCoin)
     await wait(2000)
+
+    // 升级建筑
+    while (1){
+      let build: string = '', minLV: number = 99999
+      for (let b of ['food', 'fun', 'shop', 'sea']) {
+        res = await api('user/GetBuildInfo', '_cfd_t,bizCode,dwEnv,dwType,ptag,source,strBuildIndex,strZone', {strBuildIndex: b})
+        await wait(2000)
+        if (res.dwBuildLvl <= minLV) {
+          minLV = res.dwBuildLvl
+          build = b
+        }
+      }
+      console.log('最低等级建筑:', minLV, build)
+
+      res = await api('user/GetBuildInfo', '_cfd_t,bizCode,dwEnv,dwType,ptag,source,strBuildIndex,strZone', {strBuildIndex: build})
+      console.log(`${build}升级需要:`, res.ddwNextLvlCostCoin)
+      await wait(2000)
+      if (res.dwCanLvlUp === 1 && res.ddwNextLvlCostCoin * 2 <= wallet) {
+        res = await api('user/BuildLvlUp', '_cfd_t,bizCode,ddwCostCoin,dwEnv,ptag,source,strBuildIndex,strZone', {ddwCostCoin: res.ddwNextLvlCostCoin, strBuildIndex: build})
+        await wait(2000)
+        if (res.iRet === 0) {
+          console.log(`升级成功`)
+          await wait(2000)
+        }
+      }else{
+        break
+      }
+      await wait(3000)
+    }
 
     // 珍珠
     res = await api('user/ComposeGameState', '', {dwFirst: 1})
@@ -229,7 +260,6 @@ let UserName: string, index: number;
     }
 
     // 清空背包
-    /*
     res = await api('story/querystorageroom', '_cfd_t,bizCode,dwEnv,ptag,source,strZone')
     let bags: number[] = []
     for (let s of res.Data.Office) {
@@ -249,8 +279,6 @@ let UserName: string, index: number;
         {dwSceneId: isCollector ? '2' : '1', strTypeCnt: strTypeCnt})
       console.log('卖贝壳收入:', res.Data.ddwCoin, res.Data.ddwMoney)
     }
-    
-     */
 
     // 垃圾🚮
     res = await api('story/QueryRubbishInfo', '_cfd_t,bizCode,dwEnv,ptag,source,strZone')
@@ -267,7 +295,6 @@ let UserName: string, index: number;
           dwRewardType: 0,
           dwRubbishId: j
         })
-        console.log('垃圾分类：', res.Data.RubbishGame.AllRubbish.ddwCoin)
         await wait(1500)
       }
     }
