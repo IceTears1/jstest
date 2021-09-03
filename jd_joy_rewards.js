@@ -23,7 +23,7 @@ cron "59 7,15,23 * * *" script-path=jd_joy_reward.js,tag=宠汪汪积分兑换�
  */
 // prettier-ignore
 const $ = new Env('宠汪汪积分兑换奖品');
-const zooFaker = require('./JDJRValidator_Pure');
+const zooFaker = require('./utils/JDJRValidator_Pure');
 // $.get = zooFaker.injectToRequest2($.get.bind($));
 // $.post = zooFaker.injectToRequest2($.post.bind($));
 let allMessage = '';
@@ -100,14 +100,14 @@ async function joyReward() {
   try {
     if (new Date().getMinutes() === 59) {
       let nowtime = new Date().Format("s.S")
-      let starttime = process.env.JOY_STARTTIME ? process.env.JOY_STARTTIME : 58;
-      if(nowtime < 57) {
+      let starttime = process.env.JOY_STARTTIME ? process.env.JOY_STARTTIME : 59;
+      if(nowtime < 58) {
         let sleeptime = (starttime - nowtime) * 1000;
         console.log(`等待时间 ${sleeptime / 1000}`);
         await zooFaker.sleep(sleeptime)
       }
     }
-    for (let j = 0; j <= 4; j++) {
+    for (let j = 0; j <= 3; j++) {
       await getExchangeRewards();
       if ($.getExchangeRewardsRes && $.getExchangeRewardsRes.success) {
         // console.log('success', $.getExchangeRewardsRes);
