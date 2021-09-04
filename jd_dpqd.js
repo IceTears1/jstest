@@ -150,7 +150,7 @@ function getvenderId(token) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
         } else {
-          console.log(data)
+          // console.log(data)
           data = JSON.parse(/{(.*)}/g.exec(data)[0])
           if (data.code==402) {
             vender=''
@@ -188,7 +188,7 @@ function getvenderName(venderId) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
         } else {
-          console.log(data)
+          // console.log(data)
           data = JSON.parse(data)
           shopName = data.shopName
           console.log(`【`+shopName+`】`)
@@ -225,7 +225,7 @@ function getActivityInfo(token,venderId) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
         } else {
-          console.log(data)
+          // console.log(data)
           data = JSON.parse(/{(.*)}/g.exec(data)[0])
           activityId=data.data.id
           //console.log(data)
@@ -299,7 +299,7 @@ function taskUrl(token,venderId) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
         } else {
-            console.log(data)
+            // console.log(data)
             data = JSON.parse(/{(.*)}/g.exec(data)[0])
             console.log(`已签到：`+data.data.days+`天`)
             message +=`已签到：`+data.data.days+`天\n`
