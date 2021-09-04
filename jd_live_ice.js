@@ -146,6 +146,7 @@ async function getauthorId(liveId) {
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (safeGet(data)) {
+            console.log(`直播间列表` + data)
             data = JSON.parse(data);
           }
         }
