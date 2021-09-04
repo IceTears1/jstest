@@ -73,11 +73,10 @@ if ($.isNode()) {
   }
   
 	$.TokenLists = []
-  
-        //$.innerTokenList = await getStoreTokee('https://zy.kejiwanjia.com/jd_dpqiandao.php');
-        //$.innerTokenList = token
+  $.innerTokenList = await getStoreTokee('https://zy.kejiwanjia.com/jd_dpqiandao.php');
+  $.innerTokenList = token
 	
-	// $.TokenLists.push(...$.TokenList,...$.innerTokenList);
+	$.TokenLists.push(...$.TokenList,...$.innerTokenList);
 
 	
   for (let i = 0; i < cookiesArr.length; i++) {
@@ -396,6 +395,7 @@ function getStoreTokee(url) {
     }
     let res = []
     $.get(options, async (err, resp, data) => {
+      console.log(`${data} API请求失败，请检查网路重试`)
       try {
         if (err) {
         } else {
