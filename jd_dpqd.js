@@ -74,7 +74,7 @@ if ($.isNode()) {
   
 	$.TokenLists = []
   
-        $.innerTokenList = await getStoreTokee('https://zy.kejiwanjia.com/jd_dpqiandao.php');
+        //$.innerTokenList = await getStoreTokee('https://zy.kejiwanjia.com/jd_dpqiandao.php');
         //$.innerTokenList = token
 	
 	$.TokenLists.push(...$.TokenList,...$.innerTokenList);
@@ -297,14 +297,16 @@ function taskUrl(token,venderId) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
         } else {
-            //console.log(data)
+            console.log(data)
             data = JSON.parse(/{(.*)}/g.exec(data)[0])
             console.log(`已签到：`+data.data.days+`天`)
             message +=`已签到：`+data.data.days+`天\n`
         }
       } catch (e) {
         $.logErr(e, resp);
+        console.log(`catch`+e);
       } finally {
+        console.log(`finally`)
         resolve(data);
       }
     })
