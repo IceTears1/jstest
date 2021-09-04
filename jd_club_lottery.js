@@ -462,10 +462,10 @@ function welcomeHome() {
         "Accept-Encoding": "gzip, deflate, br",
         "Accept-Language": "zh-Hans-CN;q=1, zh-Hant-CN;q=0.9",
         "Connection": "keep-alive",
-        "Content-Length": "1761",
+        "Content-Length": "1841",
         "Content-Type": "application/x-www-form-urlencoded",
         "Host": "api.m.jd.com",
-        "User-Agent": "JD4iPhone/167588 (iPhone; iOS 14.3; Scale/2.00)"
+        "User-Agent": "User-Agent: JD4iPhone/167802 (iPhone; iOS 14.7.1; Scale/3.00)"
       }
     }
     $.post(options, async (err, resp, data) => {
