@@ -77,7 +77,7 @@ if ($.isNode()) {
         //$.innerTokenList = await getStoreTokee('https://zy.kejiwanjia.com/jd_dpqiandao.php');
         //$.innerTokenList = token
 	
-	$.TokenLists.push(...$.TokenList,...$.innerTokenList);
+	// $.TokenLists.push(...$.TokenList,...$.innerTokenList);
 
 	
   for (let i = 0; i < cookiesArr.length; i++) {
@@ -148,7 +148,7 @@ function getvenderId(token) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
         } else {
-          //console.log(data)
+          console.log(data)
           data = JSON.parse(/{(.*)}/g.exec(data)[0])
           if (data.code==402) {
             vender=''
@@ -186,7 +186,7 @@ function getvenderName(venderId) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
         } else {
-          //console.log(data)
+          console.log(data)
           data = JSON.parse(data)
           shopName = data.shopName
           console.log(`【`+shopName+`】`)
@@ -219,11 +219,11 @@ function getActivityInfo(token,venderId) {
     $.get(options, (err, resp, data) => {
       try {
         if (err) {
-          // console.log(data)
+          console.log(data)
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
         } else {
-          //console.log(data)
+          console.log(data)
           data = JSON.parse(/{(.*)}/g.exec(data)[0])
           activityId=data.data.id
           //console.log(data)
