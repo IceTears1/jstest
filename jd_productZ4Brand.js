@@ -78,7 +78,7 @@ async function main() {
   $.runFlag = false;
   $.activityInfo = {};
   await takeRequest('superBrandSecondFloorMainPage');
-  console.log(`获取活动详情成功` + JSON.stringify($.activityInfo));
+  console.log(`活动详情` + JSON.stringify($.activityInfo));
   if(JSON.stringify($.activityInfo) === '{}'){
     console.log(`获取活动详情失败`);
     return ;
@@ -170,6 +170,7 @@ async function takeRequest(type) {
   myRequest = getRequest(url);
   return new Promise(async resolve => {
     $.post(myRequest, (err, resp, data) => {
+      console.log(`数据` + resp +  data + err);
       try {
         dealReturn(type, data);
       } catch (e) {
