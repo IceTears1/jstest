@@ -471,7 +471,7 @@ function welcomeHome() {
       }
     }
     $.post(options, async (err, resp, data) => {
-      console.log(`----------------123---` +err+JSON.parse(data)+JSON.parse(resp));
+      console.log(`----------------123---` +err+data+resp);
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
