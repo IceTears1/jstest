@@ -22,7 +22,7 @@ cron "5 0,23 * * *" script-path=jd_club_lottery.js,tag=摇京豆
 摇京豆 = type=cron,script-path=jd_club_lottery.js, cronexpr="5 0,23 * * *", timeout=3600, enable=true
 */
 
-const $ = new Env('摇京豆');
+const $ = new Env('摇京豆-ice');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
