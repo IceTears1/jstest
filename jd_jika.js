@@ -44,7 +44,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
-    await getAuthorShareCode()
+    // await getAuthorShareCode()
     console.log(`\n\n@Author：zero205\n@github：https://github.com/zero205/JD_tencent_scf/tree/main\n@Tips：默认不执行入会任务\n\n助力逻辑：优先账号内互助，有剩余助力次数再帮我助力\n`);
     $.inviteList = []
     for (let i = 0; i < cookiesArr.length; i++) {
@@ -85,27 +85,22 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
             await $.wait(3000);
         }
     }
-	$.authorCode=[{ groupId: 5818671, user: '18014246678_p', max: false },
-  { groupId: 5821689, user: 'jd_FdDjJBENiJzA', max: false },
-  { groupId: 5811761, user: 'jd_41c752f800930', max: false },
-  { groupId: 5811762, user: 'jd_oKMcRZnuBXfM', max: false },
-  { groupId: 5808809, user: '269569205', max: false },
-  { groupId: 5816806, user: '18915299015_p', max: false }]
-    if ($.authorCode && $.authorCode.length > 999999) {
-        for (let i = 0; i < cookiesArr.length; i++) {
-            cookie = cookiesArr[i];
-            $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-            $.canHelp = true;
-            console.log(`\n${$.UserName} 去助力【zero205】\n`)
+	$.authorCode=[];
+    // if ($.authorCode && $.authorCode.length > 999999) {
+    //     for (let i = 0; i < cookiesArr.length; i++) {
+    //         cookie = cookiesArr[i];
+    //         $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+    //         $.canHelp = true;
+    //         console.log(`\n${$.UserName} 去助力【zero205】\n`)
 			
-            for (let j = 0; j < $.authorCode.length && $.canHelp; j++) {
-                $.item = $.authorCode[j].groupId;
+    //         for (let j = 0; j < $.authorCode.length && $.canHelp; j++) {
+    //             $.item = $.authorCode[j].groupId;
 
-                await doHelp($.item)
-                await $.wait(2000)
-            }
-        }
-    }
+    //             await doHelp($.item)
+    //             await $.wait(2000)
+    //         }
+    //     }
+    // }
 })()
     .catch((e) => {
         $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
