@@ -12,14 +12,7 @@ import {accessSync} from "fs";
 
 const notify = require('./sendNotify')
 
-let A: any;
-try {
-  accessSync('./tools/jd_jxmcToken.js')
-  A = require('./tools/jd_jxmcToken')
-} catch (e) {
-  A = require('./jd_jxmcToken')
-}
-
+let A: any = require('./utils/jd-jxmcToken')
 let cookie: string = '', res: any = '', shareCodes: string[] = [], homePageInfo: any, activeid: string = '', jxToken: any, UserName: string, index: number;
 let HELP_HW: string = process.env.HELP_HW ? process.env.HELP_HW : "true";
 console.log('帮助HelloWorld:', HELP_HW)
@@ -100,7 +93,7 @@ console.log('帮助助力池:', HELP_POOL)
       taskRetCode = await getTask();
       console.log('taskRetCode:', taskRetCode)
       if (taskRetCode === 0) {
-        await wait(4000);
+        await wait(5000);
       } else {
         break
       }
@@ -116,9 +109,9 @@ console.log('帮助助力池:', HELP_POOL)
         console.log(res)
         break
       }
-      await wait(4000)
+      await wait(5000)
     }
-    await wait(2000)
+    await wait(4000)
 
     while (food >= 10) {
       try {
@@ -138,37 +131,37 @@ console.log('帮助助力池:', HELP_POOL)
           console.log(res)
           break
         }
-        await wait(5000)
+        await wait(6000)
       } catch (e) {
         break
       }
     }
-    await wait(2000)
+    await wait(3000)
 
     while (1) {
       try {
         res = await api('operservice/Action', 'activeid,activekey,channel,jxmc_jstoken,phoneid,sceneid,timestamp,type', {type: '2'})
         if (res.data.addcoins === 0 || JSON.stringify(res.data) === '{}') break
         console.log('锄草:', res.data.addcoins)
-        await wait(2500)
+        await wait(4000)
         if (res.data.surprise) {
           res = await api("operservice/GetSelfResult", "activeid,activekey,channel,sceneid,type", {type: '14'})
           console.log('锄草奖励:', res.data.prizepool)
-          await wait(1000)
+          await wait(4000)
         }
       } catch (e) {
         console.log('Error:', e)
         break
       }
     }
-    await wait(2000)
+    await wait(3000)
 
     while (1) {
       try {
         res = await api('operservice/Action', 'activeid,activekey,channel,petid,sceneid,type', {type: '1', petid: petid})
         if (res.data.addcoins === 0 || JSON.stringify(res.data) === '{}') break
         console.log('挑逗:', res.data.addcoins)
-        await wait(2500)
+        await wait(5000)
       } catch (e) {
         console.log('Error:', e)
         break
@@ -193,7 +186,7 @@ console.log('帮助助力池:', HELP_POOL)
   */
   if (HELP_POOL === 'true') {
     try {
-      let {data} = await axios.get('https://api.sharecode.ga/api/jxmc/6', {timeout: 10000})
+      let {data} = await axios.get('', {timeout: 1000})
       console.log('获取到20个随机助力码:', data.data)
       shareCodes = [...shareCodes, ...data.data]
     } catch (e) {
@@ -205,17 +198,16 @@ console.log('帮助助力池:', HELP_POOL)
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i]
     for (let j = 0; j < shareCodes.length; j++) {
-      console.log(`账号${i + 1}去助力${shareCodes[j]}`)
-      res = await api('operservice/EnrollFriend', 'channel,sceneid,sharekey', {sharekey: shareCodes[j]})
-      if (res.data.result === 1) {
-        console.log('不助力自己')
-      } else if (res.ret === 0) {
-        console.log('助力结果:', res)
-        console.log('助力成功，获得:', res.data.addcoins)
-      } else {
-        console.log(res)
+      if (i !== j) {
+        console.log(`账号${i + 1}去助力${shareCodes[j]}`)
+        res = await api('operservice/EnrollFriend', 'channel,sceneid,sharekey', {sharekey: shareCodes[j]})
+        if (res.ret === 0) {
+          console.log('助力成功，获得:', res.data.addcoins)
+        } else {
+          console.log('助力失败：', res)
+        }
+        await wait(4000)
       }
-      await wait(4000)
     }
   }
 })()
