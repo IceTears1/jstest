@@ -15,7 +15,7 @@ const $ = new Env("中青分享阅读-助力10次");
 
 //let request = ""
 let $url = $.isNode() ? (process.env.WECHATURL ? process.env.WECHATURL : "") : ($.getdata('WECHATURL') ? $.getdata('WECHATURL') : "")
-//$url="https://script.baertt.com/count2/callback?type=1&si=8ec142b6e286ae000e69bc301d03a1b5&referer=https%253A%252F%252Ffocu.youth.cn%252Fnewzerohot%252F20210421%253Fsid%253D37729461%2526uid%253D58041470%2526timestamp%253D1631116855%2526signature%253DbD6x5nzGA2pvRerWXy4Q8WzP5cVWAYP1Og8LdMkQlPVqJYN0Bo%2526share_id%253D58041470377294611631116861085%2526scene_id%253Dfire_share%2526time%253D1631116861085&_=1631154665739&jsonpcallback=jsonp3"
+//$url="https://script.xunsl.com/count2/callback?type=1&si=b615c4f88ff6b3ad430431a3fe25b3cf&referer=https%253A%252F%252Fmy.allcitysz.net%252Fhotshareap%252F20210908%253Fsid%253D33320942%2526uid%253D55032981%2526timestamp%253D1631174162%2526signature%253DM3YJXEvNgO8W5zRwpk4VLo8ZRUbR0q3a2mZ69xB0loAqGPQnLb%2526share_id%253D55032981333209421631174164391%2526scene_id%253Dfire_share%2526time%253D1631174164391&_=1631174195903&jsonpcallback=jsonp3"
 if ($url){ 
 	getShareInfo();
 }
@@ -26,7 +26,7 @@ else
 //分享数据获取
 async function getShareInfo() {
   try {
-    if ($url.indexOf("script.baertt.com/count2") > -1) {
+    if ($url.indexOf("script.xunsl.com/count2") > -1) {
       var url = $url;
 	  console.log(url)
       var s_si = url.match(/si=(.*?)&/)[1];
@@ -58,8 +58,8 @@ async function postShareInfoa(o_url,o_si, num) {
             'Accept-Encoding': `gzip, deflate, br`,
             'Accept': `*/*`,
             'Connection': `keep-alive`,
-            'Referer': `https://focus.youth.cn/`,
-            'Host': `script.baertt.com`,
+            'Referer': `https://my.allcitysz.net/`,
+            'Host': `script.xunsl.com`,
             'User-Agent': `Mozilla/5.0 (iPhone; CPU iPhone OS ${iosV}_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.7(0x18000730) NetType/WIFI Language/zh_CN`,
             'Accept-Language': `zh-cn`
         };

@@ -23,7 +23,7 @@ cron "59 7,15,23 * * *" script-path=jd_joy_reward.js,tag=宠汪汪积分兑换�
  */
 // prettier-ignore
 const $ = new Env('宠汪汪积分兑换奖品');
-const zooFaker = require('./JDJRValidator_Pure');
+const zooFaker = require('./utils/JDJRValidator_Pure');
 // $.get = zooFaker.injectToRequest2($.get.bind($));
 // $.post = zooFaker.injectToRequest2($.post.bind($));
 let allMessage = '';
@@ -100,8 +100,8 @@ async function joyReward() {
   try {
     if (new Date().getMinutes() === 59) {
       let nowtime = new Date().Format("s.S")
-      let starttime = process.env.JOY_STARTTIME ? process.env.JOY_STARTTIME : 55;
-      if(nowtime < 54) {
+      let starttime = process.env.JOY_STARTTIME ? process.env.JOY_STARTTIME : 58;
+      if(nowtime < 57) {
         let sleeptime = (starttime - nowtime) * 1000;
         console.log(`等待时间 ${sleeptime / 1000}`);
         await zooFaker.sleep(sleeptime)
@@ -146,7 +146,7 @@ async function joyReward() {
           console.log(`${item['giftName']}当前库存:${item['leftStock']}，id：${item.id}`)
           if (item.giftType === 'jd_bean' && item['giftValue'] === rewardNum) {
             saleInfoId = item.id;
-            leftStock = item.leftStock;
+            leftStock = "100" //item.leftStock;
             salePrice = item.salePrice;
             giftValue = item.giftValue;
           }
@@ -158,7 +158,7 @@ async function joyReward() {
           //开始兑换
           if (salePrice) {
             if (leftStock) {
-              if (!saleInfoId) return
+              //if (!saleInfoId) return
               // console.log(`当前账户积分:${data.coin}\n当前京豆库存:${leftStock}\n满足兑换条件,开始为您兑换京豆\n`);
               console.log(`\n您设置的兑换${giftValue}京豆库存充足,开始为您兑换${giftValue}京豆\n`);
               console.log(`脚本开始兑换${rewardNum}京豆时间 ${(new Date()).Format("yyyy-MM-dd hh:mm:ss | S")}`);
