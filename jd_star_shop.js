@@ -50,9 +50,6 @@ if ($.isNode()) {
         }
         await main();
     }
-    if($.authorCodeList.length > 0){
-        $.inviteCodeList.push(...getRandomArrayElements($.authorCodeList, 1));
-    }
     cookiesArr = getRandomArrayElements(cookiesArr,cookiesArr.length);
     for (let i = 0; i < cookiesArr.length; i++) {
         $.cookie = cookiesArr[i];

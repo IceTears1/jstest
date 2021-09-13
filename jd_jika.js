@@ -44,17 +44,6 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
-    await getAuthorShareCode()
-    console.log(`\n\n@Author：zero205\n@github：https://github.com/zero205/JD_tencent_scf/tree/main\n@Tips：默认不执行入会任务\n\n助力逻辑：优先账号内互助，有剩余助力次数再帮我助力\n`);
-    $.inviteList = [
-  { groupId: 5818671, user: '18014246678_p', max: false },
-  { groupId: 5821689, user: 'jd_FdDjJBENiJzA', max: false },
-  { groupId: 5811761, user: 'jd_41c752f800930', max: false },
-  { groupId: 5811762, user: 'jd_oKMcRZnuBXfM', max: false },
-  { groupId: 5808809, user: '269569205', max: false },
-  { groupId: 5816806, user: '18915299015_p', max: false },
-  { groupId: 5820732, user: 'jd_718b10084be4f', max: false }
-]
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i];
@@ -91,19 +80,6 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
             console.log(`${$.UserName}去助力 ${$.oneInvite.groupId}`);
             await doHelp($.oneInvite.groupId)
             await $.wait(3000);
-        }
-    }
-    if ($.authorCode && $.authorCode.length > 999999) {
-        for (let i = 0; i < cookiesArr.length; i++) {
-            cookie = cookiesArr[i];
-            $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-            $.canHelp = true;
-            console.log(`\n${$.UserName} 去助力【zero205】\n`)
-            for (let j = 0; j < $.authorCode.length && $.canHelp; j++) {
-                $.item = $.authorCode[j];
-                await doHelp($.item)
-                await $.wait(2000)
-            }
         }
     }
 })()
@@ -332,31 +308,6 @@ function openCard() {
         })
     })
 }
-
-function getAuthorShareCode() {
-    return new Promise(resolve => {
-        $.get({
-            url: "https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/jika.json",
-            headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-            }
-        }, async (err, resp, data) => {
-            try {
-                if (err) {
-                    console.log(`${JSON.stringify(err)}`);
-                    console.log(`${$.name} API请求失败，请检查网路重试`);
-                } else {
-                    $.authorCode = JSON.parse(data);
-                }
-            } catch (e) {
-                $.logErr(e, resp)
-            } finally {
-                resolve();
-            }
-        })
-    })
-}
-
 function taskPostUrl(functionId, body) {
     return {
         url: `${JD_API_HOST}?functionId=${functionId}&appid=coupon-necklace&client=wh5`,

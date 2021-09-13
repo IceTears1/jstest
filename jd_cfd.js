@@ -36,15 +36,11 @@ $.showLog = $.getdata("cfd_showLog") ? $.getdata("cfd_showLog") === "true" : fal
 $.notifyTime = $.getdata("cfd_notifyTime");
 $.result = [];
 $.shareCodes = [
-"F23226A0E168CB913AA69AAEFD2C5E678EB154AC03E9086890E68991ED6174B2",
-"078588C361509E29916CCDA9265D316D8C780FB83134C92B7266DFC4612F07CC",
-"C0028153A0BEBAFFF2CA8C8CBB71DFB17E2AC5D48F11FAC8DA3C0BCF3BD00674",
-"17F7E5B37B1EA804939C2C8BE3F35E1085C690FCBCF24A959F66355E2E64A87F",
-"E2618D1A71364A3E172E38194329EB3C47B22242D29B302092E24C8652E7DED5",
-"E2618D1A71364A3E172E38194329EB3C5C055E51ADBE8B77C80D890E92987B69",
-"F0CA50D50CE659E5A672C38F39A4C8124FD9AF9EA069DD5D9359A96B6D439C9A",
-"F0CA50D50CE659E5A672C38F39A4C8124FD9AF9EA069DD5D9359A96B6D439C9A",
-"9105AA37CA35BA769444D3F44F5F92C62CEEC37DFEE7FF0B0EFCAE7D8B73E7A6",
+"C4BFA7960F79A773EA79054CEEA4ECC22A9DA893F02ADA2F4B7093E70F6578C2",
+"807F1AF81B5FE77B326477D90FD32A4D4FEA5B59B930E35C1AC4C42439EB2D85",
+"4C25A538D69616E32016DB3DEF8ADFC755777AE0FADD35407C64483C02989385",
+"720028D9F9C9947F8F21652F657EB69CE6C6DDA7D9FED97E9FCCCAEF0B82746E",
+"61B0C52D653D9AB83CF357C7C92130673A9A0AF15DE6A87B00BC2B4DDB8E04EC"
 ];
 let cookiesArr = [], cookie = '', token;
 
@@ -636,39 +632,6 @@ function helpByStage(shareCodes) {
         resolve(data);
       }
     })
-  })
-}
-
-function getAuthorShareCode(url) {
-  return new Promise(async resolve => {
-    const options = {
-      url: `${url}?${new Date()}`, "timeout": 10000, headers: {
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-      }
-    };
-    if ($.isNode() && process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
-      const tunnel = require("tunnel");
-      const agent = {
-        https: tunnel.httpsOverHttp({
-          proxy: {
-            host: process.env.TG_PROXY_HOST,
-            port: process.env.TG_PROXY_PORT * 1
-          }
-        })
-      }
-      Object.assign(options, { agent })
-    }
-    $.get(options, async (err, resp, data) => {
-      try {
-        resolve(JSON.parse(data))
-      } catch (e) {
-        // $.logErr(e, resp)
-      } finally {
-        resolve();
-      }
-    })
-    await $.wait(10000)
-    resolve();
   })
 }
 
