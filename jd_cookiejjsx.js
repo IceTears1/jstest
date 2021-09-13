@@ -9,7 +9,6 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 let allMessage = '';
-
 let qcMessage = '';
 let tswb = '';//变量 你想要自定义发送的文本内容 如 老弟 你的CK实效了 打开*******5701 扫码更新
 let fs = require('fs');

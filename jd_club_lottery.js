@@ -22,7 +22,7 @@ cron "5 0,23 * * *" script-path=jd_club_lottery.js,tag=摇京豆
 摇京豆 = type=cron,script-path=jd_club_lottery.js, cronexpr="5 0,23 * * *", timeout=3600, enable=true
 */
 
-const $ = new Env('摇京豆-ice');
+const $ = new Env('摇京豆');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -456,22 +456,19 @@ function welcomeHome() {
       url: `https://api.m.jd.com/client.action?functionId=welcomeHome`,
       // url: `https://api.m.jd.com/client.action?functionId=welcomeHome&body=${escape(JSON.stringify(data))}&uuid=8888888&client=apple&clientVersion=9.4.1&st=1618538579097&sign=e29d09be25576be52ec22a3bb74d4f86&sv=100`,
       // body: `body=${escape(JSON.stringify(data))}`,
-    
-      // body: `body=%7B%22homeAreaCode%22%3A%220%22%2C%22identity%22%3A%2288732f840b77821b345bf07fd71f609e6ff12f43%22%2C%22cycNum%22%3A1%2C%22fQueryStamp%22%3A%221619741900009%22%2C%22globalUIStyle%22%3A%229.0.0%22%2C%22showCate%22%3A%221%22%2C%22tSTimes%22%3A%220%22%2C%22geoLast%22%3A%22K3%252BcQaJxm9FzAm8%252BYHBwQKEMnguxItJAtNhFQOgUkktO5Vmidb%252BfKedLYq%252Fjlnc%252BK0ZsoA8jI8yXkYA6M2L5NYrGdBxZPbV%252FzT%252BU%252BHaCeNg%253D%22%2C%22geo%22%3A%22CZQirfKpZqpcvvBN0KadX76P55F3UdFoB2C3P0ZyHOXZWjeifB1aM0xH3BWx0YRlyu4eaUsfA3KpuoAraiffcw%253D%253D%22%2C%22cycFirstTimeStamp%22%3A%221619740961090%22%2C%22displayVersion%22%3A%229.0.0%22%2C%22geoReal%22%3A%22CZQirfKpZqpcvvBN0KadX76P55F3UdFoB2C3P0ZyHOXtnAGs7wzWHMkTSTIEj7qi%22%2C%22controlMaterials%22%3A%22null%22%2C%22xviewGuideFloor%22%3A%22index%2Ccategory%2Cfind%2Ccart%2Chome%22%2C%22fringe%22%3A%221%22%2C%22receiverGeo%22%3A%22mTBeEjk2Q83Kb3%252Fylt2Amm7iguwnhvKDgDnR18TktRpedJcPIHjALOIwGuNKAgau%22%7D&client=apple&clientVersion=9.4.6&d_brand=apple&isBackground=N&joycious=104&lang=zh_CN&networkType=4g&networklibtype=JDNetworkBaseAF&openudid=88732f840b77821b345bf07fd71f609e6ff12f43&osVersion=14.3&partner=apple&rfs=0000&scope=11&screen=828%2A1792&sign=69cc68677ae63b0a8737602766a0a340&st=1619741900013&sv=111&uts=0f31TVRjBSujckcdxhii7gq9cidRV4uxtCNZpaQs9IOuG5PD2oGme36aUnsUBSyCtrnCzcJjRQzsekOXnNu9XyW4W2UAsnnZ06POovikHhGabI9pwW8ZeJ2vmOBTWqWjA66DWDvRHGVeJeXzsm5xolz7r%2FX0APYfhg8I5QBwgKJfD3hzoXkHcnsGfMhHncRzuC4iOtgVG8L%2FnQyyNwXAJQ%3D%3D&uuid=hjudwgohxzVu96krv%2FT6Hg%3D%3D&wifiBssid=unknown`,
-      body:'area%3D2_2833_51953_0%26body%3D%7B%22homeAreaCode%22%3A%220%22%2C%22identity%22%3A%22d267bd9b6992b111c00f692299ab72a75f523aeb%22%2C%22cycNum%22%3A1%2C%22fQueryStamp%22%3A%221630689113665%22%2C%22globalUIStyle%22%3A%229.0.0%22%2C%22showCate%22%3A%221%22%2C%22appType%22%3A0%2C%22tSTimes%22%3A%220%22%2C%22geoLast%22%3A%223N%252FtfPdkbH2KG1eQlXvPzCfeQwe4mlwTOKSFAh%252Bm97WV9xfD0m5KO5X2YKoyQe6DM4%252FRVVSWw5EU%252F1N2B3MwMA%252BLehCdrzcjDBqqLrssr3Q%253D%22%2C%22geo%22%3A%223N%252FtfPdkbH2KG1eQlXvPzCfeQwe4mlwTOKSFAh%252Bm97WV9xfD0m5KO5X2YKoyQe6DM4%252FRVVSWw5EU%252F1N2B3MwMA%252BLehCdrzcjDBqqLrssr3Q%253D%22%2C%22cycFirstTimeStamp%22%3A%221630773214791%22%2C%22displayVersion%22%3A%2210.0.0%22%2C%22geoReal%22%3A%22852aHw7a8V%252B34Q1mvfhlnpW%252FKG78jm6b98SEtGMYKJECT2bnEVcVfFZMc2yrY%252BmG%22%2C%22controlMaterials%22%3A%22null%22%2C%22xviewGuideFloor%22%3A%22index%2Cnew%2Cfind%2Ccart%2Chome%22%2C%22focusFrame%22%3A%220%22%2C%22fringe%22%3A%221%22%2C%22receiverGeo%22%3A%22VJ%252BO77VWS7POhLetZZPY7uJ5coZxGyN%252BPj74PuWHX7bn5OmmIcyMBjDMtistngCP%22%7D%26build%3D167802%26client%3Dapple%26clientVersion%3D10.1.2%26d_brand%3Dapple%26d_model%3DiPhone13%2C3%26eid%3D3GMNNNP4NC7N73YYJSO7PRFBJ5OD6WPBI2Y24SJ727VCYDW2NF7MIZX4B2WCDIXAHYDQV4WJ64XLDGAC3WSMGIUVXNP5MX4J4DFEYDGU4JCNFXV26UOA%26isBackground%3DY%26joycious%3D79%26lang%3Dzh_CN%26networkType%3Dwifi%26networklibtype%3DJDNetworkBaseAF%26openudid%3Dd267bd9b6992b111c00f692299ab72a75f523aeb%26osVersion%3D14.7.1%26partner%3Dapple%26rfs%3D0000%26scope%3D11%26screen%3D1170*2532%26sign%3Dd6ec67430a28010c07bb51e47b629085%26st%3D1630773845481%26sv%3D101%26uemps%3D0-0%26uts%3D0f31TVRjBSsqndu4%2FjgUPz6uymy50MQJTDMxGnhduyciu%2FQi%2BXH%2FNeP9FZD4fe8CrcCoAb%2FTAlhw0EeARxxy8iDMl4Z9Cdj2is%2FVs6TrdG1UKEDYBP%2BB6wEwI5LcT7NEA3rR0e%2Fuigc5fgPALBw5G%2B4jn%2BQ1iyEqMaYMq6GGtNY0%2BBqB9OrMjLQaAMYK9plBF9uxh4sCWDfs1oGJeQCz1g%3D%3D%26uuid%3DhjudwgohxzVu96krv%2FT6Hg%3D%3D%26wifiBssid%3D74f7ee00e807b0b8c975940f3779d326',
+      body: `body=%7B%22homeAreaCode%22%3A%220%22%2C%22identity%22%3A%2288732f840b77821b345bf07fd71f609e6ff12f43%22%2C%22cycNum%22%3A1%2C%22fQueryStamp%22%3A%221619741900009%22%2C%22globalUIStyle%22%3A%229.0.0%22%2C%22showCate%22%3A%221%22%2C%22tSTimes%22%3A%220%22%2C%22geoLast%22%3A%22K3%252BcQaJxm9FzAm8%252BYHBwQKEMnguxItJAtNhFQOgUkktO5Vmidb%252BfKedLYq%252Fjlnc%252BK0ZsoA8jI8yXkYA6M2L5NYrGdBxZPbV%252FzT%252BU%252BHaCeNg%253D%22%2C%22geo%22%3A%22CZQirfKpZqpcvvBN0KadX76P55F3UdFoB2C3P0ZyHOXZWjeifB1aM0xH3BWx0YRlyu4eaUsfA3KpuoAraiffcw%253D%253D%22%2C%22cycFirstTimeStamp%22%3A%221619740961090%22%2C%22displayVersion%22%3A%229.0.0%22%2C%22geoReal%22%3A%22CZQirfKpZqpcvvBN0KadX76P55F3UdFoB2C3P0ZyHOXtnAGs7wzWHMkTSTIEj7qi%22%2C%22controlMaterials%22%3A%22null%22%2C%22xviewGuideFloor%22%3A%22index%2Ccategory%2Cfind%2Ccart%2Chome%22%2C%22fringe%22%3A%221%22%2C%22receiverGeo%22%3A%22mTBeEjk2Q83Kb3%252Fylt2Amm7iguwnhvKDgDnR18TktRpedJcPIHjALOIwGuNKAgau%22%7D&client=apple&clientVersion=9.4.6&d_brand=apple&isBackground=N&joycious=104&lang=zh_CN&networkType=4g&networklibtype=JDNetworkBaseAF&openudid=88732f840b77821b345bf07fd71f609e6ff12f43&osVersion=14.3&partner=apple&rfs=0000&scope=11&screen=828%2A1792&sign=69cc68677ae63b0a8737602766a0a340&st=1619741900013&sv=111&uts=0f31TVRjBSujckcdxhii7gq9cidRV4uxtCNZpaQs9IOuG5PD2oGme36aUnsUBSyCtrnCzcJjRQzsekOXnNu9XyW4W2UAsnnZ06POovikHhGabI9pwW8ZeJ2vmOBTWqWjA66DWDvRHGVeJeXzsm5xolz7r%2FX0APYfhg8I5QBwgKJfD3hzoXkHcnsGfMhHncRzuC4iOtgVG8L%2FnQyyNwXAJQ%3D%3D&uuid=hjudwgohxzVu96krv%2FT6Hg%3D%3D&wifiBssid=unknown`,
       headers: {
         "Accept": "*/*",
         "Accept-Encoding": "gzip, deflate, br",
         "Accept-Language": "zh-Hans-CN;q=1, zh-Hant-CN;q=0.9",
         "Connection": "keep-alive",
-        "Content-Length": "1841",
+        "Content-Length": "1761",
         "Content-Type": "application/x-www-form-urlencoded",
         "Host": "api.m.jd.com",
-        "User-Agent": "JD4iPhone/167802 (iPhone; iOS 14.7.1; Scale/3.00)"
+        "User-Agent": "JD4iPhone/167588 (iPhone; iOS 14.3; Scale/2.00)"
       }
     }
     $.post(options, async (err, resp, data) => {
-      console.log(`----------------123---` +err+data+resp);
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)

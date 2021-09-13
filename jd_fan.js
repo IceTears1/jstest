@@ -1,9 +1,10 @@
-/**
-粉丝互动，没啥水
-修改温某的脚本，由于温某不干活，只能自己动手修改了
-注意：脚本会加购，脚本会加购，脚本会加购
-若发现脚本里没有的粉丝互动活动。欢迎反馈给我
-cron 34 6,18 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_fan.js
+/*
+* 粉丝互动，没啥水
+* 修改温某的脚本，由于温某不干活，只能自己动手修改了
+* 注意：脚本会加购，脚本会加购，脚本会加购
+* 若发现脚本里没有的粉丝互动活动。欢迎反馈给我
+https://raw.githubusercontent.com/star261/jd/main/scripts/jd_fan.js
+* cron 34 6,18 * * *
 * */
 const $ = new Env('粉丝互动');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -29,7 +30,6 @@ const activityList = [
     {"actid":"fa3c9189473141c0aec883301452e562","endTime":1633017599000},
     {"actid":"bed695cfc40941c0a641eba935f9601e","endTime":1633017599000},
     {"actid":"eff9c47393be446f9dd576e26d13dd9d","endTime":1631635200000},
-    {"actid":"d6fe4bd6a34e4eb9b498932122453890","endTime":1630548000000},
     {"actid":"5622386323bb4a82a2ed4e0158f7c6a7","endTime":1631289599000}	
 ];
 if ($.isNode()) {
@@ -38,10 +38,7 @@ if ($.isNode()) {
     })
     if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
 } else {
-    cookiesArr = [
-        $.getdata("CookieJD"),
-        $.getdata("CookieJD2"),
-        ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
+    cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 !(async () => {
     if (!cookiesArr[0]) {
@@ -118,16 +115,6 @@ async function main() {
     let date = new Date($.activityData.actInfo.endTime)
     let endtime = date.getFullYear() + "-" + (date.getMonth() < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + "-" + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate())
     console.log(`${$.actinfo.actName},${$.actinfo.shopName},当前积分：${$.nowUseValue},结束时间：${endtime}，${$.activityData.actInfo.endTime}`);
-    let gitList = [];
-    let gitTypeList = ['One','Two','Three'];
-    for (let i = 0; i < gitTypeList.length; i++) {
-        let gitInfo = $.activityData.actInfo['giftLevel'+ gitTypeList[i]] || '';
-        if(gitInfo){
-            gitInfo = JSON.parse(gitInfo);
-            gitList.push(gitInfo[0].name);
-        }
-    }
-    console.log(`奖品列表：` + gitList.toString());
     if($.actorInfo.prizeOneStatus && $.actorInfo.prizeTwoStatus && $.actorInfo.prizeThreeStatus){
         console.log(`已抽过所有奖品`);return;
     }
@@ -170,15 +157,7 @@ async function luckDraw(){
 }
 async function doTask(){
     $.runFalag = true;
-    if($.activityData.actorInfo && !$.activityData.actorInfo.follow){
-        console.log(`关注店铺`);
-        await takePostRequest('followShop');
-        await $.wait(2000);
-        $.upFlag = true;
-    }else{
-        console.log('已关注')
-    }
-    if ($.activityData.task1Sign && $.activityData.task1Sign.finishedCount === 0 && $.runFalag) {
+    if ($.activityData.task1Sign && $.activityData.task1Sign.finishedCount === 0) {
         console.log(`执行每日签到`);
         await takePostRequest('doSign');
         await $.wait(2000);
@@ -303,13 +282,15 @@ async function takePostRequest(type){
             url= 'https://lzkjdz-isv.isvjcloud.com/wxCommonInfo/getActMemberInfo';
             body = `venderId=${$.shopid}&activityId=${$.activityID}&pin=${encodeURIComponent($.pin)}`;
             break;
+        case 'doSign':
+            url= 'https://lzkjdz-isv.isvjcloud.com/wxFansInterActionActivity/doSign';
+            body = `activityId=${$.activityID}&uuid=${$.activityData.actorInfo.uuid}`;
+            break;
         case 'doBrowGoodsTask':
         case 'doAddGoodsTask':
             url= `https://lzkjdz-isv.isvjcloud.com/wxFansInterActionActivity/${type}`;
             body = `activityId=${$.activityID}&uuid=${$.activityData.actorInfo.uuid}&skuId=${$.oneGoodInfo.skuId}`;
             break;
-        case 'doSign':
-        case 'followShop':
         case 'doShareTask':
         case 'doRemindTask':
         case 'doMeetingTask':
@@ -386,7 +367,6 @@ function dealReturn(type, data) {
                 console.log(data.errorMessage)
             }
             break;
-        case 'followShop':
         case 'doBrowGoodsTask':
         case 'doAddGoodsTask':
         case 'doShareTask':

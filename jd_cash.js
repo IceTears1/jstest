@@ -31,17 +31,33 @@ let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭�
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 let helpAuthor = true;
-
-const randomCount = $.isNode() ? 20 : 5;
-let cash_exchange = false;//是否消耗2元红包兑换200京豆，默认是
-let a = 'eU9YHajOO71Srg-okClh@JxI0b-60b_olnjM@Khwxb-ywbvQknjM@9pSEuUAqsG6wJMJNynEQ@fF5qNbLmCfQk9w';
-let b = 'JR81buyxYfsjnjM@eU9YHajOO71Srg-okClh@JxI0b-60b_olnjM@Khwxb-ywbvQknjM';
-const inviteCodes = [];
-inviteCodes.push(a);
-for (let i = 1; i < 50; i++) {
-  inviteCodes.push(b)
-}
-console.log(`\n\n内置助力码：${inviteCodes}元`);
+const randomCount = $.isNode() ? 5 : 5;
+let cash_exchange = false;//是否消耗2元红包兑换200京豆，默认否
+const inviteCodes = [
+   `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9Ya-26NP0m8WbRmSYXgA@eU9YGrjGPIZUhBCMsTli@eU9YarnjMv5y8WbVn3JA1w@eU9YaOyxZfly9TjQyXER1A@eU9YarjhY_119zvWnnMXgA@eU9Ya-62ZK0h9TvTmXQVgg@eU9Yab22MPkloDuHmCERgg@eU9Ya76wNKlz8G-Gn3IShw@eU9Yau-2Nfly-D2HwyYW3g@Jhgzb-6yb_8m7GrTwnoV0v9E@eU9YaOm3ZKkjo2nQmHMWhA@eU9YaL7hNPl0pGyBzycT0A@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w`,
+ `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9Ya-26NP0m8WbRmSYXgA@eU9YGrjGPIZUhBCMsTli@eU9YarnjMv5y8WbVn3JA1w@eU9Yau-2Nfly-D2HwyYW3g@Jhgzb-6yb_8m7GrTwnoV0v9E@eU9YaOm3ZKkjo2nQmHMWhA@eU9YaL7hNPl0pGyBzycT0A@eU9YaOyxZfly9TjQyXER1A@eU9YarjhY_119zvWnnMXgA@eU9Ya-62ZK0h9TvTmXQVgg@eU9Yab22MPkloDuHmCERgg@eU9Ya76wNKlz8G-Gn3IShw@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w`,
+ `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9Ya-26NP0m8WbRmSYXgA@eU9YGrjGPIZUhBCMsTli@eU9YarnjMv5y8WbVn3JA1w@eU9YaOyxZfly9TjQyXER1A@eU9YarjhY_119zvWnnMXgA@eU9Ya-62ZK0h9TvTmXQVgg@eU9Yab22MPkloDuHmCERgg@eU9Ya76wNKlz8G-Gn3IShw@eU9Yau-2Nfly-D2HwyYW3g@Jhgzb-6yb_8m7GrTwnoV0v9E@eU9YaOm3ZKkjo2nQmHMWhA@eU9YaL7hNPl0pGyBzycT0A@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w`,
+  `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9Ya-26NP0m8WbRmSYXgA@eU9YGrjGPIZUhBCMsTli@eU9YarnjMv5y8WbVn3JA1w@eU9YaOyxZfly9TjQyXER1A@eU9YarjhY_119zvWnnMXgA@eU9Ya-62ZK0h9TvTmXQVgg@eU9Yab22MPkloDuHmCERgg@eU9Ya76wNKlz8G-Gn3IShw@eU9Yau-2Nfly-D2HwyYW3g@Jhgzb-6yb_8m7GrTwnoV0v9E@eU9YaOm3ZKkjo2nQmHMWhA@eU9YaL7hNPl0pGyBzycT0A@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w`,
+   `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9Ya-26NP0m8WbRmSYXgA@eU9YGrjGPIZUhBCMsTli@eU9YaOyxZfly9TjQyXER1A@eU9YarjhY_119zvWnnMXgA@eU9Ya-62ZK0h9TvTmXQVgg@eU9Yab22MPkloDuHmCERgg@eU9Ya76wNKlz8G-Gn3IShw@eU9Yau-2Nfly-D2HwyYW3g@Jhgzb-6yb_8m7GrTwnoV0v9E@eU9YaOm3ZKkjo2nQmHMWhA@eU9YaL7hNPl0pGyBzycT0A@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w`,
+    `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9Ya-26NP0m8WbRmSYXgA@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w`,
+	 `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+	  `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+	   `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+	    `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+		 `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+		  `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+		   `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+		    `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+			 `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+			  `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+			   `eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+	`eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+	`eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+	`eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+	`eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+	`eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+	`eU9YGrjGPIZUhBCMsTli@eU9YM5fPNZ5MryunoyVu@IhM3beiwYvog9ma6iw@eU9YM5fPNZ5MryunoyVu@eU9YaO3hYfkkp2bVy3oQ1g@IR0-aeq7ZPwj@IhM-bemwb_Um8Gu6iw@eU9YGrjGPIZUhBCMsTli@95KXuGYJsFu2J8BkEtqz@eU9YaOy1Mv0kozuHnSUb0g@eU9Ya-q3Ya9woDqAwiFAgw@eU9YaermZK0v9j_dmncWgw@fEdoKrnvN7Q@eU9YarnjMv5y8WbVn3JA1w@UkVkM_H2N6I@9bGzuWIQsnSWJ8NE@eU9Yarq2M_QlpzjTniYWhw@eU9Yar23N6gioD_VyHVHhw`,
+	 ]
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
         cookiesArr.push(jdCookieNode[item])
@@ -58,12 +74,12 @@ let allMessage = '';
         return;
     }
     await requireConfig()
-    // $.authorCode = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jd_updateCash.json')
-    // if (!$.authorCode) {
-    //     $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateCash.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
-    //     await $.wait(1000)
-    //     $.authorCode = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateCash.json') || []
-    // }
+    $.authorCode = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jd_updateCash.json')
+    if (!$.authorCode) {
+        $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateCash.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+        await $.wait(1000)
+        $.authorCode = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateCash.json') || []
+    }
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i];

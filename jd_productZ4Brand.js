@@ -5,7 +5,7 @@ cron 23 8,9 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_p
 一天要跑2次
 */
 const $ = new Env('特务Z');
-const openCard = $.isNode() ? (process.env.OPEN_CARD ? process.env.OPEN_CARD : '2'):'2';
+const openCard = $.isNode() ? (process.env.OPEN_CARD ? process.env.OPEN_CARD : '1'):'1';
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [];
@@ -78,7 +78,6 @@ async function main() {
   $.runFlag = false;
   $.activityInfo = {};
   await takeRequest('superBrandSecondFloorMainPage');
-  console.log(`活动详情` + JSON.stringify($.activityInfo));
   if(JSON.stringify($.activityInfo) === '{}'){
     console.log(`获取活动详情失败`);
     return ;
@@ -170,7 +169,6 @@ async function takeRequest(type) {
   myRequest = getRequest(url);
   return new Promise(async resolve => {
     $.post(myRequest, (err, resp, data) => {
-      console.log(`数据` + resp +  data + err);
       try {
         dealReturn(type, data);
       } catch (e) {

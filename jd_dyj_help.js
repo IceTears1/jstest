@@ -6,11 +6,28 @@
 const $ = new Env("发财大赢家助力")
 const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 let cookiesArr = []
-let pins = process.env.dyjHelpPins ?? "642203775_m,jd_AtLmqDoQMkjB,976302882_m,盟_梦"
+let pins = process.env.dyjHelpPins ?? "jd_FdDjJBENiJzA,18014246678_p,jd_41c752f800930,jd_oKMcRZnuBXfM"
 let cookie = ''
-let helps = [
-  
-]
+let helps = [{
+    id: 0,
+    redEnvelopeId: '8e2cc468bef446d691009057bdac478183511629563206216',
+    markedPin: 'Z0qecRq3mNfmoDe_qwpUHg'
+  },
+  {
+    id: 1,
+    redEnvelopeId: 'c6e26b7747fe44dba023fc859745131397891629563206533',
+    markedPin: 'imCfdYcAa9M7nkcDwm9zzA'
+  },
+  {
+    id: 2,
+    redEnvelopeId: '8ebdeb36fc53458e94d086c41fbcad0d81501629563206784',
+    markedPin: 'KP3aFX8LlEEi2diuiFQtmJBAtkibXfaQvwbtdUNQ0wQ'
+  },
+  {
+    id: 3,
+    redEnvelopeId: '6595568340de4b0f997cd4231596536541081629563207029',
+    markedPin: 'ZMxmyFVYg_obJXQ8HllQXA'
+  }]
 let tools = []
 
 !(async () => {

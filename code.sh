@@ -9,20 +9,17 @@ dir_shell=/ql/shell
 ## 预设的仓库及默认调用仓库设置
 ## 将"repo=$repo1"改成repo=$repo2"或其他，以默认调用其他仓库脚本日志
 ## 也可自行搜索本脚本内的"name_js=("和"name_js_only",将"repo"改成"repo2"或其他，用以自由组合调用仓库的脚本日志
-repo1='acoolbook_lxkwz'                       #预设的 panghu999 仓库
+repo1='liu269569205_jstest'                       #预设的 panghu999 仓库
 repo2='JDHelloWorld_jd_scripts'                    #预设的 JDHelloWorld 仓库
 repo3='he1pu_JDHelp'                               #预设的 he1pu 仓库
 repo4='shufflewzc_faker2'                          #预设的 shufflewzc 仓库
 repo5='acoolbook_scripts'           #预设的 Wenmoux 仓库，用于读取口袋书店互助码。需提前拉取温某人的仓库或口袋书店脚本并完整运行。
 repo6='Aaron-lv_sync_jd_scripts'                   #预设的 Aaron-lv 仓库
 repo7='smiek2221_scripts'                          #预设的 smiek2221 仓库
-repo7='liu269569205_jstest'
-repo8='IceTears1_jstest_ice'
-repo=$repo8                                      #默认调用 shufflewzc_faker2 仓库脚本日志
-
+repo=$repo1                                       #默认调用 shufflewzc_faker2 仓库脚本日志
 
 ## 调试模式开关，默认是0，表示关闭；设置为1，表示开启
-DEBUG="1"
+DEBUG="0"
 
 ## 本脚本限制的最大线程数量
 proc_num="8"
@@ -48,11 +45,11 @@ HelpType=""
 DiyHelpType="1"
 diy_help_rules(){
     case $1 in
-        Pet | JdFactory | Health)
+        Pet | JdFactory | Health | Fruit)
             tmp_helptype="1"            # 京喜工厂和东东工厂使用“均等机会互助模板”，所有账户获得助力次数一致
             ;;
         Jdzz | Joy)
-            tmp_helptype="2"            # 京东赚赚和疯狂的Joy使用“随机顺序互助模板”，本套脚本内账号间随机顺序助力，每次生成的顺序都不一致。
+            tmp_helptype=""            # 京东赚赚和疯狂的Joy使用“随机顺序互助模板”，本套脚本内账号间随机顺序助力，每次生成的顺序都不一致。
             ;;
         *)
             tmp_helptype=$HelpType      # 其他活动仍按默认互助模板生产互助规则。
@@ -69,12 +66,26 @@ diy_help_rules(){
 ##     c) 设定为 BreakHelpNum="6-12" 表示从第 6 至 12 个账号均不被助力；
 ##     d) 设定为 BreakHelpNum="4 9-14 15~18 19_21" 表示第4个账号、第9至14账号、第15至18账号、第19至21账号均不被助力。注意序号区间连接符仅支持 - ~ _；
 ## 不按示例填写可能引发报错。
-BreakHelpType="0"                  ## 屏蔽模式
-BreakHelpNum="4 9-14 15~18 19_21"  ## 屏蔽账号序号或序号区间
+function rand(){
+    min=$1
+    max=$(($2- $min + 1))
+    num=$(date +%s%N)
+    echo $(($num % $max + $min))
+}
+
+rnd=$(rand 8 47)
+#echo $rnd
+rnd2=$[$rnd + 33]
+#echo $rnd2
+#BreakHelpNum=$rnd~$rnd2
+#echo $BreakHelpNum
+BreakHelpType="1"                  ## 屏蔽模式
+BreakHelpNum=$rnd~$rnd2  #"4 9-14 15~18 19_21"  ## 屏蔽账号序号或序号区间
+echo -e "\n## 本次屏蔽被助力账号区间\"$BreakHelpNum\"，共32个账号"
 
 ## 定义是否自动更新配置文件中的互助码和互助规则
 ## 默认为 UpdateType="1" 表示更新互助码和互助规则；UpdateType="2" 表示只更新互助码，不更新互助规则；UpdateType="3" 表示只更新互助规则，不更新互助码；留空或其他数值表示不更新。
-UpdateType="3"
+UpdateType="1"
 
 ## 定义是否自动安装或修复缺失的依赖，默认为1，表示自动修复；留空或其他数值表示不修复。
 FixDependType=""

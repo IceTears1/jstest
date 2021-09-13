@@ -13,7 +13,8 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
-let tytpacketId = '8d30ed1b707a4960a118e9ded0962606-NjQyMjAzNzc1X20!';
+let tytpacketId = '36dd3cef415d4396931208dbc0b0754c-amRfRmREakpCRU5pSnpB';
+tytpacketId='4839d343e8b9443cb20ea28675f71ab3-MTgwMTQyNDY2NzhfcA!!';
 if (process.env.tytpacketId) {
   tytpacketId = process.env.tytpacketId;
 }
@@ -32,7 +33,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  console.log(`\ntytpacketId${$.tytpacketId}\n`);
+
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -43,7 +44,6 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
       message = '';
       await TotalBean();
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-      
       if (!$.isLogin) {
         $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
 
