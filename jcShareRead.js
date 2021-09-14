@@ -16,13 +16,21 @@ const $ = new Env("中青分享阅读-助力10次");
 //let request = ""
 let $url = $.isNode() ? (process.env.JC_WECHATURL ? process.env.JC_WECHATURL : "") : ($.getdata('JC_WECHATURL') ? $.getdata('JC_WECHATURL') : "")
 //$url="https://script.xunsl.com/count2/callback?type=1&si=b615c4f88ff6b3ad430431a3fe25b3cf&referer=https%253A%252F%252Fmy.allcitysz.net%252Fhotshareap%252F20210908%253Fsid%253D33320942%2526uid%253D55032981%2526timestamp%253D1631174162%2526signature%253DM3YJXEvNgO8W5zRwpk4VLo8ZRUbR0q3a2mZ69xB0loAqGPQnLb%2526share_id%253D55032981333209421631174164391%2526scene_id%253Dfire_share%2526time%253D1631174164391&_=1631174195903&jsonpcallback=jsonp3"
-if ($url){ 
-	getShareInfo();
+var urls=$url.split('@')
+!(async () => {
+for(var k=0;k<urls.length;k++){
+	$url=urls[k]
+	if ($url){ 
+	await getShareInfo();
+	}
+	else
+	{
+		$.msg("中青url获取失败", "", "️中青url获取失败");
+	}
 }
-else
-{
-	$.msg("中青url获取失败", "", "️中青url获取失败");
-}
+
+})()
+
 //分享数据获取
 async function getShareInfo() {
   try {
