@@ -30,11 +30,11 @@ if ($.isNode()) {
         return;
     }
     let res = [];
-    try{res = await getAuthorShareCode('');}catch (e) {}
-    if(res){
-        try{res = await getAuthorShareCode('');}catch (e) {}
-        if(!res){res = ["2028","12668","12137","12684","12695"];}
-    }
+    // try{res = await getAuthorShareCode('');}catch (e) {}
+    // if(res){
+    //     try{res = await getAuthorShareCode('');}catch (e) {}
+    //     if(!res){res = ["2028","12668","12137","12684","12695"];}
+    // }
     //$.shareUuid = getRandomArrayElements(res,1)[0];
     for (let i = 0; i < cookiesArr.length; i++) {
         getUA();
