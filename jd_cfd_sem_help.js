@@ -28,15 +28,10 @@ function randomString(e) {
     n += t.charAt(Math.floor(Math.random() * a));
   return n
 }
-$.InviteList = ["F23226A0E168CB913AA69AAEFD2C5E678EB154AC03E9086890E68991ED6174B2",
-"078588C361509E29916CCDA9265D316D8C780FB83134C92B7266DFC4612F07CC",
-"C0028153A0BEBAFFF2CA8C8CBB71DFB17E2AC5D48F11FAC8DA3C0BCF3BD00674",
-"17F7E5B37B1EA804939C2C8BE3F35E1085C690FCBCF24A959F66355E2E64A87F",
-"E2618D1A71364A3E172E38194329EB3C47B22242D29B302092E24C8652E7DED5",
-"E2618D1A71364A3E172E38194329EB3C5C055E51ADBE8B77C80D890E92987B69",
-"F0CA50D50CE659E5A672C38F39A4C8124FD9AF9EA069DD5D9359A96B6D439C9A",
-"F0CA50D50CE659E5A672C38F39A4C8124FD9AF9EA069DD5D9359A96B6D439C9A",
-"9105AA37CA35BA769444D3F44F5F92C62CEEC37DFEE7FF0B0EFCAE7D8B73E7A6",]
+$.InviteList = ["C4BFA7960F79A773EA79054CEEA4ECC202F834F05805ADFC75665D6298964027",
+"807F1AF81B5FE77B326477D90FD32A4D9575EED022E5B464DB39BF145F3BF5B3",
+"4C25A538D69616E32016DB3DEF8ADFC7DFF3E77E5D23D835AF2084FE3390543A",
+"720028D9F9C9947F8F21652F657EB69CB57D9AC82411C43359651C6E3E12447B"]
 $.innerInviteList = [];
 const HelpAuthorFlag = false;//是否助力  true 助力，false 不助力
 
@@ -87,17 +82,9 @@ $.appId = 10032;
   $.InviteLists = []
   let getShareNum = 10
   let getShareNums = 0
-  if (HelpAuthorFlag) {
-    $.innerInviteList = await getAuthorShareCode('https://raw.githubusercontent.com/smiek2221/updateTeam/master/shareCodes/wealth_island_code_one.json');
-    if(!$.innerInviteList[0]) $.innerInviteList = await getAuthorShareCode('https://gitee.com/smiek2221/updateTeam/raw/master/shareCodes/wealth_island_code_one.json');
-    res2 = await getAuthorShareCode('https://raw.githubusercontent.com/smiek2221/updateTeam/master/shareCodes/wealth_island_code.json');
-    if(!res2[0]) res2 = await getAuthorShareCode('https://gitee.com/smiek2221/updateTeam/raw/master/shareCodes/wealth_island_code.json');
-    getShareNums = [...res, ...res2].length >= getShareNum ? getShareNum : [...res, ...res2].length
-    $.innerInviteLists = getRandomArrayElements([...res, ...res2], [...res, ...res2].length >= getShareNum ? getShareNum : [...res, ...res2].length );
-    $.InviteLists.push(...$.InviteList,...$.innerInviteList,...$.innerInviteLists);
-  }else{
-    $.InviteLists.push(...$.InviteList);
-  }
+
+ $.InviteLists.push(...$.InviteList);
+  
   for (let i = 0; i < cookiesArr.length; i++) {
     UA = `jdapp;iPhone;10.0.5;${Math.ceil(Math.random()*2+12)}.${Math.ceil(Math.random()*4)};${randomString(40)};`
     $.cookie = cookiesArr[i];
@@ -492,48 +479,6 @@ function getUrlQueryParams(url_string, param) {
   };
   return '';
 }
-
-
-
-function getAuthorShareCode(url) {
-  return new Promise(async resolve => {
-    const options = {
-      "url": `${url}?${new Date()}`,
-      "timeout": 10000,
-      "headers": {
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-      }
-    };
-    if ($.isNode() && process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
-      const tunnel = require("tunnel");
-      const agent = {
-        https: tunnel.httpsOverHttp({
-          proxy: {
-            host: process.env.TG_PROXY_HOST,
-            port: process.env.TG_PROXY_PORT * 1
-          }
-        })
-      }
-      Object.assign(options, { agent })
-    }
-    let res = []
-    $.get(options, async (err, resp, data) => {
-      try {
-        if (err) {
-        } else {
-          if (data) res = JSON.parse(data)
-        }
-      } catch (e) {
-        // $.logErr(e, resp)
-      } finally {
-        resolve(res || []);
-      }
-    })
-    await $.wait(10000)
-    resolve(res);
-  })
-}
-
 /**
  * 随机从一数组里面取
  * @param arr
