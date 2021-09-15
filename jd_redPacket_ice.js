@@ -1,7 +1,7 @@
 /* 
 京东全民开红包
 */
-const $ = new Env('京东全民开红包');
+const $ = new Env('京东全民开红包1');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
