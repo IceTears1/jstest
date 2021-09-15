@@ -110,6 +110,7 @@ async function pasture() {
       console.log('获取活动信息成功');
       console.log(`互助码：${$.homeInfo.sharekey}`);
       $.activeid = $.homeInfo.activeid;
+      console.log(`activeid:${$.homeInfo.activeid}`);
       $.helpCkList.push($.cookie);
       $.inviteCodeList.push({'use':$.UserName,'code':$.homeInfo.sharekey,'max':false});
       for (let i = 0; i < $.homeInfo.petinfo.length; i++) {
