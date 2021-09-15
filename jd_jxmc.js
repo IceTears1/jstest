@@ -367,7 +367,7 @@ async function takeGetRequest(type) {
       myRequest = getGetRequest(`Award`, url);
       break;
     case 'cow':
-      url = `https://m.jingxi.com/jxmc/operservice/GetCoin?channel=7&sceneid=1001&activeid=${$.activeid}&token=${A($.crowInfo.lastgettime)}&_stk=channel%2Csceneid%2Ctoken&_ste=1`;
+      url = `https://m.jingxi.com/jxmc/operservice/GetCoin?channel=7&sceneid=1001&token=${A($.crowInfo.lastgettime)}&_stk=channel%2Csceneid%2Ctoken&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       myRequest = getGetRequest(`cow`, url);
       break;
@@ -382,7 +382,7 @@ async function takeGetRequest(type) {
       myRequest = getGetRequest(`cow`, url);
       break;
     case 'GetEgg':
-      url = `https://m.jingxi.com/jxmc/operservice/GetSelfResult?channel=7&sceneid=1001&type=11&itemid=${$.onepetInfo.petid}&_stk=channel%2Citemid%2Csceneid%2Ctype&_ste=1`;
+      url = `https://m.jingxi.com/jxmc/operservice/GetSelfResult?channel=7&sceneid=1001&activeid=${$.activeid}&type=11&itemid=${$.onepetInfo.petid}&_stk=channel%2Citemid%2Csceneid%2Ctype&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       myRequest = getGetRequest(`GetEgg`, url);
       break;
