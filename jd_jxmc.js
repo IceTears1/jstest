@@ -397,18 +397,25 @@ async function takeGetRequest(type) {
   }
   myRequest = getGetRequest(url);
   return new Promise(async resolve => {
-    $.get(myRequest, (err, resp, data) => {
-      try {
-        dealReturn(type, data);
-      } catch (e) {
-        console.log(data);
-        $.logErr(e, resp)
-      } finally {
-        resolve();
-      }
-    })
-  })
-}
+        $.get(myRequest, (err, resp, data) => {
+          try {
+            if (err) {
+              console.log(`${JSON.stringify(err)}`)
+              console.log(`API请求失败，请检查网路重试`)
+              $.runFlag = false;
+              console.log(`请求失败`)
+            } else {
+              dealReturn(type, data);
+            }
+          } catch (e) {
+            console.log(data);
+            $.logErr(e, resp)
+          } finally {
+            resolve();
+          }
+        })
+      })
+    }
 // async function takeGetRequest(type) {
 //   let url = ``;
 //   let myRequest = ``;
