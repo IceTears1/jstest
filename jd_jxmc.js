@@ -395,7 +395,7 @@ async function takeGetRequest(type) {
     default:
       console.log(`错误${type}`);
   }
-  myRequest = getGetRequest(url);
+  myRequest = getGetRequest(`cow`, url);
   return new Promise(async resolve => {
         $.get(myRequest, (err, resp, data) => {
           try {
