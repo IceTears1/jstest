@@ -34,7 +34,7 @@ if ($.isNode()) {
     $.getdata("CookieJD2"),
     ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
-$.packetIdArr = [];
+$.packetIdArr = [{"strUserPin":"3TVWJXGOIfXxmHSxNYjAl2JQVxHgyBP8uo1M7W_hLncB3czajFWB_SN5-LdTDlcT","userName":"642203775_m"},{"strUserPin":"3TVWJXGOIfXxmHSxNYjAl9Xu9TMm8kwb5rLGMd_IpGXhjSk4C1SRY7tQkHFzlnID","userName":"jd_AtLmqDoQMkjB"},{"strUserPin":"3TVWJXGOIfXxmHSxNYjAl48gN8xlOv6OxvbfDHVpFtwB3czajFWB_SN5-LdTDlcT","userName":"493326963_m"}];;
 $.activeId = '489177';
 const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
 
