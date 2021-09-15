@@ -35,14 +35,14 @@ $.InviteList = ["C4BFA7960F79A773EA79054CEEA4ECC202F834F05805ADFC75665D629896402
 $.innerInviteList = [];
 const HelpAuthorFlag = false;//是否助力  true 助力，false 不助力
 
-let codeIndex = $.getval('gua_wealth_island_codeId') || '' // 定义提交助力码的账号如2,3,5
+let codeIndex = $.getval('gua_wealth_island_codeId') || '1,2,3' // 定义提交助力码的账号如2,3,5
 if ($.isNode() && process.env.gua_wealth_island_codeId) {
   codeIndex = process.env.gua_wealth_island_codeId;
 }
 let codeIndexArr = []
 
 // 热气球接客 每次运行接客次数
-let serviceNum = 20;// 每次运行接客次数
+let serviceNum = 15;// 每次运行接客次数
 if ($.isNode() && process.env.gua_wealth_island_serviceNum) {
   serviceNum = Number(process.env.gua_wealth_island_serviceNum);
 }

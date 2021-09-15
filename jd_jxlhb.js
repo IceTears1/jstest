@@ -32,11 +32,9 @@ if ($.isNode()) {
 } else {
   cookiesArr = [$.getdata("CookieJD"), $.getdata("CookieJD2"), ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
-$.packetIdArr = [{"strUserPin":"m0LuttwFQMorELxcDKqZaff_lyKVTLcIMAZu-7GEXZV1Ffe2U484vy5GrKcjlRVW","userName":"18014246678_p"},{"strUserPin":"m0LuttwFQMorELxcDKqZaWTczu5K5S36ubVUGEvE8n32Txssnwy2oDrMJXIUUCvh","userName":"jd_FdDjJBENiJzA"},{"strUserPin":"m0LuttwFQMorELxcDKqZaQ25WpYvDp7iWfrQFLQQZtGD5Kk19Xjfk-LkqEHM_MhW","userName":"jd_41c752f800930"},{"strUserPin":"m0LuttwFQMorELxcDKqZaSppKZ2IKvOUV9I4tiNNX9GeUuXHgMxnhU_3NSne1uUK","userName":"jd_oKMcRZnuBXfM"},{"strUserPin":"m0LuttwFQMorELxcDKqZaU7J_QMScuDxWLwRQUsyetI","userName":"269569205"},{"strUserPin":"m0LuttwFQMorELxcDKqZaXh-9PKBceyCWQrKw2hAS3d1Ffe2U484vy5GrKcjlRVW","userName":"18915299015_p"},{"strUserPin":"m0LuttwFQMorELxcDKqZaWBtOaOJWgeCH8Vai3sx_QbDsFR7R9lUgnGhMIeJpyAi","userName":"jd_718b10084be4f"}];
+$.packetIdArr = [{"strUserPin":"3TVWJXGOIfXxmHSxNYjAl2JQVxHgyBP8uo1M7W_hLncB3czajFWB_SN5-LdTDlcT","userName":"642203775_m"},{"strUserPin":"3TVWJXGOIfXxmHSxNYjAl9Xu9TMm8kwb5rLGMd_IpGXhjSk4C1SRY7tQkHFzlnID","userName":"jd_AtLmqDoQMkjB"},{"strUserPin":"3TVWJXGOIfXxmHSxNYjAl48gN8xlOv6OxvbfDHVpFtwB3czajFWB_SN5-LdTDlcT","userName":"493326963_m"}];
 $.activeId = '489177';
 const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
-
-
 !(async () => {
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
@@ -48,7 +46,7 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
       '温馨提示：如提示助力火爆，可尝试寻找京东客服')
   $.authorMyShareIds = []
   //开启红包,获取互助码
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 3; i++) {
     cookie = cookiesArr[i];
     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
     $.index = i + 1;
@@ -70,7 +68,6 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
   }
   //互助
   console.log(`\n\n自己京东账号助力码：\n${JSON.stringify($.packetIdArr)}\n\n`);
-  console.log(`\n开始助力：助力逻辑 先自己京东相互助力，如有剩余助力机会，则助力作者\n`)
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
@@ -83,7 +80,7 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
       console.log(`【${$.UserName}】去助力【${code['userName']}】邀请码：${code['strUserPin']}`);
       await $.wait(1000);
       await enrollFriend(code['strUserPin']);
-      await $.wait(1000);
+      await $.wait(10000);
       if ($.max) continue
       if (!$.canHelp) break
     }
