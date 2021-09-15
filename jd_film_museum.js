@@ -1,8 +1,8 @@
 /*
 动人影像馆
-抽奖貌似没水了，累计签到有豆子，14天100豆  应该能拿到
-注意*****************脚本会开一个会员卡，会加购，默认助力作者********************
-cron 23 10 13-26 9 * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_film_museum.js
+抽奖貌似没水了，累计签到有豆子，5天25豆，10天50豆，14天100豆  应该能拿到
+注意*****************脚本会开一个会员卡，会加购，会助力作者********************
+cron 23 10,22 13-26 9 * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_film_museum.js
 * */
 const $ = new Env('影像馆');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -30,12 +30,12 @@ if ($.isNode()) {
         return;
     }
     let res = [];
-    try{res = await getAuthorShareCode('');}catch (e) {}
-    if(res){
-        try{res = await getAuthorShareCode('');}catch (e) {}
-        if(!res){res = ["2028","12668","12137","12684","12695"];}
+    try{res = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/museum.json');}catch (e) {}
+    if(!res){
+        try{res = await getAuthorShareCode('https://gitee.com/star267/share-code/raw/master/museum.json');}catch (e) {}
+        if(!res){res = [];}
     }
-    //$.shareUuid = getRandomArrayElements(res,1)[0];
+    $.shareUuid = getRandomArrayElements(res,1)[0];
     for (let i = 0; i < cookiesArr.length; i++) {
         getUA();
         $.index = i + 1;
@@ -89,8 +89,8 @@ async function main() {
         console.log(`活动抽奖码：${$.activityInfo.lotteryCount.cuponcode}`);
     }
     if($.activityInfo.isJoin.status === '0'){
-        //await join('1000085868');
-        //await $.wait(1000);
+        await join('1000085868');
+        await $.wait(1000);
         for (let i = 0; i < typeList.length; i++) {
             $.activityInfo[typeList[i]] = await takeGet(typeList[i]);
             await $.wait(100);
@@ -361,9 +361,7 @@ function getToken() {
                     console.log(`${JSON.stringify(err)}`)
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
-                    console.log(`${data}`)
                     data = JSON.parse(data);
-                    
                     $.token = data['token']
                 }
             } catch (e) {
@@ -429,6 +427,9 @@ function TotalBean() {
     })
 }
 function getRandomArrayElements(arr, count) {
+    if(arr.length === 0){
+        arr = ["2028","12668","12137","12684","12695","12769","12795","12808","12827","12792"];
+    }
     var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
     while (i-- > min) {
         index = Math.floor((i + 1) * Math.random());
