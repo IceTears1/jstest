@@ -35,9 +35,11 @@ if ($.isNode()) {
 $.packetIdArr = [];
 $.activeId = '489177';
 if(process.env.jxlhb_packetID){
+console.log(`\n11133---${process.env.jxlhb_packetID}}*****\n`);
+
   $.packetIdArr.push(...process.env.jxlhb_packetID);
 }
-
+console.log(`\n111---${$.packetIdArr}}*****\n`);
 const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
 !(async () => {
   if (!cookiesArr[0]) {
@@ -47,7 +49,7 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
   console.log('京喜领88元红包\n' +
       '活动入口：京喜app-》我的-》京喜领88元红包\n' +
       '温馨提示：如提示助力火爆，可尝试寻找京东客服')
-      console.log(`\n111---${$.packetIdArr}}*****\n`);
+     
   return
   $.authorMyShareIds = []
   //开启红包,获取互助码
