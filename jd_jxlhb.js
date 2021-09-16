@@ -33,14 +33,11 @@ if ($.isNode()) {
   cookiesArr = [$.getdata("CookieJD"), $.getdata("CookieJD2"), ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
 $.packetIdArr = [];
-$.activeId = '489177';
 if(process.env.jxlhb_packetID){
-console.log(`\n11133---${process.env.jxlhb_packetID}}*****\n`);
-let a = JSON.parse( process.env.jxlhb_packetID );
+  let a = JSON.parse( process.env.jxlhb_packetID );
   $.packetIdArr.push(...a);
 }
-console.log(`\n111---${$.packetIdArr}}*****\n`);
-console.log(`\n3333---${JSON.stringify($.packetIdArr[0])}}*****\n`);
+$.activeId = '489177';
 const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
 !(async () => {
   if (!cookiesArr[0]) {

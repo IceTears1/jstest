@@ -34,11 +34,14 @@ if ($.isNode()) {
     $.getdata("CookieJD2"),
     ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
-$.packetIdArr = [{"strUserPin":"7TbH6WpjN_QDJ5GXcZhirWJQVxHgyBP8uo1M7W_hLncB3czajFWB_SN5-LdTDlcT","userName":"642203775_m"},{"strUserPin":"7TbH6WpjN_QDJ5GXcZhirdXu9TMm8kwb5rLGMd_IpGXhjSk4C1SRY7tQkHFzlnID","userName":"jd_AtLmqDoQMkjB"},{"strUserPin":"7TbH6WpjN_QDJ5GXcZhirY8gN8xlOv6OxvbfDHVpFtwB3czajFWB_SN5-LdTDlcT","userName":"493326963_m"}];
+$.packetIdArr = [];
+if(process.env.jxlhb_packetID){
+  let a = JSON.parse( process.env.jxlhb_packetID );
+  $.packetIdArr.push(...a);
+}
+
 $.activeId = '489177';
 const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
-
-
 !(async () => {
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
