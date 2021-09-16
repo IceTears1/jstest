@@ -56,12 +56,15 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     if (!isLoginInfo[$.UserName]) continue
     if (cookiesArr && cookiesArr.length >= 2) {
       console.log(`\n\n自己账号内部互助`);
-      let nums = $.redPacketId.length > 4 ? 4:$.redPacketId.length; //新增只给前四个人助力
+      let nums = $.redPacketId.length > 3 ? 3:$.redPacketId.length; //新增只给前3个人助力
       for (let j = 0; j < nums && $.canHelp; j++) {
         console.log(`账号 ${$.index} ${$.UserName} 开始给 ${$.redPacketId[j]} 进行助力`)
         $.max = false;
+        let a = Math.ceil(Math.random()*100000) + 1000; 
+        console.log(`等待 ${a}s`);
+        await $.wait(a)
         await jinli_h5assist($.redPacketId[j]);
-        await $.wait(19999)
+        
         if ($.max) {
           $.redPacketId.splice(j, 1)
           j--
