@@ -36,8 +36,8 @@ $.packetIdArr = [];
 $.activeId = '489177';
 if(process.env.jxlhb_packetID){
 console.log(`\n11133---${process.env.jxlhb_packetID}}*****\n`);
-
-  $.packetIdArr.push(...process.env.jxlhb_packetID);
+let a = JSON.parse( process.env.jxlhb_packetID );
+  $.packetIdArr.push(...a);
 }
 console.log(`\n111---${$.packetIdArr}}*****\n`);
 const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
