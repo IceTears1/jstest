@@ -1,5 +1,6 @@
 /* 
 京东全民开红包
+环境变量 ice_redpackect  作者id  需要了加
 */
 const $ = new Env('京东全民开红包1');
 const notify = $.isNode() ? require('./sendNotify') : '';
