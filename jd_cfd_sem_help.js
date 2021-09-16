@@ -81,14 +81,16 @@ $.appId = 10032;
   // 助力
   let res = [], res2 = [];
   $.InviteLists = []
-
  $.InviteLists.push(...$.auth_help_codes,...$.InviteList);
   for (let i = 0; i < cookiesArr.length; i++) {
+    
     UA = `jdapp;iPhone;10.0.5;${Math.ceil(Math.random()*2+12)}.${Math.ceil(Math.random()*4)};${randomString(40)};`
     $.cookie = cookiesArr[i];
     $.canHelp = true;
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
     $.index = i + 1;
+
+    console.log(`---------------------${$.UserName} 助力 开始--------------`)
     let nums = $.InviteLists.length > 5 ? 5: $.InviteLists.length
 
     for (let j = 0; j < nums && $.canHelp; j++) {
