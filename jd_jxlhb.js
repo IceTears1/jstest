@@ -47,9 +47,7 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
   console.log('京喜领88元红包\n' +
       '活动入口：京喜app-》我的-》京喜领88元红包\n' +
       '温馨提示：如提示助力火爆，可尝试寻找京东客服')
-     
-  return
-  $.authorMyShareIds = []
+    
   //开启红包,获取互助码
   for (let i = 0; i < 3; i++) {
     cookie = cookiesArr[i];
