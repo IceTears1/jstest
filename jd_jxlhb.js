@@ -32,8 +32,12 @@ if ($.isNode()) {
 } else {
   cookiesArr = [$.getdata("CookieJD"), $.getdata("CookieJD2"), ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
-$.packetIdArr = [{"strUserPin":"3TVWJXGOIfXxmHSxNYjAl2JQVxHgyBP8uo1M7W_hLncB3czajFWB_SN5-LdTDlcT","userName":"642203775_m"},{"strUserPin":"3TVWJXGOIfXxmHSxNYjAl9Xu9TMm8kwb5rLGMd_IpGXhjSk4C1SRY7tQkHFzlnID","userName":"jd_AtLmqDoQMkjB"},{"strUserPin":"3TVWJXGOIfXxmHSxNYjAl48gN8xlOv6OxvbfDHVpFtwB3czajFWB_SN5-LdTDlcT","userName":"493326963_m"}];
+$.packetIdArr = [];
 $.activeId = '489177';
+if(process.env.jxlhb_packetID){
+  $.packetIdArr.push(...process.env.jxlhb_packetID);
+}
+
 const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
 !(async () => {
   if (!cookiesArr[0]) {
@@ -43,6 +47,8 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
   console.log('京喜领88元红包\n' +
       '活动入口：京喜app-》我的-》京喜领88元红包\n' +
       '温馨提示：如提示助力火爆，可尝试寻找京东客服')
+      console.log(`\n111---${$.packetIdArr}}*****\n`);
+  return
   $.authorMyShareIds = []
   //开启红包,获取互助码
   for (let i = 0; i < 3; i++) {
