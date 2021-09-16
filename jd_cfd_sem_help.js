@@ -28,10 +28,11 @@ function randomString(e) {
     n += t.charAt(Math.floor(Math.random() * a));
   return n
 }
-$.InviteList = ["C4BFA7960F79A773EA79054CEEA4ECC202F834F05805ADFC75665D6298964027",
-"807F1AF81B5FE77B326477D90FD32A4D9575EED022E5B464DB39BF145F3BF5B3",
-"4C25A538D69616E32016DB3DEF8ADFC7DFF3E77E5D23D835AF2084FE3390543A",
-"720028D9F9C9947F8F21652F657EB69CB57D9AC82411C43359651C6E3E12447B"]
+$.auth_help_codes = [];
+if(process.env.auth_help_codes){
+  $.auth_help_codes.push(process.env.auth_help_codes);
+}
+$.InviteList = [];
 $.innerInviteList = [];
 const HelpAuthorFlag = false;//是否助力  true 助力，false 不助力
 
@@ -80,19 +81,17 @@ $.appId = 10032;
   // 助力
   let res = [], res2 = [];
   $.InviteLists = []
-  let getShareNum = 10
-  let getShareNums = 0
 
- $.InviteLists.push(...$.InviteList);
-  
+ $.InviteLists.push(...$.auth_help_codes,...$.InviteList);
   for (let i = 0; i < cookiesArr.length; i++) {
     UA = `jdapp;iPhone;10.0.5;${Math.ceil(Math.random()*2+12)}.${Math.ceil(Math.random()*4)};${randomString(40)};`
     $.cookie = cookiesArr[i];
     $.canHelp = true;
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
     $.index = i + 1;
-    if ($.InviteLists && $.InviteLists.length) console.log(`\n******开始【邀请好友助力】(当前有${$.InviteList.length}+${getShareNums}个助力码)*********\n`);
-    for (let j = 0; j < $.InviteLists.length && $.canHelp; j++) {
+    let nums = $.InviteLists.length > 5 ? 5: $.InviteLists.length
+
+    for (let j = 0; j < nums && $.canHelp; j++) {
       $.inviteId = $.InviteLists[j];
       console.log(`${$.UserName} 助力 ${$.inviteId}`);
       let res = await taskGet(`story/helpbystage`, '_cfd_t,bizCode,dwEnv,ptag,source,strShareId,strZone', `&strShareId=${$.inviteId}`)
@@ -108,9 +107,6 @@ $.appId = 10032;
       }
       await $.wait(1000);
     }
-    $.InviteLists = []
-    $.innerInviteLists = getRandomArrayElements([...res, ...res2], [...res, ...res2].length >= getShareNum ? getShareNum : [...res, ...res2].length );
-    $.InviteLists.push(...$.InviteList,...$.innerInviteList,...$.innerInviteLists);
   }
 })()
   .catch((e) => {
