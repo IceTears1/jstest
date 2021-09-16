@@ -8,8 +8,13 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 let isLoginInfo = {}
-let auth = ['354067155'];
+$.auth = [];
+if(process.env.ice_redpackect){
+  $.auth.push(process.env.ice_redpackect);
+}
+
 $.redPacketId = [];
+
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -53,7 +58,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.index = i + 1;
     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
     $.canHelp = true;
-    $.redPacketId = [...new Set(auth),...new Set($.redPacketId)];
+    $.redPacketId = [...new Set($.auth),...new Set($.redPacketId)];
     if (!isLoginInfo[$.UserName]) continue
     if (cookiesArr && cookiesArr.length >= 2) {
       console.log(`\n\n自己账号内部互助`);
@@ -61,7 +66,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
       for (let j = 0; j < nums && $.canHelp; j++) {
         console.log(`账号 ${$.index} ${$.UserName} 开始给 ${$.redPacketId[j]} 进行助力`)
         $.max = false;
-        let a = Math.ceil(Math.random()*100000) + 1000; 
+        let a = Math.ceil(Math.random()*20000) + 1000; 
         console.log(`等待 ${a}s`);
         await $.wait(a)
         await jinli_h5assist($.redPacketId[j]);
