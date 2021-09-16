@@ -40,7 +40,7 @@ let a = JSON.parse( process.env.jxlhb_packetID );
   $.packetIdArr.push(...a);
 }
 console.log(`\n111---${$.packetIdArr}}*****\n`);
-console.log(`\n3333---${$.packetIdArr[0]}}*****\n`);
+console.log(`\n3333---${JSON.stringify($.packetIdArr[0])}}*****\n`);
 const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
 !(async () => {
   if (!cookiesArr[0]) {
