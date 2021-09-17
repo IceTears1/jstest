@@ -67,7 +67,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
       for (let j = 0; j < nums && $.canHelp; j++) {
         console.log(`账号 ${$.index} ${$.UserName} 开始给 ${$.redPacketId[j]} 进行助力`)
         $.max = false;
-        let a = Math.ceil(Math.random()*20000) + 1000; 
+        let a = Math.ceil(Math.random()*10000) + 1000; 
         console.log(`等待 ${a}s`);
         await $.wait(a)
         await jinli_h5assist($.redPacketId[j]);
