@@ -9,12 +9,12 @@ Quantumuil X：添加远程重写
 https://gitee.com/curtinlv/qx/raw/master/rewrite/youth.conf, tag=中青 by Curtin, update-interval=172800, opt-parser=false, enabled=true
 
 中青分享一篇文章到自己的微信上，自己点击一下即触发会自动完成10好有阅读奖励 500青豆/次。
-重写 https://kd.youth.cn/WebApi/invite/openHourRed 
+重写 https://kd.youth.cn/WebApi/invite/openHourRed  https://raw.githubusercontent.com/liu269569205/jstest/master/zq_openHourRed.js
  */
 const $ = new Env("中青定时宝箱");
 
 //let request = ""
-let openHourRed = $.isNode() ? (process.env.zq_openboxbody ? process.env.zq_openboxbody : "") : ($.getdata('zq_openboxbody') ? $.getdata('zq_openboxbody') : "")
+let openHourRed = $.isNode() ? (process.env.zq_openHourRed ? process.env.zq_openHourRed : "") : ($.getdata('zq_openHourRed') ? $.getdata('zq_openHourRed') : "")
 //openHourRed="access=WIFI&app-version=3.5.5&app_version=3.5.5&carrier=%E4%B8%AD%E5%9B%BD%E7%A7%BB%E5%8A%A8&channel=c1002&cookie=MDAwMDAwMDAwMJCMpN-w09Wtg5-Bb36eh6CPqHualIejl7B1pWKwt4VshHyp4LDPyGl9onqkj3ZqYJa8Y898najWsJupZLDdeW2FjJiWrs-mapqGcXY&cookie_id=6c7a19964e3955c7dc38557d0fcd1696&device_brand=Xiaomi&device_id=54575505&device_model=Mi%2B10%2BPro&device_platform=android&device_type=android&inner_version=202108181034&mi=1&oaid=7027eb0359f65c43&openudid=5bcac6814e51087d&os_api=30&os_version=RKQ1.200826.002%2Btest-keys&phone_network=WIFI&phone_sim=1&request_time=1631857494&resolution=1080x2206&sim=1&sm_device_id=20210727214538d085a089f67431e365e8084b16132355014bd0c121ad3a6b&subv=1.2.2&time=1631857472&uid=58041470&uuid=75f43853288a4dbf9946735994b2f58a&version_code=63&version_name=%E4%B8%AD%E9%9D%92%E7%9C%8B%E7%82%B9&zqkey=MDAwMDAwMDAwMJCMpN-w09Wtg5-Bb36eh6CPqHualIejl7B1pWKwt4VshHyp4LDPyGl9onqkj3ZqYJa8Y898najWsJupZLDdeW2FjJiWrs-mapqGcXY&zqkey_id=6c7a19964e3955c7dc38557d0fcd1696"
 var urls=openHourRed.split('@')
 !(async () => {
