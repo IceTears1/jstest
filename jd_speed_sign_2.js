@@ -31,7 +31,7 @@ const JD_API_HOST = 'https://api.m.jd.com/', actCode = 'visa-card-001';
     return;
   }
   for (let i = 0; i < cookiesArr.length; i++) {
-    if (i%5 != 0)continue;
+    if (i%5 != 2)continue;
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
