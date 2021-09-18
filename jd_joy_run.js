@@ -131,24 +131,12 @@ async function main() {
       // const zooFaker = require('./utils/JDJRValidator_Pure');
       // $.validate = await zooFaker.injectToRequest()
       if ($.isNode()) {
-        if (process.env.JOY_RUN_HELP_MYSELF) {
-          let my_run_pins = [];
-          Object.values(jdCookieNode).filter(item => item.match(/pt_pin=([^; ]+)(?=;?)/)).map(item => my_run_pins.push(decodeURIComponent(item.match(/pt_pin=([^; ]+)(?=;?)/)[1])))
-          run_pins = [...new Set(my_run_pins), [...getRandomArrayElements([...run_pins[0].split(',')], [...run_pins[0].split(',')].length)]];
-          run_pins = [[...run_pins].join(',')];
-          invite_pins = run_pins;
-        } else {
-    
-          run_pins = run_pins[0].split(',')
-          Object.values(jdCookieNode).filter(item => item.match(/pt_pin=([^; ]+)(?=;?)/)).map(item => run_pins.push(decodeURIComponent(item.match(/pt_pin=([^; ]+)(?=;?)/)[1])))
-          run_pins = [...new Set(run_pins)];
-          let fixPins = run_pins.splice(run_pins.indexOf('zhaosen2580'), 1);
-          fixPins.push(...run_pins.splice(run_pins.indexOf('jd_61f1269fd3236'), 1));
-          const randomPins = getRandomArrayElements(run_pins, run_pins.length);
-          run_pins = [[...fixPins, ...randomPins].join(',')];
-          invite_pins = run_pins;
-        }
-      }
+        let my_run_pins = [];
+        Object.values(jdCookieNode).filter(item => item.match(/pt_pin=([^; ]+)(?=;?)/)).map(item => my_run_pins.push(decodeURIComponent(item.match(/pt_pin=([^; ]+)(?=;?)/)[1])))
+        run_pins = [...new Set(my_run_pins)];
+        run_pins = [[...run_pins].join(',')];
+        invite_pins = run_pins;
+    }
       cookie = cookiesArr[i];
       UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
