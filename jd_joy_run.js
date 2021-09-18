@@ -50,11 +50,11 @@ const JD_BASE_API = `https://draw.jdfcloud.com//pet`;
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : {};
 //下面给出好友邀请助力的示例填写规则
-let invite_pins = ["jd_4613d00a6a0ef","jd_7eb844fa34b82","jd_7a9adfaa33e88","H189178","jd_sNwckLRthfIF","jd_7fe75a7dd251c"];
+let invite_pins = [];
 //下面给出好友赛跑助力的示例填写规则
-let run_pins = ["jd_4613d00a6a0ef","jd_7eb844fa34b82","jd_7a9adfaa33e88","H189178","jd_sNwckLRthfIF","jd_7fe75a7dd251c"];
+let run_pins = [];
 //friendsArr内置太多会导致IOS端部分软件重启,可PR过来(此处目的:帮别人助力可得30g狗粮)
-let friendsArr = ["jd_4613d00a6a0ef","jd_7eb844fa34b82","jd_7a9adfaa33e88","H189178","jd_sNwckLRthfIF","jd_7fe75a7dd251c"];
+let friendsArr = [];
 
 
 //IOS等用户直接用NobyDa的jd cookie
@@ -125,7 +125,6 @@ async function main() {
     $.msg($.name, '【提示】请先获取来客有礼宠汪汪token', "iOS用户微信搜索'来客有礼'小程序\n点击底部的'发现'Tab\n即可获取Token");
     // return;
   }
-  await getFriendPins();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       $.validate = '';
@@ -133,14 +132,13 @@ async function main() {
       // $.validate = await zooFaker.injectToRequest()
       if ($.isNode()) {
         if (process.env.JOY_RUN_HELP_MYSELF) {
-          console.log(`\n赛跑会先给账号内部助力,如您当前账户有剩下助力机会则为lx0301作者助力\n`)
           let my_run_pins = [];
           Object.values(jdCookieNode).filter(item => item.match(/pt_pin=([^; ]+)(?=;?)/)).map(item => my_run_pins.push(decodeURIComponent(item.match(/pt_pin=([^; ]+)(?=;?)/)[1])))
           run_pins = [...new Set(my_run_pins), [...getRandomArrayElements([...run_pins[0].split(',')], [...run_pins[0].split(',')].length)]];
           run_pins = [[...run_pins].join(',')];
           invite_pins = run_pins;
         } else {
-          console.log(`\n赛跑先给作者两个固定的pin进行助力,然后从账号内部与剩下的固定位置合并后随机抽取进行助力\n如需自己账号内部互助,设置环境变量 JOY_RUN_HELP_MYSELF 为true,则开启账号内部互助\n`)
+    
           run_pins = run_pins[0].split(',')
           Object.values(jdCookieNode).filter(item => item.match(/pt_pin=([^; ]+)(?=;?)/)).map(item => run_pins.push(decodeURIComponent(item.match(/pt_pin=([^; ]+)(?=;?)/)[1])))
           run_pins = [...new Set(run_pins)];
@@ -562,32 +560,6 @@ function getRandomArrayElements(arr, count) {
     shuffled[i] = temp;
   }
   return shuffled.slice(min);
-}
-function getFriendPins() {
-  return new Promise(resolve => {
-    $.get({
-      url: "https://cdn.jsdelivr.net/gh/gitupdate/friendPin@main/friendPins.json",
-      headers:{
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-      },
-      timeout: 100000}, async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`getFriendPins::${JSON.stringify(err)}`);
-        } else {
-          $.friendPins = data && JSON.parse(data);
-          if ($.friendPins && $.friendPins['friendsArr']) {
-            friendsArr = $.friendPins['friendsArr'];
-            console.log(`\n共提供 ${friendsArr.length}个好友供来进行邀请助力\n`)
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve();
-      }
-    })
-  })
 }
 isRequest ? getToken() : main();
 
