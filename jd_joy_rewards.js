@@ -100,14 +100,14 @@ async function joyReward() {
   try {
     if (new Date().getMinutes() === 59) {
       let nowtime = new Date().Format("s.S")
-      let starttime = process.env.JOY_STARTTIME ? process.env.JOY_STARTTIME : 58;
-      if(nowtime < 57) {
+      let starttime = process.env.JOY_STARTTIME ? process.env.JOY_STARTTIME : 60;
+      if(nowtime < 59) {
         let sleeptime = (starttime - nowtime) * 1000;
         console.log(`等待时间 ${sleeptime / 1000}`);
         await zooFaker.sleep(sleeptime)
       }
     }
-    for (let j = 0; j <= 3; j++) {
+    for (let j = 0; j <= 10; j++) {
       await getExchangeRewards();
       if ($.getExchangeRewardsRes && $.getExchangeRewardsRes.success) {
         // console.log('success', $.getExchangeRewardsRes);
@@ -146,7 +146,7 @@ async function joyReward() {
           console.log(`${item['giftName']}当前库存:${item['leftStock']}，id：${item.id}`)
           if (item.giftType === 'jd_bean' && item['giftValue'] === rewardNum) {
             saleInfoId = item.id;
-            leftStock = "100" //item.leftStock;
+            leftStock = item.leftStock;
             salePrice = item.salePrice;
             giftValue = item.giftValue;
           }
@@ -158,7 +158,7 @@ async function joyReward() {
           //开始兑换
           if (salePrice) {
             if (leftStock) {
-              //if (!saleInfoId) return
+              if (!saleInfoId) return
               // console.log(`当前账户积分:${data.coin}\n当前京豆库存:${leftStock}\n满足兑换条件,开始为您兑换京豆\n`);
               console.log(`\n您设置的兑换${giftValue}京豆库存充足,开始为您兑换${giftValue}京豆\n`);
               console.log(`脚本开始兑换${rewardNum}京豆时间 ${(new Date()).Format("yyyy-MM-dd hh:mm:ss | S")}`);
@@ -221,7 +221,7 @@ async function joyReward() {
 }
 function getExchangeRewards() {
   let opt = {
-    url: "//jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=RtKLB8euDo7KwsO0",
+    url: "//jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=JL1VTNRadM68cIMQ",
     method: "GET",
     data: {},
     credentials: "include",
@@ -229,7 +229,7 @@ function getExchangeRewards() {
   }
   return new Promise((resolve) => {
     let lkt = new Date().getTime()
-    let lks = $.md5('' + 'RtKLB8euDo7KwsO0' + lkt).toString()
+    let lks = $.md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
     const option = {
       url: "https:" + taroRequest(opt)['url'] + $.validate,
       headers: {
@@ -269,13 +269,13 @@ function getExchangeRewards() {
 function exchange(saleInfoId, orderSource) {
   let body = {"buyParam":{"orderSource":orderSource,"saleInfoId":saleInfoId},"deviceInfo":{}}
   let opt = {
-    "url": "//jdjoy.jd.com/common/gift/new/exchange?reqSource=h5&invokeKey=RtKLB8euDo7KwsO0",
+    "url": "//jdjoy.jd.com/common/gift/new/exchange?reqSource=h5&invokeKey=JL1VTNRadM68cIMQ",
     "data":body,
     "credentials":"include","method":"POST","header":{"content-type":"application/json"}
   }
   return new Promise((resolve) => {
     let lkt = new Date().getTime()
-    let lks = $.md5('' + 'RtKLB8euDo7KwsO0' + lkt).toString()
+    let lks = $.md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
     const option = {
       url: "https:" + taroRequest(opt)['url'] + $.validate,
       body: `${JSON.stringify(body)}`,
