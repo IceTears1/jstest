@@ -1768,6 +1768,32 @@ async function showMsg() {
     resolve()
   })
 }
+
+function readShareCode() {
+  return new Promise(async resolve => {
+    $.get({
+      url: `https://api.jdsharecode.xyz/api/jxfactory/30`,
+      'timeout': 10000
+    }, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            console.log(`随机取30个码放到您固定的互助码后面(不影响已有固定互助)`)
+            data = JSON.parse(data);
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data || {code: 404, data: []});
+      }
+    })
+  })
+}
+
 //格式化助力码
 function shareCodesFormat() {
   return new Promise(async resolve => {
@@ -1779,7 +1805,12 @@ function shareCodesFormat() {
       const tempIndex = $.index > inviteCodes.length ? (inviteCodes.length - 1) : ($.index - 1);
       $.newShareCodes = inviteCodes[tempIndex].split('@');
     }
-  
+    const readShareCodeRes = await readShareCode();
+    if (readShareCodeRes && readShareCodeRes.code === 200) {
+      // let HW_CODE = ['INcGtFWIUwvLFFvpQtKFCQ==', 'AZV37CNsgm_Q9Xid7tt-eA==', 'K6AGuw2dq_U2kEpg4mTmHQ==', 'c3anbYUBmLe9Qh1TIM4dEg==', 'zfzxrqaM7n3s4FhUZQmA8Q=='];
+      let HW_CODE = [];
+      $.newShareCodes = [...new Set([...$.newShareCodes, ...HW_CODE, ...(readShareCodeRes.data || [])])];
+    }
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
