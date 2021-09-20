@@ -35,7 +35,43 @@ if ($.isNode()) {
 }
 const JD_API_HOST = 'https://ddsj-dz.isvjcloud.com/dd-api';
 let allMessage = '';
-$.shareCodes = []
+$.shareCodes = [
+  {
+    use: 'jd_FdDjJBENiJzA',
+    taskToken: 'T0205KkcNkptry6lVWSt7r17CjRVmIaV5kRrbA',
+    code: 'W_lXYF3UohGvCpiESsy_2FNjbo0TyqGcxV6llFO8r8o',
+    num: 0
+  },
+  {
+    use: '18915299015_p',
+    taskToken: 'T018v_V6QRsb_F3XIR-b1ACjRVmIaV5kRrbA',
+    code: 'xXWocS6ovW26raZmkTrg2qfBMgkm7lwJZnP-RCHRX_A',
+    num: 9
+  },
+  {
+    use: 'jd_41c752f800930',
+    taskToken: 'T0225KkcRB9K8lHVdhL0lP4JdACjRVmIaV5kRrbA',
+    code: 'TMuFIgjjThA9ym6Da8NYsJjhPaBbjxvjn6pl3DtePKE',
+    num: 0
+  },
+  {
+    use: 'jd_oKMcRZnuBXfM',
+    taskToken: 'T0205KkcH2Vkpja9fl-G_KF3CjRVmIaV5kRrbA',
+    code: 'U6s02b_5LGPhanEiOWR1mBk_O91NeXWQlN6jHydUDlI',
+    num: 0
+  },
+  {
+    use: '269569205',
+    taskToken: 'T012vPt6RRgQ91TSCjRVmIaV5kRrbA',
+    code: 'aZZW1h7l9Dz05JZdjlENW4E_BxGbfI5CFXkkyKvxMbU',
+    num: 0
+  },
+  {
+    use: 'jd_718b10084be4f',
+    taskToken: 'T0225KkcRx8Rp1XXIBLwxqIOIgCjRVmIaV5kRrbA',
+    code: 'x_8ylToGA1X5dO8nO0GL3Ufh16MjfDbellScVh1vdRs',
+    num: 0
+  }]
 let tokenInfo = {}, hotInfo = {}
 !(async () => {
   if (!cookiesArr[0]) {
