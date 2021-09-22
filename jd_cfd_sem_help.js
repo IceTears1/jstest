@@ -28,7 +28,7 @@ function randomString(e) {
     n += t.charAt(Math.floor(Math.random() * a));
   return n
 }
-$.auth_help_codes = ['ACFB88D83C3F30CE3E67404BCC7AC799AF15C0270CC02A16FD17A13BA019D91E'];
+$.auth_help_codes = [];
 if(process.env.auth_help_codes){
   $.auth_help_codes.push(process.env.auth_help_codes);
 }
