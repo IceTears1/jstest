@@ -32,21 +32,10 @@ if ($.isNode()) {
     }
     let res = [];
 
-    try{res = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/museum.json');}catch (e) {}
-    if(!res){
-        try{res = await getAuthorShareCode('https://gitee.com/star267/share-code/raw/master/museum.json');}catch (e) {}
-        if(!res){res = [];}
-    }
-<<<<<<< HEAD
+ 
     console.log(`\n**res***【${$.res}}*****\n`);
-    $.shareUuid = getRandomArrayElements(res,1)[0];
-=======
-    if(res.length === 0){
-        $.shareUuid = '';
-    }else{
-        $.shareUuid = getRandomArrayElements(res,1)[0];
-    }
->>>>>>> 92accae3034d07c8531bb766ca8294582459cd65
+     $.shareUuid = '';
+
     for (let i = 0; i < cookiesArr.length; i++) {
         getUA();
         $.index = i + 1;
