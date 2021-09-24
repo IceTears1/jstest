@@ -100,14 +100,14 @@ async function joyReward() {
   try {
     if (new Date().getMinutes() === 59) {
       let nowtime = new Date().Format("s.S")
-      let starttime = process.env.JOY_STARTTIME ? process.env.JOY_STARTTIME : 60;
-      if(nowtime < 59) {
+      let starttime = process.env.JOY_STARTTIME ? process.env.JOY_STARTTIME : 57;
+      if(nowtime < 56) {
         let sleeptime = (starttime - nowtime) * 1000;
         console.log(`等待时间 ${sleeptime / 1000}`);
         await zooFaker.sleep(sleeptime)
       }
     }
-    for (let j = 0; j <= 10; j++) {
+    for (let j = 0; j <= 3; j++) {
       await getExchangeRewards();
       if ($.getExchangeRewardsRes && $.getExchangeRewardsRes.success) {
         // console.log('success', $.getExchangeRewardsRes);
@@ -146,7 +146,7 @@ async function joyReward() {
           console.log(`${item['giftName']}当前库存:${item['leftStock']}，id：${item.id}`)
           if (item.giftType === 'jd_bean' && item['giftValue'] === rewardNum) {
             saleInfoId = item.id;
-            leftStock = item.leftStock;
+            leftStock = "80"//item.leftStock;
             salePrice = item.salePrice;
             giftValue = item.giftValue;
           }
