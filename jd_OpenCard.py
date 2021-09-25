@@ -747,8 +747,8 @@ def getUserInfo(ck, pinName, userNum):
     except Exception:
         context = f"账号{userNum}【{pinName}】Cookie 已失效！请重新获取。"
         message(context)
-        send("【JD入会领豆】Cookie 已失效！", context)
-        test="nonnickname"
+        #send("【JD入会领豆】Cookie 已失效！", context)
+        test=pinName  #"nonnickname"
         return ck, test
 
 # 设置Headers
