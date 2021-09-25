@@ -19,7 +19,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 let allMessage = '';
-let dlbtz = true; //通知开关
+let dlbtz = false; //通知开关
 if (process.env.dlbtz) {
   dlbtz = process.env.dlbtz;
 }
