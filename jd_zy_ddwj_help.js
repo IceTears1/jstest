@@ -193,7 +193,7 @@ async function getsecretp() {
 							$.log(data)
 							secretp = result.data.result.homeMainInfo.secretp
 								userUnlockedPlaceNum = result.data.result.homeMainInfo.raiseInfo.userEarthInfo.userUnlockedPlaceNum
-								//$.log(userUnlockedPlaceNum)
+								$.log(userUnlockedPlaceNum)
 				} catch (e) {
 					$.logErr(e, response);
 				}
