@@ -48,6 +48,7 @@ var tools= []
         tools.push({id: i, cookie: cookie})   
     }
     for(let help of helps){
+        console.log(help)
         open(help)
     }
     await $.wait(60000)
