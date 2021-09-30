@@ -1,12 +1,15 @@
 /**
 
 **/
-
+const querystring = require('querystring');
+const exec = require('child_process').exec;
 const $ = new Env("超店会员福利社");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
 let ownCode = [];
+
+const fs = require('fs');
 let strCKFile = './CKName_cache.json';
 let Fileexists = fs.existsSync(strCKFile);
 let TempCK = [];
