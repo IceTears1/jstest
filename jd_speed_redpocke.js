@@ -151,7 +151,7 @@ async function sign() {
 function reward_query() {
   return new Promise(resolve => {
     $.get(taskGetUrl("spring_reward_query", {
-      "inviter": ["Z0qecRq3mNfmoDe_qwpUHg", "imCfdYcAa9M7nkcDwm9zzA"][Math.floor((Math.random() * 2))],
+      "inviter": "zw4ZA6-snIheDOw1Y2aXeg",
       linkId
     }), async (err, resp, data) => {
       try {
@@ -179,7 +179,7 @@ function reward_query() {
 }
 async function redPacket() {
   return new Promise(resolve => {
-    $.get(taskGetUrl("spring_reward_receive",{"inviter":["Z0qecRq3mNfmoDe_qwpUHg","imCfdYcAa9M7nkcDwm9zzA"][Math.floor((Math.random()*2))],linkId}),
+    $.get(taskGetUrl("spring_reward_receive",{"inviter":"zw4ZA6-snIheDOw1Y2aXeg",linkId}),
         async (err, resp, data) => {
           try {
             if (err) {
