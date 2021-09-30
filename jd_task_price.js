@@ -45,7 +45,7 @@ async function main(id) {
         if ($.source.flag) {
             text = `本次保价金额: ${$.source.succAmount}`
         } else {
-            //text = ""
+            text = "本次无保价"
         }
         console.log(text)
         $.notice(text)
