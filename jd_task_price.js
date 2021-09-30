@@ -1,4 +1,3 @@
-//https://github.com/airacg/jd_task/blob/main/jd-task-price.js
 let common = require("./utils/common");
 let jsdom = require("jsdom");
 let $ = new common.env('京东保价');
@@ -11,6 +10,7 @@ $.setOptions({
         'referer': 'https://msitepp-fm.jd.com/rest/priceprophone/priceProPhoneMenu?sid=0b5a9d5564059f36ed16a8967c37e24w',
     }
 });
+$.readme = ``
 eval(common.eval.mainEval($));
 async function prepare() {}
 async function main(id) {
@@ -31,9 +31,9 @@ async function main(id) {
         };
         h = await $.curl(p)
         console.log(h)
-        await $.wait(5000)
+        console.log("等待10s获取保价信息")
+        await $.wait(10000)
         // 获取保价信息
-        console.log("获取保价订单")
         let p2 = {
             'url': `https://api.m.jd.com/api?appid=siteppM&functionId=siteppM_appliedSuccAmount&forcebot=&t=${$.timestamp}`,
             // 'form': {
@@ -45,7 +45,7 @@ async function main(id) {
         if ($.source.flag) {
             text = `本次保价金额: ${$.source.succAmount}`
         } else {
-            //text = "本次无保价订单"
+            //text = ""
         }
         console.log(text)
         $.notice(text)

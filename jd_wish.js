@@ -25,8 +25,8 @@ let message = '', allMessage = '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-let appIdArr = ['1E1NXxq0', '1ElBTx6o', '1ElJYxqY'];
-let appNameArr = ['众筹许愿池', '企有此礼', '芯意制造盒'];
+let appIdArr = ['1E1NXxq0', '1ElBTx6o'];
+let appNameArr = ['众筹许愿池', '企有此礼'];
 let appId, appName;
 $.shareCode = [];
 if ($.isNode()) {
@@ -74,7 +74,7 @@ if ($.isNode()) {
     await $.wait(1000)
     res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/wish.json')
   }
- // $.shareCode = [...$.shareCode, ...(res || [])]
+  //$.shareCode = [...$.shareCode, ...(res || [])]
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -105,6 +105,7 @@ if ($.isNode()) {
       }
     }
   }
+  console.log($.shareCode)
 })()
     .catch((e) => {
       $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -193,6 +194,7 @@ async function healthyDay_getHomeData(type = true) {
                         "appId": appId,
                         "use": $.UserName
                       })
+					console.log($.shareCode)
                     }
                   }
                 } else {
