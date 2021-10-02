@@ -52,38 +52,7 @@ const BASE_URL = 'https://m.jingxi.com/cubeactive/steprewardv3'
     res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jxhb.json')
   }
   if (res && res.activeId) $.activeId = res.activeId;
-  $.authorMyShareIds = [{
-    strUserPin: 'mPn16FnK4goIFzdZbPCN8Pf_lyKVTLcIMAZu-7GEXZV1Ffe2U484vy5GrKcjlRVW',
-    userName: '18014246678_p'
-  },
-  {
-    strUserPin: 'mPn16FnK4goIFzdZbPCN8GTczu5K5S36ubVUGEvE8n32Txssnwy2oDrMJXIUUCvh',
-    userName: 'jd_FdDjJBENiJzA'
-  },
-  {
-    strUserPin: 'mPn16FnK4goIFzdZbPCN8Hh-9PKBceyCWQrKw2hAS3d1Ffe2U484vy5GrKcjlRVW',
-    userName: '18915299015_p'
-  },
-  {
-    strUserPin: 'mPn16FnK4goIFzdZbPCN8A25WpYvDp7iWfrQFLQQZtGD5Kk19Xjfk-LkqEHM_MhW',
-    userName: 'jd_41c752f800930'
-  },
-  {
-    strUserPin: 'mPn16FnK4goIFzdZbPCN8CppKZ2IKvOUV9I4tiNNX9GeUuXHgMxnhU_3NSne1uUK',
-    userName: 'jd_oKMcRZnuBXfM'
-  },
-  {
-    strUserPin: 'mPn16FnK4goIFzdZbPCN8E7J_QMScuDxWLwRQUsyetI',
-    userName: '269569205'
-  },
-  {
-    strUserPin: 'mPn16FnK4goIFzdZbPCN8GBtOaOJWgeCH8Vai3sx_QbDsFR7R9lUgnGhMIeJpyAi',
-    userName: 'jd_718b10084be4f'
-  },
-  {
-    strUserPin: 'mPn16FnK4goIFzdZbPCN8PSeHe6SggDSdVn2BrwMEswZnfh2xiZMcVZOQIBikSfg',
-    userName: 'jd_6ead2d080d1c1'
-  }];
+  $.authorMyShareIds = [...((res && res.codes) || [])];
   //开启红包,获取互助码
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
@@ -128,13 +97,12 @@ const BASE_URL = 'https://m.jingxi.com/cubeactive/steprewardv3'
         continue
       }
     }
-	console.log($.packetIdArr)
     if ($.canHelp && ($.authorMyShareIds && $.authorMyShareIds.length>10000)) {
       console.log(`\n【${$.UserName}】有剩余助力机会，开始助力作者\n`)
       for (let j = 0; j < $.authorMyShareIds.length && $.canHelp; j++) {
         console.log(`【${$.UserName}】去助力作者的邀请码：${$.authorMyShareIds[j]}`);
         $.max = false;
-        await enrollFriend($.authorMyShareIds[j].strUserPin);
+        await enrollFriend($.authorMyShareIds[j]);
         await $.wait(5000);
         if ($.max) {
           $.authorMyShareIds.splice(j, 1)

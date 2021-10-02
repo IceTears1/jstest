@@ -71,7 +71,7 @@ let allMessage = '';
       await jdConnoisseur()
     }
   }
-  //$.shareCodes = [...$.shareCodes, ...(res || [])]
+ // $.shareCodes = [...$.shareCodes, ...(res || [])]
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
