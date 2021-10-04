@@ -60,7 +60,7 @@ if (zq_timebody) {
     var fs = require("fs");
     zq_timebody = fs.readFileSync("zq_timebody.txt", "utf8");
     if (zq_timebody !== `undefined`) {
-		if (zq_timebodys.indexOf("&") > -1) {
+		if (zq_timebody.indexOf("&") > -1) {
 			zq_timebodys = zq_timebody.split("&");
 		}
     } else {
