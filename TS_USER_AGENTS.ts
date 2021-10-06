@@ -4,9 +4,9 @@ import * as dotenv from "dotenv";
 import {Md5} from "ts-md5";
 
 const CryptoJS = require('crypto-js')
-const util = require('util')
 dotenv.config()
-let appId: number = 10028, fingerprint: string | number, token: string = '', enCryptMethodJD: any;
+
+let fingerprint: string | number, token: string = '', enCryptMethodJD: any;
 
 const USER_AGENTS: Array<string> = [
   "jdapp;android;10.0.2;10;network/wifi;Mozilla/5.0 (Linux; Android 10; ONEPLUS A5010 Build/QKQ1.191014.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045230 Mobile Safari/537.36",
@@ -47,8 +47,6 @@ const USER_AGENTS: Array<string> = [
   "jdapp;iPhone;10.0.2;14.1;network/wifi;Mozilla/5.0 (iPhone; CPU iPhone OS 14_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1",
 ]
 
-const jd_joy_invokeKey = "value1"
-
 function TotalBean(cookie: string) {
   return {
     cookie: cookie,
@@ -64,7 +62,7 @@ function getRandomNumberByRange(start: number, end: number) {
 let USER_AGENT = USER_AGENTS[getRandomNumberByRange(0, USER_AGENTS.length)];
 
 async function getBeanShareCode(cookie: string) {
-  let {data} = await axios.post('https://api.m.jd.com/client.action',
+  let {data}: any = await axios.post('https://api.m.jd.com/client.action',
     `functionId=plantBeanIndex&body=${escape(
       JSON.stringify({version: "9.0.0.1", "monitor_source": "plant_app_plant_index", "monitor_refer": ""})
     )}&appid=ld&client=apple&area=5_274_49707_49973&build=167283&clientVersion=9.1.0`, {
@@ -83,7 +81,7 @@ async function getBeanShareCode(cookie: string) {
 }
 
 async function getFarmShareCode(cookie: string) {
-  let {data} = await axios.post('https://api.m.jd.com/client.action?functionId=initForFarm', `body=${escape(JSON.stringify({"version": 4}))}&appid=wh5&clientVersion=9.1.0`, {
+  let {data}: any = await axios.post('https://api.m.jd.com/client.action?functionId=initForFarm', `body=${escape(JSON.stringify({"version": 4}))}&appid=wh5&clientVersion=9.1.0`, {
     headers: {
       "cookie": cookie,
       "origin": "https://home.m.jd.com",
@@ -114,12 +112,16 @@ function requireConfig() {
   })
 }
 
-const wait = util.promisify(setTimeout)
+function wait(timeout: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, timeout)
+  })
+}
 
-async function requestAlgo() {
-  fingerprint = await generateFp();
+async function requestAlgo(appId = 10032) {
+  fingerprint = generateFp();
   return new Promise<void>(async resolve => {
-    let {data} = await axios.post('https://cactus.jd.com/request_algo?g_ty=ajax', {
+    let {data}: any = await axios.post('https://cactus.jd.com/request_algo?g_ty=ajax', {
       "version": "1.0",
       "fp": fingerprint,
       "appId": appId,
@@ -171,7 +173,7 @@ function getQueryString(url: string, name: string) {
   return '';
 }
 
-function decrypt(stk: string, url: string) {
+function decrypt(stk: string, url: string, appId: number) {
   const timestamp = (format(new Date(), 'yyyyMMddhhmmssSSS'))
   let hash1: string;
   if (fingerprint && token && enCryptMethodJD) {
@@ -191,11 +193,11 @@ function decrypt(stk: string, url: string) {
   return encodeURIComponent(["".concat(timestamp.toString()), "".concat(fingerprint.toString()), "".concat(appId.toString()), "".concat(token), "".concat(hash2)].join(";"))
 }
 
-function h5st(url: string, stk: string, params: object) {
+function h5st(url: string, stk: string, params: object, appId: number = 10032) {
   for (const [key, val] of Object.entries(params)) {
     url += `&${key}=${val}`
   }
-  url += '&h5st=' + decrypt(stk, url)
+  url += '&h5st=' + decrypt(stk, url, appId)
   return url
 }
 
@@ -228,7 +230,6 @@ export {
   requireConfig,
   wait,
   getRandomNumberByRange,
-  jd_joy_invokeKey,
   requestAlgo,
   decrypt,
   getJxToken,
