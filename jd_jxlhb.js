@@ -49,20 +49,8 @@ const BASE_URL = 'https://m.jingxi.com/cubeactive/steprewardv3'
   console.log('京喜领88元红包\n' +
       '活动入口：京喜app-》我的-》京喜领88元红包\n' +
       '温馨提示：如提示助力火爆，可尝试寻找京东客服')
-<<<<<<< HEAD
 
-    
-=======
   let res = []
-  res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jxhb.json')
-  if (!res) {
-    $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jxhb.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
-    await $.wait(1000)
-    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jxhb.json')
-  }
-  if (res && res.activeId) $.activeId = res.activeId;
-  $.authorMyShareIds = [...((res && res.codes) || [])];
->>>>>>> origin/master
   //开启红包,获取互助码
   for (let i = 0; i < 3; i++) {
     let res = []
@@ -108,9 +96,7 @@ const BASE_URL = 'https://m.jingxi.com/cubeactive/steprewardv3'
         continue
       }
     }
-<<<<<<< HEAD
-	console.log($.packetIdArr)
-=======
+
     if ($.canHelp && ($.authorMyShareIds && $.authorMyShareIds.length>10000)) {
       console.log(`\n【${$.UserName}】有剩余助力机会，开始助力作者\n`)
       for (let j = 0; j < $.authorMyShareIds.length && $.canHelp; j++) {
@@ -125,7 +111,6 @@ const BASE_URL = 'https://m.jingxi.com/cubeactive/steprewardv3'
         }
       }
     }
->>>>>>> origin/master
   }
   //拆红包
   for (let i = 0; i < cookiesArr.length; i++) {
