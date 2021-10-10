@@ -65,7 +65,11 @@ let allMessage = '';
       await jdConnoisseur()
     }
   }
+<<<<<<< HEAD
 
+=======
+ // $.shareCodes = [...$.shareCodes, ...(res || [])]
+>>>>>>> origin/master
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
