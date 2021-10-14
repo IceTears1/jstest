@@ -23,7 +23,7 @@ cron "59 7,15,23 * * *" script-path=jd_joy_reward.js,tag=宠汪汪积分兑换�
  */
 // prettier-ignore
 const $ = new Env('宠汪汪积分兑换奖品');
-const zooFaker = require('./JDJRValidator_Pure');
+const zooFaker = require('./utils/JDJRValidator_Pure');
 // $.get = zooFaker.injectToRequest2($.get.bind($));
 // $.post = zooFaker.injectToRequest2($.post.bind($));
 let allMessage = '';
@@ -146,7 +146,7 @@ async function joyReward() {
           console.log(`${item['giftName']}当前库存:${item['leftStock']}，id：${item.id}`)
           if (item.giftType === 'jd_bean' && item['giftValue'] === rewardNum) {
             saleInfoId = item.id;
-            leftStock = "80"//item.leftStock;
+            leftStock = "50"//item.leftStock;
             salePrice = item.salePrice;
             giftValue = item.giftValue;
           }
