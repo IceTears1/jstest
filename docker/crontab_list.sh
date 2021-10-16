@@ -95,3 +95,9 @@
 39 7 * * * node /scripts/jx_sign.js >> /scripts/logs/jx_sign.log 2>&1
 #京东家庭号(暂不知最佳cron)
 #*/20 * * * * node /scripts/jd_family.js >> /scripts/logs/jd_family.log 2>&1
+#极速版签到
+10 14,20 * * * node /scripts/jd_speed_sign.js >> /scripts/logs/jd_speed_sign.log 2>&1
+10 14,20 * * * node /scripts/jd_speed_sign_1.js >> /scripts/logs/jd_speed_sign_1.log 2>&1
+10 14,20 * * * node /scripts/jd_speed_sign_2.js >> /scripts/logs/jd_speed_sign_2.log 2>&1
+10 14,20 * * * node /scripts/jd_speed_sign_3.js >> /scripts/logs/jd_speed_sign_3.log 2>&1
+10 14,20 * * * node /scripts/jd_speed_sign_4.js >> /scripts/logs/jd_speed_sign_4.log 2>&1

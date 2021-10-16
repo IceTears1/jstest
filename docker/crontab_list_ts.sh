@@ -82,9 +82,3 @@
 10 11 * * * node /scripts/jd_jdzz.js | ts >> /scripts/logs/jd_jdzz.log 2>&1
 #宠汪汪邀请助力
 10 10,11 * * * node /scripts/jd_joy_run.js >> /scripts/logs/jd_joy_run.log 2>&1
-#极速版签到
-10 14,20 * * * node /scripts/jd_speed_sign.js >> /scripts/logs/jd_speed_sign.log 2>&1
-10 14,20 * * * node /scripts/jd_speed_sign_1.js >> /scripts/logs/jd_speed_sign_1.log 2>&1
-10 14,20 * * * node /scripts/jd_speed_sign_2.js >> /scripts/logs/jd_speed_sign_2.log 2>&1
-10 14,20 * * * node /scripts/jd_speed_sign_3.js >> /scripts/logs/jd_speed_sign_3.log 2>&1
-10 14,20 * * * node /scripts/jd_speed_sign_4.js >> /scripts/logs/jd_speed_sign_4.log 2>&1
