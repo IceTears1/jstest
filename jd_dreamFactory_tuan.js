@@ -114,10 +114,9 @@ if ($.isNode()) {
   }
   let res = [];
   if(helpFlag){
-    res = await getAuthorShareCode('https://raw.githubusercontent.com/linmudaye/updateTeam/blob/main/shareCodes/jd_updateFactoryTuanId.json');
-    if(!res){
-      res = [];
-    }
+
+    res = [];
+    
     if(res.length === 0){
       return ;
     }
