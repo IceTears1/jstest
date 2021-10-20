@@ -3,8 +3,17 @@
 =================================Quantumultx=========================
 [task_local]
 #城城领现金
-0 0-23/5,22 * 10 * gua_city.js, tag=城城领现金, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+0 0-23/1 * * * https://jdsharedresourcescdn.azureedge.net/jdresource/jd_city.js, tag=城城领现金, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
+=================================Loon===================================
+[Script]
+cron "0 0-23/1 * * *" script-path=https://jdsharedresourcescdn.azureedge.net/jdresource/jd_city.js,tag=城城领现金
+
+===================================Surge================================
+城城领现金 = type=cron,cronexp="0 0-23/1 * * *",wake-system=1,timeout=3600,script-path=https://jdsharedresourcescdn.azureedge.net/jdresource/jd_city.js
+
+====================================小火箭=============================
+城城领现金 = type=cron,script-path=https://jdsharedresourcescdn.azureedge.net/jdresource/jd_city.js, cronexpr="0 0-23/1 * * *", timeout=3600, enable=true
  */
 const $ = new Env('城城领现金');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -27,7 +36,7 @@ if ($.isNode()) {
 }
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let inviteCodes = [
-  'HY3lyeimRQyleYv1V5h_mieobVVTVc1t1YhP8NgKTfswNQ@RtGKvrjQG3DRC_3DbZ5CmnpxgVOYYTF63IxQZjA3pU8c92Su@HY3syemmSAOjf4b1V5h_muRuVIEIxrVcrIZj11mH1qRpww@RtGKzO33Rg-hKIuaF90w1tmcXqVxLgKG4tDyLCWDmSHBnb7j1Q@RtGKl5fZEmjJIMbof4JOmh97XVHpJ7cvKJNK44s-_bDXwPLm@HoPszeqtQwqmMs_WF5h_mvkQEtr0zcc4o0sDPf4h@RtGKz-2sEwujfoueRYE3gAz5C_H7ZooxAhxJLbqRUvwl-ASyUw@RtGKzrqgFAKgKNWcQoE2h_muiuvOjOslAF1K-ctCg0tuSd0ScA@RtGKzrn1FQj3fouaQ9Vg10lFwVu0dd-P2aDjEODyegi4v1xpEQ',
+  'HoPszeqtQwqmMs_WF5h_mvkQEtr0zcc4o0sDPf4h@RtGKl5fZEmjJIMbof4JOmh97XVHpJ7cvKJNK44s-_bDXwPLm@RtGKvrjQG3DRC_3DbZ5CmnpxgVOYYTF63IxQZjA3pU8c92Su@HY3lyeimRQyleYv1V5h_mieobVVTVc1t1YhP8NgKTfswNQ@RtGKvrjQG3DRC_3DbZ5CmnpxgVOYYTF63IxQZjA3pU8c92Su@HY3syemmSAOjf4b1V5h_muRuVIEIxrVcrIZj11mH1qRpww@RtGKzO33Rg-hKIuaF90w1tmcXqVxLgKG4tDyLCWDmSHBnb7j1Q@RtGKl5fZEmjJIMbof4JOmh97XVHpJ7cvKJNK44s-_bDXwPLm@HoPszeqtQwqmMs_WF5h_mvkQEtr0zcc4o0sDPf4h@RtGKz-2sEwujfoueRYE3gAz5C_H7ZooxAhxJLbqRUvwl-ASyUw@RtGKzrqgFAKgKNWcQoE2h_muiuvOjOslAF1K-ctCg0tuSd0ScA@RtGKzrn1FQj3fouaQ9Vg10lFwVu0dd-P2aDjEODyegi4v1xpEQ',
 ]
 for(var i=0;i<40;i++){
 	inviteCodes.push(inviteCodes[0])
