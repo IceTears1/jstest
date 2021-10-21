@@ -45,7 +45,7 @@ HelpType=""
 DiyHelpType="1"
 diy_help_rules(){
     case $1 in
-        Pet | JdFactory | Health | Fruit)
+        Pet | JdFactory | Health)
             tmp_helptype="1"            # 京喜工厂和东东工厂使用“均等机会互助模板”，所有账户获得助力次数一致
             ;;
         Jdzz | Joy)
@@ -75,11 +75,11 @@ function rand(){
 
 rnd=$(rand 8 47)
 #echo $rnd
-rnd2=$[$rnd + 33]
+rnd2=$[$rnd + 11]
 #echo $rnd2
 #BreakHelpNum=$rnd~$rnd2
 #echo $BreakHelpNum
-BreakHelpType="1"                  ## 屏蔽模式
+BreakHelpType="1"                  ## 屏蔽模式开启 1 
 BreakHelpNum=$rnd~$rnd2  #"4 9-14 15~18 19_21"  ## 屏蔽账号序号或序号区间
 echo -e "\n## 本次屏蔽被助力账号区间\"$BreakHelpNum\"，共32个账号"
 
@@ -148,7 +148,7 @@ name_js=(
   "$repo5"_jd_cfd
   "$repo"_jd_health
   "$repo"_jd_carnivalcity
-  "$repo"_jd_city
+  acoolbook_scripts_jd_city
   "$repo"_jd_moneyTree_heip
   "$repo5"_jd_cfd
 )
