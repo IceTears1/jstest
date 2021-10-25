@@ -21,12 +21,6 @@ const invite=1;//新用户自动邀请，0关闭，1默认开启
 const logs =0;//0为关闭日志，1为开启
 var hour=''
 var minute=''
-
-if(new Date().getHours() >= 18){
-   $.msg("","不在竞猜时间内！请在18点之前运行")
-   $.done()
-}
-
 if ($.isNode()) {
    hour = new Date( new Date().getTime() + 8 * 60 * 60 * 1000 ).getHours();
    minute = new Date( new Date().getTime() + 8 * 60 * 60 * 1000 ).getMinutes();
@@ -52,6 +46,10 @@ if ($.isNode()) {
     $.msg($.name, '【提示】请先获取cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
+  if(new Date().getHours() >= 18){
+   $.msg($.name,"不在竞猜时间内！请在18点之前运行")
+   return;
+}
   for (let i =0; i < cookiesArr.length; i++) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -70,9 +68,13 @@ if ($.isNode()) {
                 continue
             }
       await getNowFormatDate()
+      await getshareid()
       await getlist()
       await select()
+      await getlist()
+      await select2()
       await quiz()
+      await lottery()
   }
 for(let i = 0; i < cookiesArr.length; i++){
       cookie = cookiesArr[i];
@@ -136,7 +138,7 @@ async function quiz(){
         const result = JSON.parse(data)
         $.log(data)
         if(result && result.code && result.code == 200){
-           console.log("\n参与竞猜成功，开奖时间为:"+(new Date().getDay()+"月"+(new Date().getDate()+1)+"日")+" 10:00 \n")
+           console.log("\n参与竞猜成功，开奖时间为:"+(new Date().getMonth()+1+"月"+(new Date().getDate()+1)+"日")+" 10:00 \n")
    await $.wait(8000)
         }else{
            $.log(result.msg+"\n")
@@ -149,10 +151,12 @@ async function quiz(){
     })
    })
   }
+
 async function control(){
-for (let i =0; i < cookiesArr.length; i++) {
-      cookie = cookiesArr[i];
-      await getshareid()
+     for(let i = 0; i < distinct(shareidArr).length; i++){
+   helpcode = shareidArr[i]
+   await dosupport()
+   await $.wait(4000)
 }
 }
 async function getshareid(){
@@ -259,13 +263,38 @@ for(var i in distinct(taskTypeArr)){
        $.waits = 2
        $.end = "/api/task/getReward"
 }
+await scan()
 await doTask()
 await $.wait($.waits*1000)
     }
 }
+async function select2(){
+//$.log(JSON.stringify(taskTypeArr))
+for(var i in distinct(taskTypeArr)){
+
+   tasktype = taskTypeArr[i]
+   taskid = taskIdArr[i]
+   switch(tasktype){
+     case("FOLLOW_SHOP_TASK_0001"):
+       $.waits = 2
+       $.end = "/api/task/doTask"
+       await scan()
+await doTask()
+await $.wait($.waits*1000)
+       break;
+     case("JOIN_SHOPPING_CART_0001"):
+       $.waits = 2
+       $.end = "/api/task/getReward"
+await scan()
+await doTask()
+await $.wait($.waits*1000)
+       break;
+}
+    }
+}
 async function doTask(){
 //$.log(1111+tasktype)
- const body = `appid=china-joy&functionId=champion_game_prod&body={"parentId":"${tasktype}","taskId":"${taskid}","activityDate":"20211023","apiMapping":"${$.end}"}&t=${new Date().getTime()}&loginType=2`
+ const body = `appid=china-joy&functionId=champion_game_prod&body={"parentId":"${tasktype}","taskId":"${taskid}","activityDate":"${currentdate}","apiMapping":"${$.end}"}&t=${new Date().getTime()}&loginType=2`
 //$.log(body)
  const MyRequest = PostRequest(body)
  return new Promise((resolve) => {
@@ -287,17 +316,22 @@ async function doTask(){
     })
    })
   }
-async function upload(){
+async function lottery(){
+//$.log(1111+tasktype)
+ const body = `appid=china-joy&functionId=champion_game_prod&body={"activityDate":"${currentdate}","apiMapping":"/api/lottery/lottery"}&t=${new Date().getTime()}&loginType=2`
+//$.log(body)
+ const MyRequest = PostRequest(body)
  return new Promise((resolve) => {
-    let upload_url = {
-   		url: `https://pool.nz.lu/upload/PKv2/Phoneupload/11111`,
-   	}
-   $.get(upload_url,async(error, response, data) =>{
+   $.post(MyRequest,async(error, response, data) =>{
     try{
         const result = JSON.parse(data)
         $.log(data)
-        if(result.code == 0)
-          $.log(result.msg+"观看"+result.amount+"\n")
+        if(result && result.code && result.code == 200){
+           console.log("完成抽奖")
+   await $.wait(8000)
+        }else{
+           $.log(result.msg+"\n")
+        }
         }catch(e) {
           $.logErr(e, response);
       } finally {
@@ -305,8 +339,32 @@ async function upload(){
       } 
     })
    })
-  } 
+  }
 
+async function scan(){
+//$.log(1111+tasktype)
+ const body = `appid=china-joy&functionId=champion_game_prod&body={"apiMapping":"/api/isRisk"}&t=${new Date().getTime()}&loginType=2`
+//$.log(body)
+ const MyRequest = PostRequest(body)
+ return new Promise((resolve) => {
+   $.post(MyRequest,async(error, response, data) =>{
+    try{
+        const result = JSON.parse(data)
+        $.log(data)
+        if(result && result.code && result.code == 200){
+           //console.log("success")
+   await $.wait(8000)
+        }else{
+           $.log(result.msg+"\n")
+        }
+        }catch(e) {
+          $.logErr(e, response);
+      } finally {
+        resolve();
+      } 
+    })
+   })
+  }
 //showmsg
 //boxjs设置tz=1，在12点<=20和23点>=40时间段通知，其余时间打印日志
 
