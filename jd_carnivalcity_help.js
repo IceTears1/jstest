@@ -36,9 +36,7 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 let inviteCodes = [
-
   'b8d50ab9-802e-4fce-a413-353309dd2db5@3c84e2a6-779c-4946-929c-22fe49765014@d5eceaad-f0bd-4050-9338-adc855ec7aeb@4e0baab9-303f-442a-b36a-0600fda0e382@3769d157-0267-4913-9e4d-b34b798b377d@5c71ee58-008e-4964-ae18-378e52f412c7@7a2d6b55-2e6e-4a59-b655-1ca7e2ca23a4@fd2d4f68-ec94-4349-a2c3-df4ca05d0b4f@46d95af3-76b1-4dc9-b714-9e2eba109ad3@f57bdc86-9c5e-4f29-9955-230666d59268@48d97a63-663e-4c77-80f8-349900426354',
- 
 ];
 for(var i=0;i<40;i++){
 	inviteCodes.push(inviteCodes[0])
