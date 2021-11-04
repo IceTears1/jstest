@@ -1,8 +1,8 @@
 /**
- 抢京豆
- 若作者未满助力，第一个账号会助力作者，其他账号内部互助，位置在前的优先
-* */
-
+抢京豆
+若作者未满助力，第一个账号会助力作者，其他账号内部互助，位置在前的优先
+cron 0 0,9,21 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_qjd.js
+ * */
 const $ = new Env('qjd');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -28,21 +28,21 @@ let autoCodeList = []
         return;
     }
     let res = [];
-    //try{res = await getAuthorShareCode('https://raw.githubusercontent.com/lsh26/share_code/main/qjd.json');}catch (e) {}
-    if(res){
-       // try{res = await getAuthorShareCode('https://gitee.com/star267/share-code/raw/master/qjd.json');}catch (e) {}
+    try{res = await getAuthorShareCode('https://raw.githubusercontent.com/lsh26/share_code/main/qjd.json');}catch (e) {}
+    if(!res){
+        try{res = await getAuthorShareCode('https://gitee.com/star267/share-code/raw/master/qjd.json');}catch (e) {}
         if(!res){res = [];}
     }
     if(res.length > 0){
-        let len = 0;
+        let len = 3;
         if(res.length < 3){
             len = res.length;
         }
         autoCodeList = getRandomArrayElements(res,len);
     }else{
-        autoCodeList = [{"id":"5C4D67FD544E326CB40BE27948719EB5","value":"903689846505627648"},{"id":"D6EDB878775DF803513F00F30DDE6E22","value":"903689848107327488"},{"id":"2293269FB42217A09A186CD6A88153FB","value":"903689849676914688"},{"id":"6A70E1CD46B6D2F3E2E976D969C76FD5AD1DAAB9A3E3F6CBAFDE81EEB7393333","value":"903689851227758592"}];
+        autoCodeList = [];
     }
-    for (let i = 0; i < cookiesArr.length/3; i++) {
+    for (let i = 0; i < Math.ceil(cookiesArr.length/6); i++) {
         let index = i + 1;
         cookie = cookiesArr[i];
         $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
@@ -51,7 +51,7 @@ let autoCodeList = []
     }
     if($.newShareCodes.length === 0){return;}
     console.log(`-------------------开始脚本内互助-------------------------------------------`);
-    for (let i = 0; i < 1; i++) {
+    /*for (let i = 0; i < 1; i++) {
         $.canHelp = true;
         cookie = cookiesArr[i];
         $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
@@ -60,20 +60,23 @@ let autoCodeList = []
             console.log(`【抢京豆】${$.UserName} 去助力作者`);
             await help(code.id, code.value);
             await $.wait(2000);
-        }
-    }
+        
+    }*/
     for (let i = 0; i < cookiesArr.length; i++) {
         $.canHelp = true;
         cookie = cookiesArr[i];
         $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
         for (let j = 0; j < $.newShareCodes.length && $.canHelp; j++) {
             let code = $.newShareCodes[j];
-            if(code[2] && code[2] ===  $.UserName){
+            if(code[2] && code[2] ===  $.UserName || !code[3]){
                 //不助力自己
                 continue;
             }else {
                 console.log(`【抢京豆】${$.UserName} 去助力账号 ${code[2]}`);
-                await help(code[0], code[1]);
+                let helpInfo = await help(code[0], code[1]);
+                if(helpInfo && helpInfo.data && helpInfo.data.respCode === 'SG215'){
+                    code[3] = false;
+                }
                 await $.wait(2000);
             }
         }
@@ -88,7 +91,7 @@ async function main() {
     await getUserInfo()
 }
 
-function getAuthorShareCode(url = "https://cdn.jsdelivr.net/gh/gitupdate/updateTeam@master/shareCodes/jd_red.json") {
+function getAuthorShareCode(url) {
     return new Promise(resolve => {
         const options = {
             url: `${url}?${new Date()}`, "timeout": 10000, headers: {
@@ -181,7 +184,7 @@ function getUserInfo() {
                 } else {
                     if (safeGet(data)) {
                         data = JSON.parse(data);
-                        if(data.data.jklInfo) {
+                        if(data && data.data && data.data.jklInfo) {
                             $.actId = data.data.jklInfo.keyId
                             let {shareCode, groupCode} = data.data
                             if (!shareCode) {
@@ -194,8 +197,10 @@ function getUserInfo() {
                                 //     await help(shareCode, groupCode, 1)
                                 // }
                                 console.log(`\n京东账号 ${$.nickName || $.UserName} 抢京豆邀请码：${shareCode}\n`);
-                                $.newShareCodes.push([shareCode, groupCode,$.UserName])
+                                $.newShareCodes.push([shareCode, groupCode,$.UserName,true])
                             }
+                        }else{
+                            console.log(JSON.stringify(data));
                         }
                     }
                 }
@@ -222,7 +227,7 @@ function hitGroup() {
                         if (data.data.respCode === "SG150") {
                             let {shareCode, groupCode} = data.data.signGroupMain
                             if (shareCode) {
-                                $.newShareCodes.push([shareCode, groupCode,$.UserName]);
+                                $.newShareCodes.push([shareCode, groupCode,$.UserName,true]);
                                 console.log('开团成功')
                                 console.log(`\n京东账号${$.index} ${$.nickName || $.UserName} 抢京豆邀请码：${shareCode}\n`);
                                 //await help(shareCode, groupCode, 1)
