@@ -35,12 +35,12 @@ if ($.isNode()) {
 }
 $.invitePinTaskList = []
 $.invitePin = [
+  "QBvMTcXPbkwIlv837Jda2RG9Q_X5Q69q6vmghb6ZAm8",
+  "PGeoKpZ2TtGT4CniP1xtXkLzgydkwqsFE40RI1BhzBw",
   "d8qYBiA2CcvYPoRe2MVDwYphqXv_Bbx5LnHIKqL_dZY",
-  "cpIEMMjYbI0oTSXU8Nf-UQ",
-  "cpIEMMjYbI0oTSXU8Nf-UQ",
   "Wa775bRpGM3ni94LzY8cfA",
-  "mwi6mHtEYKHp7nUT-zozVOSPKodw0PotvVTEHtaXEq0",
-  "QszBK5KEpYb2rf4zw"
+  "cpIEMMjYbI0oTSXU8Nf-UQ",
+  "mwi6mHtEYKHp7nUT-zozVOSPKodw0PotvVTEHtaXEq0"
 ]
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
@@ -63,7 +63,7 @@ message = ""
       // if ($.isNode()) {
       //   if (process.env.HELP_JOYPARK && process.env.HELP_JOYPARK == "false") {
       //   } else {
-      //     $.kgw_invitePin = ["cpIEMMjYbI0oTSXU8Nf-UQ"][Math.floor((Math.random() * 1))];
+      //     $.kgw_invitePin = ["7zG4VHS99AUEoX1mQTkC9Q"][Math.floor((Math.random() * 1))];
       //     let resp = await getJoyBaseInfo(undefined, 2, $.kgw_invitePin);
       //     if (resp.data && resp.data.helpState && resp.data.helpState === 1) {
       //       $.log("帮【zero205】开工位成功，感谢！\n");
@@ -152,7 +152,7 @@ message = ""
           }
         } else if (task.taskType === 'SHARE_INVITE') {
           for (let j = 0; j < 5; j++) {
-            let resp = await apTaskDrawAward(167, 'SHARE_INVITE');
+            let resp = await apTaskDrawAward(261, 'SHARE_INVITE');
 
             if (!resp.success) {
               break
@@ -165,6 +165,9 @@ message = ""
           await apDoTask2(task.id, task.taskType, task.taskSourceUrl);
           $.log(`${task.taskTitle}|${task.taskShowTitle} 领取奖励`)
           await apTaskDrawAward(task.id, task.taskType);
+        }
+        if (task.taskType === 'SHARE_INVITE') {
+          $.yq_taskid = task.id
         }
       }
     }
@@ -191,7 +194,7 @@ message = ""
       $.newinvitePinTaskList = [...($.invitePinTaskList || []), ...($.invitePin || [])]
       for (const invitePinTaskListKey of $.newinvitePinTaskList) {
         $.log(`【京东账号${$.index}】${$.nickName || $.UserName} 助力 ${invitePinTaskListKey}`)
-        let resp = await getJoyBaseInfo(261, 1, invitePinTaskListKey);
+        let resp = await getJoyBaseInfo($.yq_taskid, 1, invitePinTaskListKey);
         if (resp.success) {
           if (resp.data.helpState === 1) {
             $.log("助力成功！");
