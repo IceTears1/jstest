@@ -44,7 +44,7 @@ let lkt = 0
     console.log(`获取活动ID失败`);
     return ;
   }
-  let openCount = Math.floor((Number(cookiesArr.length)-1)/Number($.completeNumbers));
+  let openCount = Math.floor((Number(cookiesArr.length)-1)/Number($.completeNumbers)) + 1;
   // openCount = 1;
   console.log(`\n共有${cookiesArr.length}个账号，前${openCount}个账号可以开团\n`);
   $.openTuanList = [];
