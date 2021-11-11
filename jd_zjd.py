@@ -9,13 +9,13 @@ TG交流 https://t.me/topstyle996
 TG频道 https://t.me/TopStyle2021
 updateTime: 2021.7.24 14:22
 '''
-print("赚京豆-瓜分10亿京豆自动助力--活动已结束\nTG交流 https://t.me/topstyle996\nTG频道 https://t.me/TopStyle2021")
-exit(0)
+# print("赚京豆-瓜分10亿京豆自动助力--活动已结束\nTG交流 https://t.me/topstyle996\nTG频道 https://t.me/TopStyle2021")
+# exit(0)
 #####
 #ck 优先读取【JDCookies.txt】 文件内的ck  再到 ENV的 变量 JD_COOKIE='ck1&ck2' 最后才到脚本内 cookies=ck
 cookies=''
 #助力账号，填写pt_pin或用户名的值，如 zlzh = ['aaaa','xxxx','yyyy'] ,支持ENV export zlzh=['CurtinLV','xxxx','yyyy']
-zlzh = ['Curtinlv', '买买买', '东哥']
+zlzh = ['18014246678_p', 'jd_FdDjJBENiJzA', 'jd_41c752f800930','jd_oKMcRZnuBXfM','269569205']
 #####
 
 
