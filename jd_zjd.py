@@ -245,15 +245,15 @@ def assist(ck, sid, eid, aid, user, name, a):
 
 #开始互助
 def start():
-    global header,cookiesList, userNameList, pinNameList
+    global header,cookiesList, userNameList
     print("微信小程序-赚京豆-瓜分助力")
-    cookiesList, userNameList, pinNameList = getCk.iscookie()
+    cookiesList, userNameList = getCk.iscookie()
     for ckname in zlzh:
         try:
             ckNum = userNameList.index(ckname)
         except Exception as e:
             try:
-                ckNum = pinNameList.index(ckname)
+                ckNum = userNameList.index(ckname)
             except:
                 print("请检查助力账号名称是否正确？提示：助力名字可填pt_pin的值、也可以填用户名。")
                 exit(9)
