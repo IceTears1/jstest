@@ -15,7 +15,7 @@ const $ = new Env("中青分享阅读-助力10次");
 var refer={"scripttq.xunsl.com":"https://bdzx.allcitysz.net/","script.baertt.com":"https://focus.youth.cn/"}
 //let request = ""
 let $urls = $.isNode() ? (process.env.WECHATURL ? process.env.WECHATURL : "") : ($.getdata('WECHATURL') ? $.getdata('WECHATURL') : "")
-$urls="https://scripttq.xunsl.com/count2/callback?type=1&si=4d00b56dd423c179298dbe44990bd1e8&referer=https%253A%252F%252Fbdzx.allcitysz.net%252Farticle%252Fau%253Fsignature%253DqEkWRmZyvzPO2bBdGX788GoezTY8qgb7l36xneA0QpKgM9NYL8%2526scene_id%253Dhome_feed%2526share_id%253D55032981378209611637153979853%2526time%253D1637153995966&_=1637154085381&jsonpcallback=jsonp3"
+//$urls="https://scripttq.xunsl.com/count2/callback?type=1&si=4d00b56dd423c179298dbe44990bd1e8&referer=https%253A%252F%252Fbdzx.allcitysz.net%252Farticle%252Fau%253Fsignature%253DqEkWRmZyvzPO2bBdGX788GoezTY8qgb7l36xneA0QpKgM9NYL8%2526scene_id%253Dhome_feed%2526share_id%253D55032981378209611637153979853%2526time%253D1637153995966&_=1637154085381&jsonpcallback=jsonp3"
 //https://script.baertt.com/count2/callback?type=1&si=0f6de20ed79063720ccf18c038202e0d&referer=https%253A%252F%252Ffocu.youth.cn%252Fwapzerohot%252F20210911%253Fsid%253D40068172%2526uid%253D58943830%2526timestamp%253D1631380520%2526signature%253DEgVbkQOLMqvWm9RrG0a2ebNNEIJmOGY73xy6doZeXBJzln85PD%2526share_id%253D58943830400681721631380532764%2526scene_id%253Dfire_share%2526time%253D1631380532765%2523&_=1631380696709&jsonpcallback=jsonp3
 let $url="";
 !(async () => {
