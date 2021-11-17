@@ -12,24 +12,39 @@ https://gitee.com/curtinlv/qx/raw/master/rewrite/youth.conf, tag=中青 by Curti
 
  */
 const $ = new Env("中青分享阅读-助力10次");
-
+var refer={"scripttq.xunsl.com":"https://bdzx.allcitysz.net/","script.baertt.com":"https://focus.youth.cn/"}
 //let request = ""
-let $url = $.isNode() ? (process.env.WECHATURL ? process.env.WECHATURL : "") : ($.getdata('WECHATURL') ? $.getdata('WECHATURL') : "")
-//$url="https://script.baertt.com/count2/callback?type=1&si=8ec142b6e286ae000e69bc301d03a1b5&referer=https%253A%252F%252Ffocu.youth.cn%252Fnewzerohot%252F20210421%253Fsid%253D37729461%2526uid%253D58041470%2526timestamp%253D1631116855%2526signature%253DbD6x5nzGA2pvRerWXy4Q8WzP5cVWAYP1Og8LdMkQlPVqJYN0Bo%2526share_id%253D58041470377294611631116861085%2526scene_id%253Dfire_share%2526time%253D1631116861085&_=1631154665739&jsonpcallback=jsonp3"
-if ($url){ 
-	getShareInfo();
-}
-else
-{
-	$.msg("中青url获取失败", "", "️中青url获取失败");
-}
+let $urls = $.isNode() ? (process.env.WECHATURL ? process.env.WECHATURL : "") : ($.getdata('WECHATURL') ? $.getdata('WECHATURL') : "")
+$urls="https://scripttq.xunsl.com/count2/callback?type=1&si=4d00b56dd423c179298dbe44990bd1e8&referer=https%253A%252F%252Fbdzx.allcitysz.net%252Farticle%252Fau%253Fsignature%253DqEkWRmZyvzPO2bBdGX788GoezTY8qgb7l36xneA0QpKgM9NYL8%2526scene_id%253Dhome_feed%2526share_id%253D55032981378209611637153979853%2526time%253D1637153995966&_=1637154085381&jsonpcallback=jsonp3"
+//https://script.baertt.com/count2/callback?type=1&si=0f6de20ed79063720ccf18c038202e0d&referer=https%253A%252F%252Ffocu.youth.cn%252Fwapzerohot%252F20210911%253Fsid%253D40068172%2526uid%253D58943830%2526timestamp%253D1631380520%2526signature%253DEgVbkQOLMqvWm9RrG0a2ebNNEIJmOGY73xy6doZeXBJzln85PD%2526share_id%253D58943830400681721631380532764%2526scene_id%253Dfire_share%2526time%253D1631380532765%2523&_=1631380696709&jsonpcallback=jsonp3
+let $url="";
+!(async () => {
+	if ($urls){ 
+		if($urls.indexOf("\n")>-1){
+			$urls=$urls.split("\n");
+			for(var i=0;i<$urls.length;i++){
+				$url=$urls[i];
+				await getShareInfo();
+			}
+		}else{
+			$url=$urls;
+			await getShareInfo();
+		}
+		
+	}
+	else
+	{
+		$.msg("中青url获取失败", "", "️中青url获取失败");
+	}
+})();
 //分享数据获取
 async function getShareInfo() {
   try {
-    if ($url.indexOf("script.baertt.com/count2") > -1) {
+    if ($url.indexOf("count2/callback") > -1) {
       var url = $url;
 	  console.log(url)
       var s_si = url.match(/si=(.*?)&/)[1];
+	  
       console.log("url:" + url);
       console.log("s_si:" + s_si);
       $.msg("中青分享", "", "数据获取成功");
@@ -47,6 +62,10 @@ async function getShareInfo() {
 
   $.done();
 }
+function gethost(url){
+	var aa=url.split("/");
+	return aa[2];
+}
 async function postShareInfoa(o_url,o_si, num) {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -54,12 +73,13 @@ async function postShareInfoa(o_url,o_si, num) {
         var n_si = randomsi();
         var iosV = parseInt(Math.random() * (14 - 11 + 1) + 11, 10);
         var n_url = o_url.replace(o_si, n_si);
+		var host=gethost(n_url);
         var header = {
             'Accept-Encoding': `gzip, deflate, br`,
             'Accept': `*/*`,
             'Connection': `keep-alive`,
-            'Referer': `https://focus.youth.cn/`,
-            'Host': `script.baertt.com`,
+            'Referer': refer[host],
+            'Host': host,
             'User-Agent': `Mozilla/5.0 (iPhone; CPU iPhone OS ${iosV}_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.7(0x18000730) NetType/WIFI Language/zh_CN`,
             'Accept-Language': `zh-cn`
         };
