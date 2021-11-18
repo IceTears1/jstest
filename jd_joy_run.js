@@ -552,7 +552,7 @@ function getFriendPins() {
         } else {
           $.friendPins = data && JSON.parse(data);
           if ($.friendPins && $.friendPins['friendsArr']) {
-            friendsArr = $.friendPins['friendsArr'];
+            //friendsArr = $.friendPins['friendsArr'];
             console.log(`\n共提供 ${friendsArr.length}个好友供来进行邀请助力\n`)
           }
         }
