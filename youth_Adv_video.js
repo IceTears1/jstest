@@ -64,7 +64,7 @@ Object.keys(zq_cookies).forEach((item) => {
                 //待处理cookie
                 console.log(`${zq_cookie1}`)
                 console.log(`--------第 ${k + 1} 个账号观看福利视频中--------\n`)
-		        for (let j =0; j<6;j++){
+		        for (let j =0; j<10;j++){
 			        console.log(`--------第 ${j + 1} 次观看福利视频中--------\n`)
                 	await video(zq_cookie1)
 			        console.log("等待30秒")
