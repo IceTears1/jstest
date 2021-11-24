@@ -436,31 +436,90 @@ function h5launch() {
   const body = {"clientInfo":{},"followShop":0,"promUserState":""};
   const options = taskUrl(arguments.callee.name.toString(), body)
   return new Promise((resolve) => {
-    $.post(options, (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
-          console.log(JSON.stringify(err));
-        } else {
-          data = JSON.parse(data);
-          if (data && data.data && data.data.biz_code === 0) {
-            if (data.data.result.redPacketId) {
-              console.log(`\n\n发起助力红包 成功：红包ID ${data.data.result.redPacketId}`)
+    var data = await requestApi('h5launch',cookie,{
+        "followShop":0,
+        "random": num,
+        "log":"42588613~8,~0iuxyee",
+        "sceneid":"JLHBhPageh5"
+   });
+   switch (data?.data?.result?.status) {
+    case 1://火爆
+        continue;
+    case 2://已经发起过
+        break;
+    default:
+        if(data?.data?.result?.redPacketId){
+            console.log(`\n\n发起助力红包 成功：红包ID ${data.data.result.redPacketId}`)
               $.redPacketId.push(data.data.result.redPacketId);
-            } else {
-              console.log(`\n\n发起助力红包 失败：${data.data.result.statusDesc}`)
-            }
-          } else {
-            console.log(`发起助力红包 失败：${JSON.stringify(data)}`)
-          }
+            // helps.push({redPacketId: data.data.result.redPacketId, success: false, id: i, cookie: cookie})
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
+        continue;
+}   
+data = await requestApi('h5activityIndex',cookie,{
+    "isjdapp":1
+});
+console.log("发起请求")
+switch (data?.data?.code) {
+    case 20002://已达拆红包数量限制
+        break;
+    case 10002://活动正在进行，火爆号
+        break;
+    case 20001://红包活动正在进行，可拆
+        helps.push({redPacketId: data.data.result.redpacketInfo.id, success: false, id: i, cookie: cookie})
+        break;
+    default:
+        break;
+}
+
+    // $.post(options, (err, resp, data) => {
+    //   try {
+    //     if (err) {
+    //       console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
+    //       console.log(JSON.stringify(err));
+    //     } else {
+    //       data = JSON.parse(data);
+    //       if (data && data.data && data.data.biz_code === 0) {
+    //         if (data.data.result.redPacketId) {
+    //           console.log(`\n\n发起助力红包 成功：红包ID ${data.data.result.redPacketId}`)
+    //           $.redPacketId.push(data.data.result.redPacketId);
+    //         } else {
+    //           console.log(`\n\n发起助力红包 失败：${data.data.result.statusDesc}`)
+    //         }
+    //       } else {
+    //         console.log(`发起助力红包 失败：${JSON.stringify(data)}`)
+    //       }
+    //     }
+    //   } catch (e) {
+    //     $.logErr(e, resp);
+    //   } finally {
+    //     resolve(data);
+    //   }
+    // })
   })
+}
+function requestApi(functionId, cookie, body = {}) {
+    return new Promise(resolve => {
+        $.post({
+            url: `${JD_API_HOST}/api?appid=jd_mp_h5&functionId=${functionId}&loginType=2&client=jd_mp_h5&clientVersion=10.0.5&osVersion=AndroidOS&d_brand=Xiaomi&d_model=Xiaomi`,
+            headers: {
+                "Cookie": cookie,
+                "origin": "https://h5.m.jd.com",
+                "referer": "https://h5.m.jd.com/babelDiy/Zeus/2NUvze9e1uWf4amBhe1AV6ynmSuH/index.html",
+                'Content-Type': 'application/x-www-form-urlencoded',
+                "X-Requested-With": "com.jingdong.app.mall",
+                "User-Agent": ua,
+            },
+            body: `body=${escape(JSON.stringify(body))}`,
+        }, (_, resp, data) => {
+            try {
+                data = JSON.parse(data)
+            } catch (e) {
+                $.logErr('Error: ', e, resp)
+            } finally {
+                resolve(data)
+            }
+        })
+    })
 }
 function h5activityIndex() {
   const body = {"clientInfo":{},"isjdapp":1};
