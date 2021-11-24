@@ -468,7 +468,7 @@ function h5launch () {
     })
 }
 function h5activityIndex () {
-    const body = {"isjdapp": 1 };
+    const body = { "isjdapp": 1 };
     const options = taskUrl(arguments.callee.name.toString(), body);
     return new Promise((resolve) => {
         $.post(options, async (err, resp, data) => {
@@ -585,8 +585,8 @@ function getCcTaskList (functionId, body, type = '1') {
 //         }
 //     }
 // }
-const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
-function taskUrl(functionId, body = {}) {
+
+function taskUrl (functionId, body = {}) {
     return new Promise(resolve => {
         $.post({
             url: `${JD_API_HOST}/api?appid=jd_mp_h5&functionId=${functionId}&loginType=2&client=jd_mp_h5&clientVersion=10.0.5&osVersion=AndroidOS&d_brand=Xiaomi&d_model=Xiaomi`,
@@ -596,7 +596,8 @@ function taskUrl(functionId, body = {}) {
                 "referer": "https://h5.m.jd.com/babelDiy/Zeus/2NUvze9e1uWf4amBhe1AV6ynmSuH/index.html",
                 'Content-Type': 'application/x-www-form-urlencoded',
                 "X-Requested-With": "com.jingdong.app.mall",
-                "User-Agent": ua,
+                "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+
             },
             body: `body=${escape(JSON.stringify(body))}`,
         }, (_, resp, data) => {
