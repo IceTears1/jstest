@@ -585,6 +585,7 @@ function getCcTaskList (functionId, body, type = '1') {
 //         }
 //     }
 // }
+const ua = `jdltapp;iPhone;3.1.0;${Math.ceil(Math.random()*4+10)}.${Math.ceil(Math.random()*4)};${randomString(40)}`
 function taskUrl(functionId, body = {}) {
     return new Promise(resolve => {
         $.post({
