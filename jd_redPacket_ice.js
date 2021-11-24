@@ -378,9 +378,9 @@ function receiveTaskRedpacket(taskType) {
 //助力API
 function jinli_h5assist(redPacketId) {
   //一个人一天只能助力两次，助力码redPacketId 每天都变
-  const body = {"clientInfo":{},redPacketId,"followShop":0,"promUserState":""};
-  const options = taskUrl(arguments.callee.name.toString(), body)
-  return new Promise((resolve) => {
+//   const body = {"clientInfo":{},redPacketId,"followShop":0,"promUserState":""};
+//   const options = taskUrl(arguments.callee.name.toString(), body)
+//   return new Promise((resolve) => {
     $.post(options, (err, resp, data) => {
       try {
         if (err) {
@@ -433,9 +433,9 @@ function h5receiveRedpacketAll() {
 }
 //发起助力红包API
 function h5launch() {
-  const body = {"clientInfo":{},"followShop":0,"promUserState":""};
-  const options = taskUrl(arguments.callee.name.toString(), body)
-  return new Promise((resolve) => {
+//   const body = {"clientInfo":{},"followShop":0,"promUserState":""};
+//   const options = taskUrl(arguments.callee.name.toString(), body)
+//   return new Promise((resolve) => {
     var data = await requestApi('h5launch',cookie,{
         "followShop":0,
         "random": num,
@@ -495,7 +495,7 @@ switch (data?.data?.code) {
     //     resolve(data);
     //   }
     // })
-  })
+//   })
 }
 function requestApi(functionId, cookie, body = {}) {
     return new Promise(resolve => {
