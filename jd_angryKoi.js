@@ -99,6 +99,7 @@ function open(help){
         open(help)         
     })   
 }
+
 function requestApi(functionId, cookie, body = {}) {
     return new Promise(resolve => {
         $.post({
