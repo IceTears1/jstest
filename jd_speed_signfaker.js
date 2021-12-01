@@ -110,13 +110,7 @@ async function signInit() {
     $.get(taskUrl('speedSignInit', {
       "activityId": "8a8fabf3cccb417f8e691b6774938bc2",
       "kernelPlatform": "RN",
-      "inviterId":[
-        "1CRgWazqVItY8aaqpkLH0Gl/O+1OYbYMAaFSLHsfq0U=",
-        "T4xQP/egYosCHUTNHkHDqHCzpezw53UOgiGqM1J+FWc=",
-        "dsEn+XopxVSqrNq0TSRwBBrEwVj/+3qyg7H3FXESIiM=",
-        "d3jdjbeII5GbF1SpVL0LEAqjzzI84LpOZSHFM696Rlw=",
-        "10vhQ/yCrMFluS3MNHMWpA=="
-      ][Math.floor((Math.random() * 5))]
+      "inviterId":"U44jAghdpW58FKgfqPdotA=="
     }), async (err, resp, data) => {
       try {
         if (err) {
@@ -674,11 +668,11 @@ function taskGetUrl(function_id, body) {
 function invite2() {
   let t = +new Date()
   let inviterIdArr = [
-    "1CRgWazqVItY8aaqpkLH0Gl/O+1OYbYMAaFSLHsfq0U=",
-    "T4xQP/egYosCHUTNHkHDqHCzpezw53UOgiGqM1J+FWc=",
-    "dsEn+XopxVSqrNq0TSRwBBrEwVj/+3qyg7H3FXESIiM=",
-    "d3jdjbeII5GbF1SpVL0LEAqjzzI84LpOZSHFM696Rlw=",
-    "10vhQ/yCrMFluS3MNHMWpA==",
+    "5V7vHE23qh2EkdBHXRFDuA==",
+    "wXX9SjXOdYMWe5Ru/1+x9A==",
+    "mCvmrmFghpDCLcL3VZs53BkAhucziHAYn3HhPmURJJE=",
+    "4AVQao+eH8Q8kvmXnWmkG8ef/fNr5fdejnD9+9Ugbec=",
+    "jbGBRBPo5DmwB9ntTCSVOGXuh1YQyccCuZpWwb3PlIc=",
   ]
   let inviterId = inviterIdArr[Math.floor((Math.random() * inviterIdArr.length))]
   let options = {
@@ -704,15 +698,18 @@ function invite2() {
 function invite() {
   let t = +new Date()
   let inviterIdArr = [
-    "1CRgWazqVItY8aaqpkLH0Gl/O+1OYbYMAaFSLHsfq0U=",
-    "T4xQP/egYosCHUTNHkHDqHCzpezw53UOgiGqM1J+FWc=",
-    "dsEn+XopxVSqrNq0TSRwBBrEwVj/+3qyg7H3FXESIiM=",
-    "d3jdjbeII5GbF1SpVL0LEAqjzzI84LpOZSHFM696Rlw=",
-    "10vhQ/yCrMFluS3MNHMWpA==",
-    "L4/d1QH7e2SBPpYj79RYEQ==",
-    "ogqTvb1WgFMQgBABOqIU9w==",
-    "U7frWc9I0oJ7BhQHlD2QmQJVXYb7jarf+iMSRqCUqFk=",
-    "52U4gN24clvcqjlXtguHDg=="
+    "5V7vHE23qh2EkdBHXRFDuA==",
+    "4AVQao+eH8Q8kvmXnWmkG8ef/fNr5fdejnD9+9Ugbec=",
+    "jbGBRBPo5DmwB9ntTCSVOGXuh1YQyccCuZpWwb3PlIc=",
+    "wXX9SjXOdYMWe5Ru/1+x9A==",
+    "mCvmrmFghpDCLcL3VZs53BkAhucziHAYn3HhPmURJJE=",
+    "E9EvSFNuA1pahSQT0uSsXkW1v0j+QOHQbk8+peJYc0I=",
+    "zPiP6uq7hi9AS7VecMnRvA==",
+    "YQ5wwbSWDzNIudDC2OWvSw==",
+    "+vbK7QKOtpHM4dsSRqUPPX/11g/P71iBYh46dyiMuKk=",
+    "w22w0sZEccp/OWxg1d20RtsryQGfghc94PsLIBqeX0E=",
+    "VdDrieI4oR6XwchWlxwfCQqEf6/k8cYvTG52R1ToSoQ=",
+    "D7QE/1ouU1wA14mAV0zGMg=="
   ]
   let inviterId = inviterIdArr[Math.floor((Math.random() * inviterIdArr.length))]
   let options = {

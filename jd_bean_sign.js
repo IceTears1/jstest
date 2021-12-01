@@ -1,5 +1,4 @@
 /*
-corn "14 0,9 * * *" jd_bean_sign.js
 京东多合一签到,自用,可N个京东账号
 活动入口：各处的签到汇总
 Node.JS专用
@@ -16,8 +15,8 @@ const exec = require('child_process').execSync
 const fs = require('fs')
 const download = require('download');
 let resultPath = "./result.txt";
-let JD_DailyBonusPath = "./JD_DailyBonus.js";
-let outPutUrl = './';
+let JD_DailyBonusPath = "./utils/JD_DailyBonus.js";
+let outPutUrl = './utils';
 let NodeSet = 'CookieSet.json';
 let cookiesArr = [], cookie = '', allMessage = '', jrBodyArr = [], jrBody = '';
 
@@ -70,7 +69,6 @@ if ($.isNode()) {
       jrBody = ''
       if (jrBodyArr && jrBodyArr.length) {
         for (let key in Object.keys(jrBodyArr)) {
-			console.log(jrBodyArr[key])
           let vo = JSON.parse(jrBodyArr[key])
           if (decodeURIComponent(vo.pin) == $.UserName) {
             jrBody = vo.body || ''
