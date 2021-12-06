@@ -41,7 +41,7 @@ if ($.isNode()) {
                 continue
             }
             authorCodeList = [
-                '6e495e84d96940618b6040717c95208e',
+                'ad52b4fd9e8f4facacfe4a88ce89c3f9',
             ]
             $.bean = 0;
             $.ADID = getUUID('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 1);
@@ -232,6 +232,7 @@ function getMyPing() {
                             $.log(`你好：${data.data.nickname}`)
                             $.pin = data.data.nickname;
                             $.secretPin = data.data.secretPin;
+							console.log($.secretPin)
                         } else {
                             $.log(data.errorMessage)
                         }
