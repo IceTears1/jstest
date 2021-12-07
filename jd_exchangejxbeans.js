@@ -9,7 +9,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message = '';
-let exjxbeans = false;
+let exjxbeans = true;
 if (process.env.exjxbeans) {
     exjxbeans = process.env.exjxbeans;
 }
@@ -61,7 +61,7 @@ if ($.isNode()) {
 })().catch((e) => { $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '') }).finally(() => { $.done(); })
 
 async function domain() {
-    maxexchange = 600;
+    maxexchange = 1000;
     beans = await queryexpirebeans();
     if (beans.ret === 0) {
         beans.expirejingdou.map(item => {
