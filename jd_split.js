@@ -37,7 +37,12 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-$.shareCodes = [];
+$.shareCodes = [
+  'T012vPt6RRgQ91TSCjRQmoaX5kRrbA','T018v_VzQRob8VLRJxKb1ACjRQmoaX5kRrbA',
+  'T0205KkcNkptry6lVWSt7r17CjRQmoaX5kRrbA',
+  'T018v_V6QRsb_F3XIR-b1ACjRQmoaX5kRrbA',
+  'T0225KkcRB9K8lHVdhL0lP4JdACjRQmoaX5kRrbA',
+  'T0205KkcH2Vkpja9fl-G_KF3CjRQmoaX5kRrbA'];
 !(async () => {
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
@@ -71,7 +76,13 @@ $.shareCodes = [];
     await $.wait(1000)
     res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/split.json')
   }
-  $.newShareCodes = [...new Set([...$.shareCodes, ...[]])]
+  //$.newShareCodes = [...new Set([...$.shareCodes, ...[]])]
+  $.newShareCodes =[
+  'T012vPt6RRgQ91TSCjRQmoaX5kRrbA','T018v_VzQRob8VLRJxKb1ACjRQmoaX5kRrbA',
+  'T0205KkcNkptry6lVWSt7r17CjRQmoaX5kRrbA',
+  'T018v_V6QRsb_F3XIR-b1ACjRQmoaX5kRrbA',
+  'T0225KkcRB9K8lHVdhL0lP4JdACjRQmoaX5kRrbA',
+  'T0205KkcH2Vkpja9fl-G_KF3CjRQmoaX5kRrbA']
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -252,7 +263,8 @@ function jdsplit_getTaskDetail() {
                 if (item.taskType === 6) {
                   console.log(`\n您的${$.name}好友助力邀请码：${item.assistTaskDetailVo.taskToken}\n`)
                   if (item.times < item.maxTimes) {
-                    $.shareCodes.push(item.assistTaskDetailVo.taskToken)
+                    $.shareCodes.push(item.assistTaskDetailVo.taskToken);
+					console.log($.shareCodes);
                   }
                 }
               })
