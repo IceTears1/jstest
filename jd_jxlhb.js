@@ -58,9 +58,10 @@ const BASE_URL = 'https://m.jingxi.com/cubeactive/steprewardv3'
   }
   $.authorMyShareIds = ['vjyP1CfZK-Muzq-zCQVMaPf_lyKVTLcIMAZu-7GEXZV1Ffe2U484vy5GrKcjlRVW',
 	  'vjyP1CfZK-Muzq-zCQVMaGTczu5K5S36ubVUGEvE8n32Txssnwy2oDrMJXIUUCvh',
-	  'vjyP1CfZK-Muzq-zCQVMaHh-9PKBceyCWQrKw2hAS3d1Ffe2U484vy5GrKcjlRVW'
+	  'vjyP1CfZK-Muzq-zCQVMaHh-9PKBceyCWQrKw2hAS3d1Ffe2U484vy5GrKcjlRVW',
 	  'vjyP1CfZK-Muzq-zCQVMaA25WpYvDp7iWfrQFLQQZtGD5Kk19Xjfk-LkqEHM_MhW',
-		  'vjyP1CfZK-Muzq-zCQVMaCppKZ2IKvOUV9I4tiNNX9GeUuXHgMxnhU_3NSne1uUK','vjyP1CfZK-Muzq-zCQVMaE7J_QMScuDxWLwRQUsyetI','vjyP1CfZK-Muzq-zCQVMaGBtOaOJWgeCH8Vai3sx_QbDsFR7R9lUgnGhMIeJpyAi'
+		  'vjyP1CfZK-Muzq-zCQVMaCppKZ2IKvOUV9I4tiNNX9GeUuXHgMxnhU_3NSne1uUK',
+  'vjyP1CfZK-Muzq-zCQVMaE7J_QMScuDxWLwRQUsyetI','vjyP1CfZK-Muzq-zCQVMaGBtOaOJWgeCH8Vai3sx_QbDsFR7R9lUgnGhMIeJpyAi',
 		  'vjyP1CfZK-Muzq-zCQVMaJK-unm8ZUwRzu2RA7q_eA31Shc5L93TYJqQUjzK6eSe',
 		  ];
   //开启红包,获取互助码
