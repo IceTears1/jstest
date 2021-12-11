@@ -199,6 +199,7 @@ async function healthyDay_getHomeData(type = true) {
                       })
                     }
                   }
+				  console.log($.shareCode)
                 } else {
                   console.log(`【${vo.taskName}】已完成\n`)
                 }
