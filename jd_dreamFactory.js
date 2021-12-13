@@ -442,6 +442,7 @@ async function helpFriends() {
     console.log(`\n未到招工时间(每日6-24点之间可招工)\n`)
     return
   }
+	  console.log(`开始助力---------------------------\n`+$.canHelpFlag)
   if ($.canHelpFlag) {
     await shareCodesFormat();
     for (let code of $.newShareCodes) {
