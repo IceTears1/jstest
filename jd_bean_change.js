@@ -52,7 +52,7 @@ let ReturnMessageTitle="";
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-let intPerSent = 0;
+let intPerSent = 20;
 let i = 0;
 let DisableCash = "false";
 let llShowMonth = false;
