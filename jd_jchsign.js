@@ -1,10 +1,25 @@
-/**
-京车会签到
+/*
+京东京车会签到
 入口：京东京车会APP,我的-右上角
-cron 19 5 * * * jd_jchsign.js
-TG频道：https://t.me/sheeplost
-*/
-const $ = new Env('京车会签到');
+by：lost
+已支持IOS双京东账号,Node.js支持N个京东账号
+脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
+============Quantumultx===============
+[task_local]
+#京东京车会签到
+5 7 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_jchsign.js, tag=京东京车会签到, enabled=true
+
+================Loon==============
+[Script]
+cron "5 7 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_jchsign.js,tag=京东京车会签到
+
+===============Surge=================
+京东京车会签到 = type=cron,cronexp="5 7 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_jchsign.js
+
+============小火箭=========
+京东京车会签到 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_jchsign.js, cronexpr="5 7 * * *", timeout=3600, enable=true
+ */
+const $ = new Env('京东京车会签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';

@@ -7,26 +7,28 @@
 ===================quantumultx================
 [task_local]
 #东东健康社区
-13 0,6,22 * * * jd_health.js, tag=东东健康社区, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+13 1,6,22 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_health.js, tag=东东健康社区, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 =====================Loon================
 [Script]
-cron "13 0,6,22 * * *" script-path=jd_health.js, tag=东东健康社区
+cron "13 1,6,22 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_health.js, tag=东东健康社区
 
 ====================Surge================
-东东健康社区 = type=cron,cronexp="13 0,6,22 * * *",wake-system=1,timeout=3600,script-path=jd_health.js
+东东健康社区 = type=cron,cronexp="13 1,6,22 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_health.js
 
 ============小火箭=========
-东东健康社区 = type=cron,script-path=jd_health.js, cronexpr="13 0,6,22 * * *", timeout=3600, enable=true
+东东健康社区 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_health.js, cronexpr="13 1,6,22 * * *", timeout=3600, enable=true
  */
 const $ = new Env("东东健康社区");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const notify = $.isNode() ? require('./sendNotify') : "";
 let cookiesArr = [], cookie = "", allMessage = "", message;
 const inviteCodes = [
-  ``
+  `T018v_VzQRob8VLRJxKb1ACjVfnoaW5kRrbA@T0205KkcNkptry6lVWSt7r17CjVfnoaW5kRrbA@T018v_V6QRsb_F3XIR-b1ACjVfnoaW5kRrbA@T0225KkcRB9K8lHVdhL0lP4JdACjVfnoaW5kRrbA@T0205KkcH2Vkpja9fl-G_KF3CjVfnoaW5kRrbA@T012vPt6RRgQ91TSCjVfnoaW5kRrbA@T0225KkcRx8Rp1XXIBLwxqIOIgCjVfnoaW5kRrbA@T0225KkcRkgdoFzUdkzywaIPJQCjVfnoaW5kRrbA@T0225KkcRktIoVaDIBL0wPZZdQCjVfnoaW5kRrbA`,
 ]
-const ZLC = !(process.env.JD_JOIN_ZLC && process.env.JD_JOIN_ZLC === 'false')
+for(var i=0;i<30;i++){
+inviteCodes.push(inviteCodes[0])
+}
 let reward = process.env.JD_HEALTH_REWARD_NAME ? process.env.JD_HEALTH_REWARD_NAME : ''
 const randomCount = $.isNode() ? 20 : 5;
 function oc(fn, defaultVal) {//optioanl chaining
@@ -52,9 +54,6 @@ const JD_API_HOST = "https://api.m.jd.com/";
   if (!cookiesArr[0]) {
     $.msg($.name, "【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取", "https://bean.m.jd.com/", {"open-url": "https://bean.m.jd.com/"});
     return;
-  }
-  if (!process.env.JD_JOIN_ZLC) {
-    console.log(`【注意】本脚本已经清空助力`)
   }
   await requireConfig()
   for (let i = 0; i < cookiesArr.length; i++) {
@@ -147,24 +146,7 @@ function getTaskDetail(taskId = '') {
             } else if (taskId === 6) {
               if (oc(() => data.data.result.taskVos)) {
                 console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${oc(() => data.data.result.taskVos[0].assistTaskDetailVo.taskToken)}\n`);
-                // console.log('好友助力码：' + oc(() => data.data.result.taskVos[0].assistTaskDetailVo.taskToken))
-                // ***************************
-                // 报告运行次数
-                if (ZLC) {
-                  if (oc(() => data.data.result.taskVos[0].assistTaskDetailVo.taskToken)) {
-                    $.code = data.data.result.taskVos[0].assistTaskDetailVo.taskToken
-                    for (let k = 0; k < 5; k++) {
-                      try {
-                        await runTimes()
-                        break
-                      } catch (e) {
-                      }
-                      await $.wait(Math.floor(Math.random() * 10 + 3) * 1000)
-                    }
-                  }
-                }
-                // ***************************
-
+                // console.log('好友助力码：' + data?.data?.result?.taskVos[0].assistTaskDetailVo.taskToken)
               }
             } else if (taskId === 22) {
               console.log(`${oc(() => data.data.result.taskVos[0].taskName)}任务，完成次数：${oc(() => data.data.result.taskVos[0].times)}/${oc(() => data.data.result.taskVos[0].maxTimes)}`)
@@ -213,21 +195,7 @@ function getTaskDetail(taskId = '') {
       })
   })
 }
-function runTimes() {
-  return new Promise((resolve, reject) => {
-    $.get({
-      url: ``
-    }, (err, resp, data) => {
-      if (err) {
-        console.log('上报失败', err)
-        reject(err)
-      } else {
-        console.log(data)
-        resolve()
-      }
-    })
-  })
-}
+
 async function getCommodities() {
   return new Promise(async resolve => {
     const options = taskUrl('jdhealth_getCommodities')
@@ -367,16 +335,16 @@ function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
     $.get({
-      url: `https://api.jdsharecode.xyz/api/health/${randomCount}`,
+      url: `/`,
       'timeout': 10000
     }, (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} health/read API请求失败，请检查网路重试`)
+     //   console.log(`${JSON.stringify(err)}`)
+     //   console.log(`${$.name} health/read API请求失败，请检查网路重试`)
         } else {
           if (data) {
-            console.log(`随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
+     //     console.log(`随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
             data = JSON.parse(data);
           }
         }
@@ -393,7 +361,7 @@ function readShareCode() {
 //格式化助力码
 function shareCodesFormat() {
   return new Promise(async resolve => {
-    console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
+    // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
     $.newShareCodes = [];
     if ($.shareCodesArr[$.index - 1]) {
       $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');
@@ -402,13 +370,9 @@ function shareCodesFormat() {
       const tempIndex = $.index > inviteCodes.length ? (inviteCodes.length - 1) : ($.index - 1);
       $.newShareCodes = inviteCodes[tempIndex].split('@');
     }
-    if (!ZLC) {
-      console.log(`您设置了不加入助力池，跳过\n`)
-    } else {
-      const readShareCodeRes = await readShareCode();
-      if (readShareCodeRes && readShareCodeRes.code === 200) {
-        $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
-      }
+    const readShareCodeRes = await readShareCode();
+    if (readShareCodeRes && readShareCodeRes.code === 200) {
+      $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
     }
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
