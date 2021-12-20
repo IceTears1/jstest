@@ -111,11 +111,12 @@ async function signInit() {
       "activityId": "8a8fabf3cccb417f8e691b6774938bc2",
       "kernelPlatform": "RN",
       "inviterId":[
-        "1CRgWazqVItY8aaqpkLH0Gl/O+1OYbYMAaFSLHsfq0U=",
-        "T4xQP/egYosCHUTNHkHDqHCzpezw53UOgiGqM1J+FWc=",
-        "dsEn+XopxVSqrNq0TSRwBBrEwVj/+3qyg7H3FXESIiM=",
-        "d3jdjbeII5GbF1SpVL0LEAqjzzI84LpOZSHFM696Rlw=",
-        "10vhQ/yCrMFluS3MNHMWpA=="
+        "ghNQyGlIWbUdlPK/1zsTFQ==",
+        "FrDZBDwlRNX/Fet29mBTjg==",
+        "dX0t80OyY6c/49K0DgQRRfA==",
+        "jl555FG2wDz4KjwztQvjww==",
+        "U6lCo5WEZMTUabR8RPhsmU5yrUVGTyQoPdAatEc+880=",
+        "E9cx6cIwwOksEkmNi4Mv6Q=="
       ][Math.floor((Math.random() * 5))]
     }), async (err, resp, data) => {
       try {
