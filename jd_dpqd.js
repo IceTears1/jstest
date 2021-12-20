@@ -3,14 +3,14 @@
 ============Quantumultx===============
 [task_local]
 #店铺签到
-0 0 * * * https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_shop_sign.js, tag=店铺签到, enabled=true
+15 2,14 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_shop_sign.js, tag=店铺签到, enabled=true
 ===========Loon============
 [Script]
-cron "0 0 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_shop_sign.js,tag=店铺签到
+cron "15 2,14 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_shop_sign.js,tag=店铺签到
 ============Surge=============
-店铺签到 = type=cron,cronexp="0 0 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_shop_sign.js
+店铺签到 = type=cron,cronexp="15 2,14 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_shop_sign.js
 ===========小火箭========
-店铺签到 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/JavaScript/master/Task/jd_shop_sign.jss, cronexpr="0 0 * * *", timeout=3600, enable=true
+店铺签到 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_shop_sign.jss, cronexpr="15 2,14 * * *", timeout=3600, enable=true
 */
 const $ = new Env('店铺签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -25,33 +25,26 @@ let vender=''
 let num=0
 let shopname=''
 const token = [
-
-"011BAF6E366D356E7694B0999CE3DE03",
-"C19201D1BBFABECF9184E970DF985F62",
-"2850C9F48618513C2B9727E0C1E7270B",
-"EF39DD14994863B96D690DB2583CFCAB",
-"888BA24E643DB95D83242AD122237CA9",
-"9E6034F4A60088A97427701990163E27",
-"78419F505BFF990180FF253BA10965E5",
-"4575711E8DE40C9344E01693FB41EB4E",
-"396DF5D0CA7E35723DE5CB0B2A8E7CBB",
-"737646C9DCBCB867A041A86C90420986",
-"C520A447B4D69659CD17CF1E1F7FCC40",
-"53378560A6BC7E91EB143DE59183F67F",
-"D0AD519DBC35A253CEC052FD041F2EFD",
-"09B63A54599F85A17BACA9C81F50B1B8",
-'9E6034F4A60088A97427701990163E27',
-'EF39DD14994863B96D690DB2583CFCAB',
-'4575711E8DE40C9344E01693FB41EB4E',
-'011BAF6E366D356E7694B0999CE3DE03',
-'C19201D1BBFABECF9184E970DF985F62',
-'13440850930FC8025A64D67E9D04AB7F',
-'09E4730770FD2E15F9C60365F7FEA6E4',
-'2850C9F48618513C2B9727E0C1E7270B',
-'C4BBEB9CB7892C128545257BEBD7ACA4',
-'0F6FACCF7BB02D82A760E253746ACD31'
-
-
+  "C718DA981DBB8CF73FAC7D5480733B43",
+  "77A6C7B5C2BC9175521931ADE8E3B2E0",
+  "5BEFC891C256D515C4F0F94F15989055",
+  "C18676D5A717F320CA8013506872AD8F",
+  "96A49DBA0FB5299519D9FF5B379618B0",
+  "BF2ACB3369C4AEEE6C9842A874FD7A51",
+  "487620FBF323257468FD04017EE8971A",
+  "5E89923278C4AAE248D07EC1BE067AE6",
+  "3127438A294A08E973D89C13B428C5A8",
+  "02A5827612D0B5364FD898D0F458CA10",
+  "71E31DDEFDC991A184C8579DD6574C9A",
+  "E5A3952166402D7F9C056BF1A24E69E7",
+  "01B3D5EAB2AB6FCCA4A8B699D560A458",
+  "9EA0257D7BA5312ED76E537813DA28A1",
+  "0D7DD20BBB7E8C4CBD9AB3BF7949AC4C",
+  "25D0B711EC3D050038A8CE33E969C6BD",
+  "501105E4C2FAB2A9FF760A554063E769",
+  "53378560A6BC7E91EB143DE59183F67F",
+  "C56EB03890D49C47260E3EE7567500E7",
+  "89B4E92C6E3997F0430548795F6435CC"
 ]
 
 if ($.isNode()) {
@@ -96,7 +89,7 @@ if ($.isNode()) {
     }
   }
   if ($.isNode() && allMessage) {
-    //await notify.sendNotify(`${$.name}`, `${allMessage}`)
+    await notify.sendNotify(`${$.name}`, `${allMessage}`)
   }
 })()
     .catch((e) => {
