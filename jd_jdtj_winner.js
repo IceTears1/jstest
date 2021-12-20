@@ -9,7 +9,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
-let cookiesArr = [], cookie = '', message = '', linkId = 'PFbUR7wtwUcQ860Sn8WRfw', fflLinkId = 'PFbUR7wtwUcQ860Sn8WRfw';
+let cookiesArr = [], cookie = '', message = '', linkId = 'ouLEuSSoBzj9b9YYYIsiDA', fflLinkId = 'ouLEuSSoBzj9b9YYYIsiDA';
 const money = process.env.BIGWINNER_MONEY || 0.3
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
