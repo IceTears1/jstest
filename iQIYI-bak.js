@@ -70,6 +70,7 @@ const axios = require('axios');
 	}
 	for(var i=0;i<cookies.length;i++){
 		cookie=cookies[i]
+		console.log(`\n--------第${i+1}个账号------------\n`)
 		await run();
 	}
   } else {
