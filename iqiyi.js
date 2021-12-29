@@ -8,7 +8,8 @@ const download = require('download')
 const $ = new Env('爱奇艺会员签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
 // 公共变量
-const KEY = process.env.iQIYI_COOKIE
+var KEY = process.env.iQIYI_COOKIE;
+
 const SEND_KEY = process.env.SEND_KEY
 const UTC8 = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
 
@@ -33,21 +34,22 @@ async function deleteFile(path) {
     }
 }
 
-async function start() {
+async function start(KEY) {
+	console.log(KEY)
     if (!KEY) {
         console.log('请填写 key 后在继续')
         return
     }
     // 下载最新代码
-    await downFile();
+    //await downFile();
     console.log('下载代码完毕')
     // 替换变量
     await changeFiele();
     console.log('替换变量完毕')
     // 执行
-    await exec("node iQIYI-bak.js >> result.txt");
+    await exec("node iQIYI-bak.js >> result1.txt");
     console.log('执行完毕')
-    const path = "./result.txt";
+    const path = "./result1.txt";
     let content = "";
     if (fs.existsSync(path)) {
         content = fs.readFileSync(path, "utf8");
@@ -69,10 +71,10 @@ async function start() {
 
     //运行完成后，删除下载的文件
     console.log('运行完成后，删除下载的文件\n')
-    await deleteFile(path);
+   // await deleteFile(path);
 }
 
-start()
+start(KEY)
 
 function timeFormat(time) {
   let date;
