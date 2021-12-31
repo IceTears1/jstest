@@ -25,8 +25,8 @@ let message = '', allMessage = '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-let appIdArr = ['1E1NXxq0', '1FFVQyqw','1F11Vx64'];
-let appNameArr = ['众筹许愿池', '1111点心动','冰雪闪耀季'];
+let appIdArr = ['1E1NXxq0', '1FFVQyqw'];
+let appNameArr = ['众筹许愿池', '1111点心动'];
 let appId, appName;
 $.shareCode = [];
 if ($.isNode()) {
@@ -72,6 +72,8 @@ if ($.isNode()) {
     if ($.isNode()) await notify.sendNotify($.name, allMessage);
     $.msg($.name, '', allMessage)
   }
+
+
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -198,8 +200,8 @@ async function healthyDay_getHomeData(type = true) {
                         "use": $.UserName
                       })
                     }
+						 console.log($.shareCode)
                   }
-				  console.log($.shareCode)
                 } else {
                   console.log(`【${vo.taskName}】已完成\n`)
                 }
