@@ -52,13 +52,6 @@ if ($.isNode()) {
                 // }
                 continue
             }
-<<<<<<< HEAD:jd_flp.js
-            
-            authorCodeList = [
-      
-            ]
-=======
->>>>>>> origin/master:jd_rush_lzdz1_nh.js
             $.bean = 0;
             $.ADID = getUUID('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 1);
             $.UUID = getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');

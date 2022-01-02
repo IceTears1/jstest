@@ -52,17 +52,6 @@ if ($.isNode()) {
                 // }
                 continue
             }
-<<<<<<< HEAD:jd_mn.js
-
-            
-            authorCodeList = [
-                '',
-                // 'a25c65caa19e480093256c2be4347c10',
-                // '413dcfbcc0414bd3a10a4402bc984deb',
-                // '37f4602c3ada4ef9873a4f84b5495a0c'
-            ]
-=======
->>>>>>> origin/master:jd_rush_lzdz1_nh2.js
             $.bean = 0;
             $.ADID = getUUID('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 1);
             $.UUID = getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
