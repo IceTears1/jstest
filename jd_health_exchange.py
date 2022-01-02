@@ -23,7 +23,7 @@ heath_noexchage=''
 
 ##############默认保留10W积分，18W积分才兑换20京豆############
 ###想保留其他分数，ENV设置： export least='xxx'
-least = '280000'
+least = '480000'
 
 # 20京豆id为4
 id = '4'
@@ -312,7 +312,7 @@ class msg(object):
         if a == 0:
             a += 1
         try:
-            url = 'https://raw.githubusercontent.com/acoolbook/lxkwz/main/sendNotify.py'
+            url = 'https://raw.githubusercontent.com/acoolbook/scripts/main/sendNotify.py'
             response = requests.get(url)
             if 'curtinlv' in response.text:
                 with open('sendNotify.py', "w+", encoding="utf-8") as f:

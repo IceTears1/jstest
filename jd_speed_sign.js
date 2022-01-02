@@ -112,6 +112,7 @@ async function signInit() {
       "activityId": "8a8fabf3cccb417f8e691b6774938bc2",
       "kernelPlatform": "RN",
       "inviterId":"UKVLQ5T1W+wrCAvavcYZzQ=="
+
     }), async (err, resp, data) => {
       try {
         if (err) {

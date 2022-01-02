@@ -9,7 +9,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message = '';
-let exjxbeans = true;
+let exjxbeans = false;
 if (process.env.exjxbeans) {
     exjxbeans = process.env.exjxbeans;
 }
@@ -70,7 +70,7 @@ async function domain() {
     }
     if (exjxbeans) {
         if (expirebeans) {
-            //为防止异常故障，每次最多兑换600喜豆！
+            //为防止异常故障，每次最多兑换1000喜豆！
             if (expirebeans < maxexchange) {
                 console.log(`您有${expirebeans}个京豆将在7天内过期,去执行兑换`);
                 let jxbeans = await exchangejxbeans(expirebeans);
