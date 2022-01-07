@@ -1,7 +1,7 @@
 /*
 [task_local]
 #把智能生活带给TA
-5 7,21 * * * jd_bzlshdgt.js, tag=把智能生活带给TA, enabled=true
+10 7 * * * jd_bzlshdgt.js, tag=把智能生活带给TA, enabled=true
  */
 const $ = new Env('把智能生活带给TA');
 const notify = $.isNode() ? require('./sendNotify') : '';
