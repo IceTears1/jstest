@@ -82,7 +82,7 @@ const turnTableId = [
       if($.isNode()) $.msg($.name, msg);
     }
   }
-  await showMsg();
+  //await showMsg();
 })()
   .catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
