@@ -1,6 +1,7 @@
-# 在这里输入青龙面板用户名密码，如果不填写，就自动从auth.json中读取
-username = ""
-password = ""
+"""
+new Env('新版wskey转换');
+cron 25,55 * * * *
+"""
 
 import requests
 import time
@@ -10,6 +11,12 @@ import re
 requests.packages.urllib3.disable_warnings()
 
 token = ""
+username = ""
+password = ""
+
+# 自定义青龙端口：
+port = ""
+
 if username == "" or password == "":
     f = open("/ql/config/auth.json")
     auth = f.read()
@@ -25,21 +32,21 @@ def gettimestamp():
 
 
 def login(username, password):
-    url = "http://127.0.0.1:5700/api/login?t=%s" % gettimestamp()
+    url = qlurl + "/api/login?t=%s" % gettimestamp()
     data = {"username": username, "password": password}
     r = s.post(url, data)
     s.headers.update({"authorization": "Bearer " + json.loads(r.text)["data"]["token"]})
 
 
 def getitem(key):
-    url = "http://127.0.0.1:5700/api/envs?searchValue=%s&t=%s" % (key, gettimestamp())
+    url = qlurl + "/api/envs?searchValue=%s&t=%s" % (key, gettimestamp())
     r = s.get(url)
     item = json.loads(r.text)["data"]
     return item
 
 
 def getckitem(key):
-    url = "http://127.0.0.1:5700/api/envs?searchValue=JD_COOKIE&t=%s" % gettimestamp()
+    url = qlurl + "/api/envs?searchValue=JD_COOKIE&t=%s" % gettimestamp()
     r = s.get(url)
     for i in json.loads(r.text)["data"]:
         if key in i["value"]:
@@ -47,76 +54,63 @@ def getckitem(key):
     return []
 
 
+def genToken(wsCookie):
+    url = "https://api.jds.codes/gentoken"
+    body = {"url": "https://home.m.jd.com/myJd/newhome.action"}
+    headers = {
+        "user-agent": "Mozilla/5.0 (Windows NT 6.3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36",
+        "Content-Type":"application/json"
+    }
+    r = requests.post(url, headers=headers, data=json.dumps(body))
+    r = json.loads(r.text)
+    data=r["data"]["sign"].split("&")
+    jduuid = data[1]
+    clientVersion = data[3]
+    client = data[2]
+    sign = data[4] + "&" + data[5] + "&" + data[6]
+    url = "https://api.m.jd.com/client.action?functionId=genToken&%s&%s&%s&%s" % (clientVersion, client, jduuid, sign)
+    headers = {
+        "Host": 'api.m.jd.com',
+        "Cookie": wsCookie,
+        "accept": '*/*',
+        "referer": '',
+        'user-agent': "okhttp/3.12.1;jdmall;apple;version/9.4.0;build/88830;screen/1440x3007;os/11;network/wifi;" + str(
+            uuid.uuid4()),
+        'accept-language': 'zh-Hans-CN;q=1, en-CN;q=0.9',
+        'content-type': 'application/x-www-form-urlencoded;',
+    }
+    r = requests.post(url, headers=headers, data="body=%7B%22to%22%3A%20%22https%3A//home.m.jd.com/myJd/newhome.action%22%2C%20%22action%22%3A%20%22to%22%7D")
+    r = json.loads(r.text)["tokenKey"]
+    return r
+
+
+def getJDCookie(tokenKey):
+    url = "https://un.m.jd.com/cgi-bin/app/appjmp?tokenKey=%s&to=https://home.m.jd.com/myJd/newhome.action" % tokenKey
+    headers = {
+        "Connection": 'Keep-Alive',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        "Accept": 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-cn',
+        "User-Agent": 'okhttp/3.12.1;jdmall;apple;version/9.4.0;build/88830;screen/1440x3007;os/11;network/wifi;' + str(
+            uuid.uuid4())
+    }
+    r = requests.get(url, headers=headers, allow_redirects=False,)
+    pt_pin = re.findall(r"pt_pin=(.*?);", str(r.headers))[0]
+    pt_key = re.findall(r"pt_key=(.*?);", str(r.headers))[0]
+    return "pt_key=" + pt_key + ";pt_pin=" + pt_pin + ";"
+
+
 def wstopt(wskey):
     try:
-        url = "http://cdn.xia.me/getck"
-        headers = {
-            "Host": "signer.nz.lu",
-            "user-agent": "Mozilla/5.0 (Windows NT 6.3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
-        }
-        data = {"wskey": wskey, "key": "xb3z4z2m3n847"}
-        r = requests.post(url, headers=headers, data=json.dumps(data), verify=False)
-        return r.text
+        token = genToken(wskey)
+        r = getJDCookie(token)
+        return r
     except:
         return "error"
 
-def getToken(wskey):
-    headers = {
-        'cookie': wskey,
-        'User-Agent': 'okhttp/3.12.1;jdmall;android;version/10.1.2;build/89743;screen/1440x3007;os/11;network/wifi;',
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'charset': 'UTF-8',
-        'accept-encoding': 'br,gzip,deflate'
-    }
-    params = {
-        'functionId': 'genToken',
-        'clientVersion': '10.1.2',
-        'client': 'android',
-        'lang': 'zh_CN',
-        'uuid': '09d53a5653402b1f',
-        'st': '1630392618706',
-        'sign': '53904736db53eebc01ca70036e7187d6',
-        'sv': '120'
-    }
-    # url = 'https://api.m.jd.com/client.action?functionId=genToken&clientVersion=10.1.2&client=android&lang=zh_CN&uuid=09d53a5653402b1f&st=1630392618706&sign=53904736db53eebc01ca70036e7187d6&sv=120'
-    url = 'https://api.m.jd.com/client.action'
-    data = 'body=%7B%22action%22%3A%22to%22%2C%22to%22%3A%22https%253A%252F%252Fplogin.m.jd.com%252Fcgi-bin%252Fm%252Fthirdapp_auth_page%253Ftoken%253DAAEAIEijIw6wxF2s3bNKF0bmGsI8xfw6hkQT6Ui2QVP7z1Xg%2526client_type%253Dandroid%2526appid%253D879%2526appup_type%253D1%22%7D&'
-    res = requests.post(url=url, params=params, headers=headers, data=data, verify=False)
-    # print(res.text)
-    res_json = json.loads(res.text)
-    totokenKey = res_json['tokenKey']
-    # print("Token:", totokenKey)
-    return appjmp(totokenKey)
-
-
-def appjmp(token):
-    headers = {
-        'User-Agent': 'jdapp;android;10.1.2;11;0393465333165363-5333430323261366;network/wifi;model/M2102K1C;addressid/938507929;aid/09d53a5653402b1f;oaid/2acbcab5bb3f0e68;osVer/30;appBuild/89743;partner/lc023;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 11; M2102K1C Build/RKQ1.201112.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045714 Mobile Safari/537.36',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
-    }
-    params = {
-        'tokenKey': token,
-        'to': 'https://plogin.m.jd.com/cgi-bin/m/thirdapp_auth_page?token=AAEAIEijIw6wxF2s3bNKF0bmGsI8xfw6hkQT6Ui2QVP7z1Xg',
-        'client_type': 'android',
-        'appid': 879,
-        'appup_type': 1,
-    }
-    # url = 'https://un.m.jd.com/cgi-bin/app/appjmp?tokenKey={0}&to=https%3A%2F%2Fplogin.m.jd.com%2Fcgi-bin%2Fm%2Fthirdapp_auth_page%3Ftoken%3DAAEAIEijIw6wxF2s3bNKF0bmGsI8xfw6hkQT6Ui2QVP7z1Xg%26client_type%3Dandroid%26appid%3D879%26appup_type%3D1'.format(token)
-    url = 'https://un.m.jd.com/cgi-bin/app/appjmp'
-    # print(url)
-    # res = requests.get(url=url, headers=headers, verify=False, allow_redirects=False)
-    res = requests.get(url=url, headers=headers, params=params, verify=False, allow_redirects=False)
-    # print(res.headers)
-    # print(res.status_code)
-    res_set = res.cookies.get_dict()
-    pt_key = 'pt_key=' + res_set['pt_key']
-    pt_pin = 'pt_pin=' + res_set['pt_pin']
-    ck = str(pt_key) + ';' + str(pt_pin) + ';'
-    return ck
-
 
 def update(text, qlid):
-    url = "http://127.0.0.1:5700/api/envs?t=%s" % gettimestamp()
+    url = qlurl + "/api/envs?t=%s" % gettimestamp()
     s.headers.update({"Content-Type": "application/json;charset=UTF-8"})
     data = {
         "name": "JD_COOKIE",
@@ -131,7 +125,7 @@ def update(text, qlid):
 
 
 def insert(text):
-    url = "http://127.0.0.1:5700/api/envs?t=%s" % gettimestamp()
+    url = qlurl + "/api/envs?t=%s" % gettimestamp()
     s.headers.update({"Content-Type": "application/json;charset=UTF-8"})
     data = []
     data_json = {
@@ -152,33 +146,51 @@ if __name__ == '__main__':
         login(username, password)
     else:
         s.headers.update({"authorization": "Bearer " + token})
+    if port == "":
+        try:
+            r = requests.get("http://127.0.0.1:5700/login")
+            qlurl = "http://127.0.0.1:5700"
+        except:
+            qlurl = "http://127.0.0.1:5600"
+    else:
+        qlurl = "http://127.0.0.1:" + port
     wskeys = getitem("JD_WSCK")
     count = 1
     for i in wskeys:
         if i["status"] == 0:
-            ptck = getToken(i["value"])
-            try:
-                wspin = re.findall(r"pin=(.*?);", i["value"])[0]
-                if ptck == "wskey错误":
-                    print("第%s个wskey可能过期了,pin为%s" % (count, wspin))
-                elif ptck == "未知错误" or ptck == "error":
-                    print("第%s个wskey发生了未知错误,pin为%s" % (count, wspin))
+            r = wstopt(i["value"])
+            if r == "error":
+                print("api请求错误")
+            else:
+                ptck = r.text
+                if r.status_code == 429:
+                    print("您的ip请求api过于频繁，已被流控")
+                    exit()
                 else:
-                    ptpin = re.findall(r"pt_pin=(.*?);", ptck)[0]
-                    item = getckitem("pt_pin=" + ptpin)
-                    if item != []:
-                        qlid = item["_id"]
-                        if update(ptck, qlid):
-                            print("第%s个wskey更新成功,pin为%s" % (count, wspin))
+                    try:
+                        wspin = re.findall(r"pin=(.*?);", i["value"])[0]
+                        if ptck == "wskey错误":
+                            print("第%s个wskey可能过期了,pin为%s" % (count, wspin))
+                        elif ptck == "未知错误" or ptck == "error":
+                            print("第%s个wskey发生了未知错误,pin为%s" % (count, wspin))
+                        elif "</html>" in ptck:
+                            print("你的ip被cloudflare拦截")
                         else:
-                            print("第%s个wskey更新失败,pin为%s" % (count, wspin))
-                    else:
-                        if insert(ptck):
-                            print("第%s个wskey添加成功" % count)
-                        else:
-                            print("第%s个wskey添加失败" % count)
-            except:
-                print("第%s个wskey出现异常错误" % count)
-            count += 1
+                            ptpin = re.findall(r"pt_pin=(.*?);", ptck)[0]
+                            item = getckitem("pt_pin=" + ptpin)
+                            if item != []:
+                                qlid = item["_id"]
+                                if update(ptck, qlid):
+                                    print("第%s个wskey更新成功,pin为%s" % (count, wspin))
+                                else:
+                                    print("第%s个wskey更新失败,pin为%s" % (count, wspin))
+                            else:
+                                if insert(ptck):
+                                    print("第%s个wskey添加成功" % count)
+                                else:
+                                    print("第%s个wskey添加失败" % count)
+                    except:
+                        print("第%s个wskey出现异常错误" % count)
+                    count += 1
         else:
             print("有一个wskey被禁用了")
