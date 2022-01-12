@@ -25,8 +25,8 @@ let message = '', allMessage = '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-let appIdArr = ['1FFVQyqw', "1GVFUx6g", "1E1xZy6s", "1GVJWyqg","1GFRRyqo"];
-let appNameArr = ['1111点心动', "JOY年尾之旅","PLUS生活特权", "虎娃迎福","过新潮年"];
+let appIdArr = ["1GVFUx6g", "1E1xZy6s", "1GVJWyqg","1GFRRyqo"];
+let appNameArr = ["JOY年尾之旅","PLUS生活特权", "虎娃迎福","过新潮年"];
 let appId, appName;
 $.shareCode = [{
     code: 'T018v_VzQRob8VLRJxKb1ADjRXlq-7zx55awQ',
@@ -121,7 +121,18 @@ if ($.isNode()) {
     if ($.isNode()) await notify.sendNotify($.name, allMessage);
     $.msg($.name, '', allMessage)
   }
-  
+  let res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/wish.json')
+  if (!res) {
+    $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/wish.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+    await $.wait(1000)
+    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/wish.json')
+  }
+  let res2 = await getAuthorShareCode('https://raw.githubusercontent.com/zero205/updateTeam/main/shareCodes/wish.json')
+  if (!res2) {
+    await $.wait(1000)
+    res2 = await getAuthorShareCode('https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/wish.json')
+  }
+  $.shareCode = [...$.shareCode, ...(res || []), ...(res2 || [])]
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
