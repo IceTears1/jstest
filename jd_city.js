@@ -59,14 +59,11 @@ if ($.isNode()) {
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 const author_codes = [''].sort(() => 0.5 - Math.random())
 var self_code = [
-
-  '-ryUXa1fYWFBNRrEStLG90RDeqMqPgFC',
-  '-ryUBtdxNQYpPVe2Io24u_Vr5IqAq9Q',
-  'ou7yXKoFZGRGL17EBpfUh3c',
-  'oeD7WKgOYmJFZBqrCpeJ9ytp3ClT',
-  '-ryUL_h4PB4xFmydMJG0u3AQDpfB9W4',
-  'oeDyWKkOb21DYherCpeJ9wsHT9YD',
-  '-ryUXq0ENGVDYxrAGI7BoSbes0464MM5',]
+  'puz5W6wPYWNGDE-IBtuJu9rQfw',
+  'ryUKOhwOyU3PHO5EYG3u3oOomWbbT0',
+  'ryUPsRqIRsgMGm3AryAu-aLtRmrSCU',
+  'pOH4Wq4Kb2JADE-IBtuJu2NaIA','dWdIjACUsPbVtr5cS9nGu42tlnfIGrA'
+]
 var self_define = false
 let pool = []
 !(async () => {
