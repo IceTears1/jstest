@@ -32,7 +32,7 @@ cron:30 3 13-20/3 1 *
 ============Quantumultx===============
 [task_local]
 #1.13~1.20 瓜分千万京豆 免费抽大奖
-30 3 13-20/3 1 * https://raw.githubusercontent.com/smiek2121/scripts/master/gua_opencard102.js, tag=1.13~1.20 瓜分千万京豆 免费抽大奖, enabled=true
+30 3,14 13-20/3 1 * https://raw.githubusercontent.com/smiek2121/scripts/master/gua_opencard102.js, tag=1.13~1.20 瓜分千万京豆 免费抽大奖, enabled=true
 
 */
 let guaopencard_addSku = "true"
@@ -95,7 +95,7 @@ let activityCookie =''
     return;
   }
   $.activityId = "dz220107100001616201shop"
-  $.shareUuid = "6ab5d2a7da52437eaa53dd541250e21c"
+  $.shareUuid = "4d1cb2a6e18640d4a75c2fa88170f766"
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/shop/league/activity?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
 
   for (let i = 0; i < cookiesArr.length; i++) {

@@ -36,7 +36,7 @@ cron:30 9 13-18/3 1 *
 ============Quantumultx===============
 [task_local]
 #1.13~1.18 联合开卡-103
-30 3 13-18/3 1 * https://raw.githubusercontent.com/smiek2121/scripts/master/gua_opencard103.js, tag=1.13~1.18 联合开卡-103, enabled=true
+30 3,14 13-18/3 1 * https://raw.githubusercontent.com/smiek2121/scripts/master/gua_opencard103.js, tag=1.13~1.18 联合开卡-103, enabled=true
 
 */
 let guaopencard_addSku = "true"
