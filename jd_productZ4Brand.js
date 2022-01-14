@@ -1,7 +1,7 @@
 /**
  特务Z
  脚本没有自动开卡，会尝试领取开卡奖励
- cron 23 8,9 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_productZ4Brand.js
+ cron 3 8,9 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_productZ4Brand.js
  一天要跑2次
  */
 const $ = new Env('特务Z');
@@ -146,15 +146,15 @@ async function doTask(){
                 console.log(`任务：${$.oneTask.assignmentName},信息异常`);
             }
             //if ($.oneTask.assignmentName.indexOf('首页下拉') !== -1) {
-                for (let j = 0; j < signList.length; j++) {
-                    if (signList[j].status === 1) {
-                        console.log(`任务：${$.oneTask.assignmentName},去执行,请稍稍`);
-                        let itemId = signList[j].itemId;
-                        $.runInfo = {'itemId':itemId};
-                        await takeRequest('superBrandDoTask');
-                        await $.wait(3000);
-                    }
+            for (let j = 0; j < signList.length; j++) {
+                if (signList[j].status === 1) {
+                    console.log(`任务：${$.oneTask.assignmentName},去执行,请稍稍`);
+                    let itemId = signList[j].itemId;
+                    $.runInfo = {'itemId':itemId};
+                    await takeRequest('superBrandDoTask');
+                    await $.wait(3000);
                 }
+            }
             //}
         }
     }

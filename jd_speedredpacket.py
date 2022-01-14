@@ -1,12 +1,4 @@
 # -*- coding:utf-8 -*-
-
-#Source: https://github.com/Hyper-Beast
-
-"""
-cron: 5 20,21 * * *
-new Env('京东膨胀红包通知');
-"""
-
 import requests
 import json
 import time
@@ -16,6 +8,12 @@ import sys
 import random
 import string
 import urllib
+
+
+t=str(round(time.time() * 1000))
+choujiangurl='https://api.m.jd.com/?functionId=spring_reward_receive&body={"inviter":"","linkId":"7ya6o83WSbNhrbYJqsMfFA"}&_t='+t+'&appid=activities_platform'
+tixianxinxiurl='https://api.m.jd.com/?functionId=spring_reward_list&body={"pageNum":1,"pageSize":10,"linkId":"7ya6o83WSbNhrbYJqsMfFA","inviter":""}&_t='+t+'&appid=activities_platform'
+tixianurl='https://api.m.jd.com/'
 
 
 #以下部分参考Curtin的脚本：https://github.com/curtinlv/JD-Script
@@ -53,12 +51,11 @@ def load_send():
             from sendNotify import send
         except:
             send=False
-            print("加载通知服务失败~")
+            printf("加载通知服务失败~\n")
     else:
         send=False
-        print("加载通知服务失败~")
+        printf("加载通知服务失败~\n")
 load_send()
-
     
 def get_remarkinfo():
     url='http://127.0.0.1:5600/api/envs'
@@ -83,36 +80,74 @@ def get_remarkinfo():
     except:
         printf('读取auth.json文件出错，跳过获取备注\n')
 
-def getinfo(ck):
-    global sendnotifycation
-    global userAwardExpand
-    sendnotifycation=False
-    userAwardExpand=0
-    url='https://api.m.jd.com/client.action?functionId=tigernian_pk_getAmountForecast'
+def choujiang(ck):
     headers={
-        'content-type':'application/x-www-form-urlencoded',
-        'accept':'application/json, text/plain, */*',
-        'accept-language':'zh-cn',
-        'accept-encoding':'gzip, deflate, br',
-        'origin':'https://wbbny.m.jd.com',
-        'user-agent':UserAgent,
-        'referer':'https://wbbny.m.jd.com/',
-        'content-length':'80',
-        'request-from':'native',
-        'cookie':ck
+        'Accept':'application/json, text/plain, */*',
+        'Accept-Encoding':'gzip, deflate, br',
+        'Accept-Language':'zh-CN,zh-Hans;q=0.9',
+        'Connection':'keep-alive',
+        'Cookie':ck,
+        'Host':'api.m.jd.com',
+        'Origin':'https://prodev.m.jd.com',
+        'Referer':'https://prodev.m.jd.com/',
+        'User-Agent':UserAgent
         }
-    data='functionId=tigernian_pk_getAmountForecast&body={}&client=wh5&clientVersion=1.0.0'
-    response=requests.post(url=url,headers=headers,data=data)
+
     try:
-        printf('可膨胀金额：'+json.loads(response.text)['data']['result']['userAwardExpand']+'\n\n')
-        if(float(json.loads(response.text)['data']['result']['userAwardExpand'])>=10):
-            sendnotifycation=True
-            userAwardExpand=float(json.loads(response.text)['data']['result']['userAwardExpand'])
+        response=requests.get(url=choujiangurl,headers=headers)
+        amount=json.loads(response.text)['data']['received']['amount']
+        useLimit=json.loads(response.text)['data']['received']['useLimit']
+        if useLimit!='':
+            printf(f'获得{useLimit}-{amount}的优惠券\n')
+        else:
+            printf(f'获得{amount}现金')
     except:
-        printf('获取失败，黑号或者没有参加5人以上的队伍\n\n')
+        printf('抽奖失败，可能是次数用完或者黑号了\n')
+def tixianxinxi(ck):
+    global tixianliebiao
+    tixianliebiao=[]
+    headers={
+        'Accept':'application/json, text/plain, */*',
+        'Accept-Encoding':'gzip, deflate, br',
+        'Accept-Language':'zh-CN,zh-Hans;q=0.9',
+        'Connection':'keep-alive',
+        'Cookie':ck,
+        'Host':'api.m.jd.com',
+        'Origin':'https://prodev.m.jd.com',
+        'Referer':'https://prodev.m.jd.com/',
+        'User-Agent':UserAgent
+        }
+    try:
+        response=requests.get(url=tixianxinxiurl,headers=headers)
+        for i in range(len(json.loads(response.text)['data']['items'])):
+            if not json.loads(response.text)['data']['items'][i]['couponKind'] and int(json.loads(response.text)['data']['items'][i]['state'])==3 and int(json.loads(response.text)['data']['items'][i]['prizeType']==4):
+                tixianliebiao.append(str(json.loads(response.text)['data']['items'][i]['id'])+'@'+str(json.loads(response.text)['data']['items'][i]['poolBaseId'])+'@'+str(json.loads(response.text)['data']['items'][i]['prizeGroupId'])+'@'+str(json.loads(response.text)['data']['items'][i]['prizeBaseId']))
+    except:
+        printf('获取提现列表出错，可能是黑号了\n')
+def tixian(ck,couponId,poolBaseId,prizeGroupId,prizeBaseId):
+    headers={
+        'Host':'api.m.jd.com',
+        'Content-Type':'application/x-www-form-urlencoded',
+        'Origin':'https://prodev.m.jd.com',
+        'Accept-Encoding':'gzip, deflate, br',
+        'Cookie':ck,
+        'Connection':'keep-alive',
+        'Accept':'application/json, text/plain, */*',
+        'User-Agent':UserAgent,
+        'Referer':'https://prodev.m.jd.com/',
+        'Content-Length':'277',
+        'Accept-Language':'zh-CN,zh-Hans;q=0.9'
+        }
+    data='functionId=apCashWithDraw&body={"businessSource":"SPRING_FESTIVAL_RED_ENVELOPE","base":{"id":%s,"business":null,"poolBaseId":%s,"prizeGroupId":%s,"prizeBaseId":%s,"prizeType":4},"linkId":"7ya6o83WSbNhrbYJqsMfFA","inviter":""}&_t=%s&appid=activities_platform'%(couponId,poolBaseId,prizeGroupId,prizeBaseId,t)
+    try:
+        response=requests.post(url=tixianurl,headers=headers,data=data)
+        printf(response.text+'\n')
+    except:
+        printf('提现失败')
 if __name__ == '__main__':
     remarkinfos={}
     get_remarkinfo()#获取备注
+    UserAgent=randomuserAgent()
     try:
         cks = os.environ["JD_COOKIE"].split("&")#获取cookie
     except:
@@ -120,7 +155,6 @@ if __name__ == '__main__':
         cks = re.findall(r'Cookie[0-9]*="(pt_key=.*?;pt_pin=.*?;)"', f.read())
         f.close()
     for ck in cks:
-        UserAgent=randomuserAgent()
         ptpin = re.findall(r"pt_pin=(.*?);", ck)[0]
         try:
             if remarkinfos[ptpin]!='':
@@ -129,9 +163,11 @@ if __name__ == '__main__':
                 printf("--无备注账号:" + urllib.parse.unquote(ptpin) + "--")
         except:
             printf("--账号:" + urllib.parse.unquote(ptpin) + "--")
-        getinfo(ck)
-        if sendnotifycation:
-            try:
-                send(remarkinfos[ptpin]+f'的膨胀红包金额为{userAwardExpand}元','1.进入京东app\n2.点击首页右下角悬浮图标(或搜索栏搜索-全民炸年兽)\n3.点击去组队赚红包右上角即可看到!')
-            except:
-                send(ptpin+f'的膨胀红包金额为{userAwardExpand}元','1.进入京东app\n2.点击首页右下角悬浮图标(或搜索栏搜索-全民炸年兽)\n3.点击去组队赚红包右上角即可看到!')
+        for i in range(3):
+            choujiang(ck)
+        tixianxinxi(ck)
+        if tixianliebiao:
+            for i in range(len(tixianliebiao)):
+                tixian(ck,tixianliebiao[i].split('@')[0],tixianliebiao[i].split('@')[1],tixianliebiao[i].split('@')[2],tixianliebiao[i].split('@')[3])
+        printf('\n\n\n')
+        time.sleep(30)
