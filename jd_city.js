@@ -1,6 +1,6 @@
 /*
 城城领现金
-<<<<<<< HEAD
+
 
 
 首个帐号助力作者池子在最后
@@ -9,7 +9,7 @@
 
 活动时间：2021-05-25到2021-06-03
 更新时间：2021-05-24 09:55
->>>>>>> dbf23f1edd3d2c6ec743260d96c90f7d6bf91b05
+
 脚本兼容: QuantumultX, Surge,Loon, JSBox, Node.js
 =================================Quantumultx=========================
 [task_local]
@@ -23,21 +23,6 @@ cron "0 0-23/1 * * *" script-path=https://jdsharedresourcescdn.azureedge.net/jdr
 ===================================Surge================================
 城城领现金 = type=cron,cronexp="0 0-23/1 * * *",wake-system=1,timeout=3600,script-path=https://jdsharedresourcescdn.azureedge.net/jdresource/jd_city.js
 
-====================================小火箭=============================
-城城领现金 = type=cron,script-path=https://jdsharedresourcescdn.azureedge.net/jdresource/jd_city.js, cronexpr="0 0-23/1 * * *", timeout=3600, enable=true
-=======
-0 0-23/5 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_city.js, tag=城城领现金, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
-
-=================================Loon===================================
-[Script]
-cron "0 0-23/5 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_city.js,tag=城城领现金
-
-===================================Surge================================
-城城领现金 = type=cron,cronexp="0 0-23/5 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_city.js
-
-====================================小火箭=============================
-城城领现金 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_city.js, cronexpr="0 0-23/5 * * *", timeout=3600, enable=true
->>>>>>> dbf23f1edd3d2c6ec743260d96c90f7d6bf91b05
  */
 const $ = new Env('城城领现金');
 const notify = $.isNode() ? require('./sendNotify') : '';
