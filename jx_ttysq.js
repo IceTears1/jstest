@@ -17,7 +17,76 @@ let cookiesArr = [],
     cookie = '',
     secretp = '',
     joyToken = "";
-$.shareCoseList = [];
+$.shareCoseList = [{
+    user: '18014246678_p',
+    code: 'dc8a0b77',
+    redId: 5,
+    beHelp: 0,
+    helpId: 3142
+  },
+  {
+    user: 'jd_FdDjJBENiJzA',
+    code: 'c3103cfc',
+    redId: 5,
+    beHelp: 0,
+    helpId: 3142
+  },
+  {
+    user: '18915299015_p',
+    code: '74a80deb',
+    redId: 5,
+    beHelp: 0,
+    helpId: 3142
+  },
+  {
+    user: 'jd_41c752f800930',
+    code: '8748e2c7',
+    redId: 5,
+    beHelp: 0,
+    helpId: 3142
+  },
+  {
+    user: 'jd_oKMcRZnuBXfM',
+    code: 'f5ccfdb3',
+    redId: 4,
+    beHelp: 0,
+    helpId: 3142
+  },
+  {
+    user: '269569205',
+    code: '19582cb9',
+    redId: 4,
+    beHelp: 0,
+    helpId: 3142
+  },
+  {
+    user: 'jd_718b10084be4f',
+    code: 'a052b91e',
+    redId: 4,
+    beHelp: 0,
+    helpId: 3142
+  },
+  {
+    user: 'jd_6f4e83ff6ee5a',
+    code: '28524f57',
+    redId: 4,
+    beHelp: 0,
+    helpId: 3142
+  },
+  {
+    user: 'jd_6ead2d080d1c1',
+    code: '28524f57',
+    redId: 4,
+    beHelp: 0,
+    helpId: 3142
+  },
+  {
+    user: 'jd_6a5ad4aa036da',
+    code: '28524f57',
+    redId: 4,
+    beHelp: 0,
+    helpId: 3142
+  }];
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
         cookiesArr.push(jdCookieNode[item])
