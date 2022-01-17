@@ -1,24 +1,17 @@
 /*
 萌虎摇摇乐
 https://yearfestival.jd.com
-优先内部互助,剩余次数助力作者和助力池
-0 0,12,18 * * * jd_tiger.js
+优先内部互助,剩余次数助力作者
+cron 8 0,18 * * * jd_tiger_help.js
 转义自HW大佬
-const $ = new Env('萌虎摇摇乐');
+const $ = new Env('萌虎摇摇乐助力');
 */
-const name = '萌虎摇摇乐'
+const name = '萌虎摇摇乐助力'
 let UA = process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)
 const got = require('got')
 const notify = require('./sendNotify')
 const jdCookieNode = require('./jdCookie.js')
-let shareCodesSelf = ['e589f059b5f34445a7bd7ea67cf6cb01',
-  'bf06adb6e5c74e7898d3bc50deea528c',
-  'd07b28c006774da8a1432659832c29ba',
-  '6bbc10881a114baca2f0a6a42fe864e1',
-  '7e216799c0d74a5fb85cd82527cd068b',
-  'a33048b955e74a67a3c1d312c19e3e1e',
-  'eab99a885ab7448eaebe7829d20f635d',
-  '868900d439b44333b5cf7cfd2294a917',]
+let shareCodesSelf = []
 let cookiesArr = [],
     cookie
 Object.keys(jdCookieNode).forEach((item) => {
@@ -37,17 +30,17 @@ Object.keys(jdCookieNode).forEach((item) => {
         try {
             let res = await api({ "apiMapping": "/api/task/support/getShareId" })
             console.log('助力码：', res.data)
-            await wait(1000)
+            //await wait(1000)
             shareCodesSelf.push(res.data)
             res = await api({ "apiMapping": "/api/task/support/list" })
             console.log('收到助力：', res.data.supportedNum)
-            await wait(1000)
-
+            //await wait(1000)
+			console.log(shareCodesSelf)
             res = await api({ "apiMapping": "/api/task/brand/tabs" })
             await wait(1000)
             for (let tab of res.data) {
                 let taskGroupId = tab.taskGroupId
-                res = await api({ "taskGroupId": taskGroupId, "apiMapping": "/api/task/brand/getTaskList" })
+                // res = await api({ "taskGroupId": taskGroupId, "apiMapping": "/api/task/brand/getTaskList" })
                 for (let t of res.data) {
                     for (let i = t.finishNum; i < t.totalNum; i++) {
                         res = await getTaskDetail(taskGroupId)
@@ -59,7 +52,7 @@ Object.keys(jdCookieNode).forEach((item) => {
                             if (res.data.taskType === 'BROWSE_TASK') {
                                 res = await api({ "taskGroupId": taskGroupId, "taskId": res.data.taskId, "taskItemId": res.data.taskItemId, "timestamp": res.data.timeStamp, "apiMapping": "/api/task/brand/getReward" })
                                 console.log('任务完成，积分：', res.data.integral, '，京豆：', res.data.jbean)
-                                await wait(1000)
+                                //await wait(1000)
                             } else if (res.data.taskType === 'FOLLOW_SHOP_TASK') {
                                 // console.log('任务完成，获得：', res.data.rewardInfoVo?.integral, res.data.rewardInfoVo?.jbean)
                                 console.log(res.data.rewardInfoVo)
@@ -73,11 +66,10 @@ Object.keys(jdCookieNode).forEach((item) => {
         }
     }
     let authorCode = []
-    
+ 
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i]
         const userName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
-        //const pool = await getShareCodePool('tiger', 5)
         // if (shareCodesHW.length === 0) {
         //     shareCodesHW = await getshareCodeHW('tiger')
         // }
@@ -127,18 +119,18 @@ Object.keys(jdCookieNode).forEach((item) => {
         }
     }
 })()
-.catch((e) => {
-    console.error(`${name} error: ${e.stack}`)
-})
-.finally(() => {
-    console.log(`${name} finished}`)
-})
+    .catch((e) => {
+        console.error(`${name} error: ${e.stack}`)
+    })
+    .finally(() => {
+        console.log(`${name} finished`)
+    })
 
 async function getAuthorShareCode(url) {
     try {
         const options = {
             url,
-            "timeout": 10000,
+            "timeout": 1000,
             headers: {
                 "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
             }
@@ -192,8 +184,8 @@ async function getShareCodePool(key, num) {
     let shareCode = []
     for (let i = 0; i < 2; i++) {
         try {
-            const { body } = await got(`https://api.jdsharecode.xyz/api/${key}/${num}`)
-            console.debug('getShareCodePool:', body)
+            const { body } = await got(``)
+            //console.debug('getShareCodePool:', body)
             shareCode = JSON.parse(body).data || []
             console.log(`随机获取${num}个${key}成功：${JSON.stringify(shareCode)}`)
             if (shareCode.length !== 0) {
@@ -201,8 +193,8 @@ async function getShareCodePool(key, num) {
             }
         } catch (e) {
             // console.warn(e.stack)
-            console.log("getShareCodePool Error, Retry...")
-            await wait(2000 + Math.floor((Math.random() * 4000)))
+            //console.log("getShareCodePool Error, Retry...")
+            // await wait(2000 + Math.floor((Math.random() * 4000)))
         }
     }
     return shareCode
