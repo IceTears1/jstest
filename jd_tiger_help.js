@@ -11,7 +11,14 @@ let UA = process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USE
 const got = require('got')
 const notify = require('./sendNotify')
 const jdCookieNode = require('./jdCookie.js')
-let shareCodesSelf = []
+let shareCodesSelf = ['be9b60232db841219bdb1fd6367ccb13',
+  'b7ba6ed6b0cd47f3a9fe8b44a7bcc0de',
+  '7989e0f423524ba79d58847c481c8be8',
+  'da3d86088ae247d1b1082919b802c886',
+  '27c76425a7a14254bc7bebc1ebdceaf9',
+  'a162f7e3480b4ae9b3d5cc5c4f799e71',
+  '6090e1f259c04ef48ba096362150e63e',
+  '6532e6a305264819ab56e4b17072dc9d',]
 let cookiesArr = [],
     cookie
 Object.keys(jdCookieNode).forEach((item) => {
