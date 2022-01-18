@@ -1,6 +1,6 @@
 /**
 京东超市年货日历
-36 4,16 * * * jd_year.js
+cron 36 2,13 * * * year.js
 TG频道：https://t.me/sheeplost
 */
 const $ = new Env("京东超市年货日历");
@@ -139,12 +139,11 @@ async function main() {
                             code: $.code,
                             user: $.UserName
                         })
-								console.log($.shareCodes)
                     }
                 }
-                if ($.index === -1) {
+                if ($.index === 1) {
                     console.log('助力作者')
-                    await taskPost('invite_friend', `inviter_id=61e58b5c20ade60129&uuid=${$.uuid}&source=shareFriend`);
+                    await taskPost('invite_friend', `inviter_id=&uuid=${$.uuid}&source=shareFriend`);
                 }
             }
             await task('get_calendar_detail', `uuid=${$.uuid}&source=shareFriend`);
