@@ -29,7 +29,12 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //自动抽奖 ，环境变量  JD_CITY_EXCHANGE
-let exchangeFlag = $.getdata('jdJxdExchange') || !!0;//是否开启自动抽奖，建议活动快结束开启，默认关闭
+let exchangeFlag = $.getdata('JD_CITY_EXCHANGE') || "true";//是否开启自动抽奖，建议活动快结束开启，默认关闭
+exchangeFlag = $.isNode() ? (process.env.JD_CITY_EXCHANGE ? process.env.JD_CITY_EXCHANGE : `${exchangeFlag}`) : ($.getdata('JD_CITY_EXCHANGE') ? $.getdata('JD_CITY_EXCHANGE') : `${exchangeFlag}`);
+// 优先助力[助力池]
+let helpShareFlag = "false";//是否优先助力[助力池]，默认是
+helpShareFlag = $.isNode() ? (process.env.JD_CITY_HELPSHARE ? process.env.JD_CITY_HELPSHARE : `${helpShareFlag}`) : ($.getdata('JD_CITY_HELPSHARE') ? $.getdata('JD_CITY_HELPSHARE') : `${helpShareFlag}`);
+
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 
@@ -43,50 +48,80 @@ if ($.isNode()) {
      cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
+
 const author_codes = [''].sort(() => 0.5 - Math.random())
 var self_code = [
   'puz5W6wPYWNGDE-IBtuJu9rQfw',
   'ryUKOhwOyU3PHO5EYG3u3oOomWbbT0',
   'ryUPsRqIRsgMGm3AryAu-aLtRmrSCU',
   'pOH4Wq4Kb2JADE-IBtuJu2NaIA','dWdIjACUsPbVtr5cS9nGu42tlnfIGrA'
+
 ]
 var self_define = false
 let pool = []
 !(async () => {
-     var scs = process.env.JD_CITY_SHARECODES
-     if (scs) {
-          self_define = true
-          self_code = scs.split("&")
-          console.log(`你提供了助力码${self_code}，将只为这些助力。`)
-     }
-     // console.log('内部互助没奖励了吧应该. 城城现在改为优先助力池子!(作者只吃第一个CK,其余池子!) 请查看群内频道通知!,5s后开始!')
-     // await $.wait(5000)
-     if (!cookiesArr[0]) {
-          $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
-          return;
-     }
-     await requireConfig();
-     if (exchangeFlag) {
-          console.log(`脚本自动抽奖`)
-     } else {
-          console.log(`脚本不会自动抽奖，建议活动快结束开启，默认关闭`)
-     }
-     // if (process.env.CT_R != 'false') {
-     //   cookiesArr = cookiesArr.sort(() => 0.5 - Math.random())
-     //   console.log('CK顺序打乱!用来随机内部互助!,如需关闭CT_R为false')
-     // }
-     for (let i = 0; i < cookiesArr.length; i++) {
-          if (cookiesArr[i]) {
-               cookie = cookiesArr[i];
-               $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-               $.index = i + 1;
-               $.isLogin = true;
-               $.nickName = '';
-               message = '';
-               await TotalBean();
-               console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-               if (!$.isLogin) {
-                    $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
+
+  if (!cookiesArr[0]) {
+    $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
+    return;
+  }
+  // await requireConfig();
+  if(helpShareFlag+"" == "true"){
+    //console.log('脚本优先助力[助力池] 如需开启优先助力[内部账号]，请设置环境变量  JD_CITY_HELPSHARE 为false\n')
+  }else{
+    //console.log('脚本优先助力[内部账号] 如需开启优先助力[助力池]，请设置环境变量  JD_CITY_HELPSHARE 为true\n')
+  }
+  if (exchangeFlag+"" == "true") {
+    console.log(`脚本自动抽奖`)
+  } else {
+    console.log(`脚本不会自动抽奖，建议活动快结束开启，默认关闭(在1.18日自动开启抽奖),如需自动抽奖请设置环境变量  JD_CITY_EXCHANGE 为true`);
+  }
+  $.inviteIdCodesArr = {}
+  for (let i = 0; i < cookiesArr.length && true; i++) {
+    if (cookiesArr[i]) {
+      cookie = cookiesArr[i];
+      $.isLogin = true
+      $.nickName = ''
+      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+      $.index = i + 1;
+      await checkCookie()
+      await getUA()
+      await getInviteId(i);
+
+    }
+      const res = await city_lotteryAward();//抽奖
+        if (res && res > 0) {
+            for (let i = 0; i < new Array(res).fill('').length; i++) {
+              await $.wait(1000)
+              await city_lotteryAward();//抽奖
+            }
+        }
+  }
+            const res = await city_lotteryAward();//抽奖
+           if (res && res > 0) {
+            for (let i = 0; i < new Array(res).fill('').length; i++) {
+              await $.wait(1000)
+              await city_lotteryAward();//抽奖
+            }
+          }
+        
+  if (message) {
+      await notify.sendNotify($.name,message)
+  }
+  /*
+  if(Object.getOwnPropertyNames($.inviteIdCodesArr).length > 0){
+    for (let i = 0; i < cookiesArr.length && true; i++) {
+      if (cookiesArr[i]) {
+        cookie = cookiesArr[i];
+        $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+        $.index = i + 1;
+        let code = []
+        for (let s = 0; s < cookiesArr.length && true; s++) {
+          if(s != $.index - 1 && $.inviteIdCodesArr[s]) code.push($.inviteIdCodesArr[s])
+        }
+        if(code.length > 0) $.shareCodesArr.push(code.join('@'))
+      }
+    }
 
                     if ($.isNode()) {
                          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
@@ -131,7 +166,12 @@ let pool = []
                // }
                await $.wait(1000)
           }
-     }
+
+        }
+      }
+      await $.wait(1000)
+    }
+  }*/
 })()
      .catch((e) => {
           $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -140,18 +180,32 @@ let pool = []
           $.done();
      })
 
-function taskPostUrl(functionId, body) {
-     return {
-          url: `${JD_API_HOST}`,
-          body: `functionId=${functionId}&body=${escape(JSON.stringify(body))}&client=wh5&clientVersion=1.0.0`,
-          headers: {
-               'Cookie': cookie,
-               'Host': 'api.m.jd.com',
-               'Connection': 'keep-alive',
-               'Content-Type': 'application/x-www-form-urlencoded',
-               "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-               'Accept-Language': 'zh-cn',
-               'Accept-Encoding': 'gzip, deflate, br',
+
+function getInviteId(i) {
+  let body = {"lbsCity":"16","realLbsCity":"1315","inviteId":'',"headImg":"","userName":"","taskChannel":"1"}
+  return new Promise((resolve) => {
+    $.post(taskPostUrl("city_getHomeDatav1",body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (safeGet(data)) {
+            // if (inviteId) $.log(`\n助力结果:\n${data}\n`)
+            data = JSON.parse(data);
+            if (data.code === 0) {
+                data = data.data.result
+                if (data.userActBaseInfo.poolMoney >= data.userActBaseInfo.threshold) {
+                    console.log(`【京东账号${$.index}】${$.nickName || $.UserName}: \n可抽奖次数：${data.lotteryNum || 0}\n余额：${data.userActBaseInfo.poolMoney || 0}\n提现门槛：${data.userActBaseInfo.threshold || 0}\n提现状态：可提现\n\n`)
+                    message+=`【京东账号${$.index}】${$.nickName || $.UserName}: \n可抽奖次数：${data.lotteryNum || 0}\n余额：${data.userActBaseInfo.poolMoney || 0}\n提现门槛：${data.userActBaseInfo.threshold || 0}\n提现状态：可提现，请及时提现\n\n`
+                } else {
+                    console.log(`【京东账号${$.index}】${$.nickName || $.UserName}: 抽奖次数：${data.lotteryNum || 0}\n余额：${data.userActBaseInfo.poolMoney || 0}\n提现门槛：${data.userActBaseInfo.threshold || 0}\n提现状态：不可提现\n\n`)
+                    //message += `【京东账号${$.index}】${$.nickName || $.UserName}: 抽奖次数：${data.lotteryNum || 0}\n余额：${data.userActBaseInfo.poolMoney || 0}\n提现门槛：${data.userActBaseInfo.threshold || 0}\n提现状态：不可提现\n\n`
+                }
+                //console.log(`【京东账号${$.index}】${$.nickName || $.UserName}: 抽奖次数：${data.lotteryNum || 0}\n余额：${data.userActBaseInfo.poolMoney}\n提现门槛：${data.userActBaseInfo.threshold}\n\n`)
+            } else {
+              console.log(`\n\ncity_getHomeData失败:${JSON.stringify(data)}\n`)
+            }
           }
      }
 }
@@ -244,6 +298,49 @@ function getInviteInfo() {
           })
      })
 }
+
+function checkCookie() {
+    const options = {
+        url: "https://me-api.jd.com/user_new/info/GetJDUserInfoUnion",
+        headers: {
+            "Host": "me-api.jd.com",
+            "Accept": "*/*",
+            "Connection": "keep-alive",
+            "Cookie": cookie,
+            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Mobile/15E148 Safari/604.1",
+            "Accept-Language": "zh-cn",
+            "Referer": "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&",
+            "Accept-Encoding": "gzip, deflate, br",
+        }
+    };
+    return new Promise(resolve => {
+        $.get(options, (err, resp, data) => {
+            try {
+                if (err) {
+                    $.logErr(err)
+                } else {
+                    if (data) {
+                        data = JSON.parse(data);
+                        if (data.retcode === "1001") {
+                            $.isLogin = false; //cookie过期
+                            return;
+                        }
+                        if (data.retcode === "0" && data.data.hasOwnProperty("userInfo")) {
+                            $.nickName = data.data.userInfo.baseInfo.nickname;
+                        }
+                    } else {
+                        $.log('京东返回了空数据');
+                    }
+                }
+            } catch (e) {
+                $.logErr(e)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
 function city_lotteryAward() {
      let body = {}
      return new Promise((resolve) => {
@@ -294,45 +391,20 @@ function readShareCode(num = 3) {
 }
 //格式化助力码
 function shareCodesFormat() {
-     return new Promise(async resolve => {
-          // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
-          $.newShareCodes = []
-          // const readShareCodeRes = await readShareCode(3);
-          // if (readShareCodeRes && readShareCodeRes.code === 200) {
-          //   pool = readShareCodeRes.data || [];
-          // }
-          if ($.isNode()) {
-               if (process.env.JD_CITY_EXCHANGE) {
-                    exchangeFlag = process.env.JD_CITY_EXCHANGE || exchangeFlag;
-               }
-               if (process.env.CITY_SHARECODES) {
-                    console.log('检测到助力码,优先. 内部互助0.01了吧,删了吧.')
-                    if (process.env.CITY_SHARECODES.indexOf('\n') > -1) {
-                         $.newShareCodes = process.env.CITY_SHARECODES.split('\n');
-                    } else {
-                         $.newShareCodes = process.env.CITY_SHARECODES.split('&');
-                    }
-               }
-          }
-          // if ($.index - 1 == 0) {
-          //   console.log('首个帐号,助力作者和池子')
-          //   $.newShareCodes = [...new Set([...$.newShareCodes,...author_codes, ...pool])];
-          // } else {
-          //   console.log('非首个个帐号,优先向前助力')
-          //   $.newShareCodes = [...new Set([...$.newShareCodes,...self_code,...author_codes, ...pool])]
-          // }
-          if ($.index == 1) {
-               console.log('首个帐号,助力作者和池子')
-               $.newShareCodes = [...new Set([...author_codes, ...pool, ...$.newShareCodes])]
-          } else {
-               // console.log('非首个帐号,助力池子')
-               // $.newShareCodes = [...new Set([...$.newShareCodes,...pool])]
-               console.log('非首个个帐号,优先向前助力')
-               $.newShareCodes = [...new Set([...$.newShareCodes, ...self_code, ...author_codes])]
-          }
-          console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
-          resolve();
-     })
+
+  return new Promise(async resolve => {
+    // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
+    $.newShareCodes = [];
+    if(helpShareFlag+"" != "true"){
+      if ($.shareCodesArr[$.index - 1]) {
+        $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');
+      }
+    }
+    $.newShareCodes = [...inviteCodes,...$.newShareCodes]
+    
+    console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
+    resolve();
+  })
 }
 function requireConfig() {
      return new Promise(resolve => {

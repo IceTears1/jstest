@@ -48,8 +48,8 @@ async function getShareInfo() {
       console.log("url:" + url);
       console.log("s_si:" + s_si);
       $.msg("中青分享", "", "数据获取成功");
-      for(let i=1;i<11;i++){
-		  await $.wait(20000+Math.floor(10000 * Math.random()));
+      for(let i=1;i<3;i++){
+		  await $.wait(60000+Math.floor(10000 * Math.random()));
         await postShareInfoa(url,s_si, i)
       }
 
