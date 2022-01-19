@@ -30,7 +30,12 @@ const $ = new Env('京喜牧场');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //京喜APP的UA。领取助力任务奖励需要京喜APP的UA,环境变量：JX_USER_AGENT，有能力的可以填上自己的UA
-$.inviteCodeList = [];
+$.inviteCodeList = ['g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcawEMZHsW3EAPRa2kifqlHt9XVnNYT6XvZ3yDHO_Mlt9w',
+  'g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcYrjpwp4nqQpCwqemc6sdXoc_P6h7emK8oH4WwZwBXaEg',
+  'g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHca7ozG88fJhtbH70WdleqZurW41LDaVsm9x1AbHCsDbUQ',
+  'g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcaEbCB_Sn4IBDxoj2iXbelU_iEKDoOY4i6lC2ldEYaHNA',
+  'g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcZrxM22OWUTUW0niA82XH8hPGUtMhnxzrdb2KoP8KrHVA',
+  'g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcYyfe2-FxerRS4jFEgA0loMlZ2h5TgyDKJcq4oLrSb0Ow'];
 let cookiesArr = [];
 let UA, token, UAInfo = {}
 $.appId = 10028;
