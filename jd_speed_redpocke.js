@@ -27,7 +27,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [], cookie = '', message;
-const linkIdArr = ["7ya6o83WSbNhrbYJqsMfFA"];
+const linkIdArr = ["7ya6o83WSbNhrbYJqsMfFA","Eu7-7ya6o83WSbNhrbYJqsMfFA"];
 const signLinkId = '7ya6o83WSbNhrbYJqsMfFA';
 let linkId;
 if ($.isNode()) {
@@ -398,8 +398,8 @@ function cashOut(id,poolBaseId,prizeGroupId,prizeBaseId,) {
 
 function invite2() {
   let inviterIdArr = [
-    "9GDjSu7w7j7dgHoai8-TLw",
-    "Z0qecRq3mNfmoDe_qwpUHg"
+    "7ya6o83WSbNhrbYJqsMfFA",
+    "7ya6o83WSbNhrbYJqsMfFA"
   ]
   let inviterId = inviterIdArr[Math.floor((Math.random() * inviterIdArr.length))]
   let options = {

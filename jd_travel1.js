@@ -115,7 +115,6 @@ const pkTeamNum = () => Math.ceil(cookiesArr.length / 30)
         preFunctionId: "pk_getHomeData",
         functionId: "pk_collectPkExpandScore"
     })
-	console.log("开始助力---------------------------------------------------")
     for (let i = 0; i < helpSysInfoArr.length && helpInfoArr.length > 0; i++) {
         const s = helpSysInfoArr[i]
         cookie = s.cookie
@@ -206,7 +205,6 @@ async function travel() {
     } catch (e) {
         console.log(e)
     }
-  
 }
 
 async function team() {
@@ -438,6 +436,7 @@ async function doAppTask() {
             })
             helpPinArr.push($.UserName)
         }
+		console.log(helpPinArr)
     }
    
 }
