@@ -1,28 +1,15 @@
 /*
 TG https://t.me/aaron_scriptsG
-被内鬼偷给柠檬了,大家一起玩吧
+
+CK1自动组队 加密部分为h5st 不偷助力！！！
+
+
 33 0,6-23/2 * * * jd_travel.js
 */
 const $ = new Env('炸年兽');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
-let cookiesArr = [], cookie = '', message, helpCodeArr = [{
-    pin: '18014246678_p',
-    code: 'ZXASTT018v_VzQRob8VLRJxKb1AFjRWn6W7zB55awQ'
-  },
-  {
-    pin: 'jd_oKMcRZnuBXfM',
-    code: 'ZXASTT0205KkcH2Vkpja9fl-G_KF3FjRWn6W7zB55awQ'
-  },
-  {
-    pin: 'jd_41c752f800930',
-    code: 'ZXASTT0225KkcRB9K8lHVdhL0lP4JdAFjRWn6W7zB55awQ'
-  },
-  {
-    pin: 'jd_FdDjJBENiJzA',
-    code: 'ZXASTT0205KkcNkptry6lVWSt7r17FjRWn6W7zB55awQ'
-  },
-  { pin: '269569205', code: 'ZXASTT012vPt6RRgQ91TSFjRWn6W7zB55awQ' },{ pin: '18915299015_p', code: 'ZXASTT018v_V6QRsb_F3XIR-b1AFjRWn6W7zB55awQ'}], expandHelpArr = [], helpPinArr = [], wxCookie = "";
+let cookiesArr = [], cookie = '', message, helpCodeArr = [], expandHelpArr = [], helpPinArr = [], wxCookie = "";
 let wxCookieArr = process.env.WXCookie?.split("@") || []
 const teamLeaderArr = [], teamPlayerAutoTeam = {}
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -126,7 +113,6 @@ const pkTeamNum = () => Math.ceil(cookiesArr.length / 30)
         preFunctionId: "pk_getHomeData",
         functionId: "pk_collectPkExpandScore"
     })
-	console.log("开始助力---------------------------------------------------")
     for (let i = 0; i < helpSysInfoArr.length && helpInfoArr.length > 0; i++) {
         const s = helpSysInfoArr[i]
         cookie = s.cookie
@@ -217,7 +203,6 @@ async function travel() {
     } catch (e) {
         console.log(e)
     }
-  
 }
 
 async function team() {
@@ -449,6 +434,7 @@ async function doAppTask() {
             })
             helpPinArr.push($.UserName)
         }
+		console.log(helpPinArr)
     }
    
 }
