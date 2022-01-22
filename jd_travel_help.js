@@ -1,17 +1,45 @@
 /*
 TG https://t.me/aaron_scriptsG
 被内鬼偷给柠檬了,大家一起玩吧
-33 0,6-23/2 * * * jd_travel.js
+20 0,4,8,18 * * * jd_travel_help.js
 */
-const $ = new Env('炸年兽');
+const $ = new Env('炸年兽互助');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
-let cookiesArr = [], cookie = '', message, helpCodeArr = [
-//     {
-//     pin: '18014246678_p',
-//     code: 'ZXASTT018v_VzQRob8VLRJxKb1AFjRWn6W7zB55awQ'
-//   },
- ], expandHelpArr = [], helpPinArr = [], wxCookie = "";
+let cookiesArr = [], cookie = '', message, helpCodeArr = [{
+    pin: '18014246678_p',
+    code: 'ZXASTT018v_VzQRob8VLRJxKb1AFjRWn6W7zB55awQ'
+  },
+  {
+    pin: 'jd_FdDjJBENiJzA',
+    code: 'ZXASTT0205KkcNkptry6lVWSt7r17FjRWn6W7zB55awQ'
+  },
+  {
+    pin: '18915299015_p',
+    code: 'ZXASTT018v_V6QRsb_F3XIR-b1AFjRWn6W7zB55awQ'
+  },
+  {
+    pin: 'jd_41c752f800930',
+    code: 'ZXASTT0225KkcRB9K8lHVdhL0lP4JdAFjRWn6W7zB55awQ'
+  },
+  {
+    pin: 'jd_oKMcRZnuBXfM',
+    code: 'ZXASTT0205KkcH2Vkpja9fl-G_KF3FjRWn6W7zB55awQ'
+  },
+  { pin: '269569205', code: 'ZXASTT012vPt6RRgQ91TSFjRWn6W7zB55awQ' },
+  {
+    pin: 'jd_718b10084be4f',
+    code: 'ZXASTT0225KkcRx8Rp1XXIBLwxqIOIgFjRWn6W7zB55awQ'
+  },
+  {
+    pin: 'jd_6f4e83ff6ee5a',
+    code: 'ZXASTT0225KkcRkgdoFzUdkzywaIPJQFjRWn6W7zB55awQ'
+  },
+  {
+    pin: 'jd_6a5ad4aa036da',
+    code: 'ZXASTT0225KkcRk8cpADTcUv0l_FeJQFjRWn6W7zB55awQ'
+  },
+  { pin: 'Anco-tan', code: 'ZXASTT011z6MgHwNdpAoFjRWn6W7zB55awQ' }], expandHelpArr = [], helpPinArr = [], wxCookie = "";
 let wxCookieArr = process.env.WXCookie?.split("@") || []
 const teamLeaderArr = [], teamPlayerAutoTeam = {}
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -20,8 +48,8 @@ let teamMap = {}
 let userToTeamMap = {}
 $.curlCmd = ""
 const h = (new Date()).getHours()
-const helpFlag = h >= 8 && h < 12
-const puzzleFlag = h >= 13 && h < 18
+const helpFlag = h >= 0 && h < 23
+const puzzleFlag = false
 let expandFlag = h === 22, expandHelpFlag = h === 23
 if (process.env.JD_TRAVEL_EXPAND !== undefined) {
     expandFlag = h === +process.env.JD_TRAVEL_EXPAND
@@ -192,44 +220,8 @@ async function travel() {
             }
             const collectAutoScore = await doApi("collectAutoScore", null, null, true)
             collectAutoScore.produceScore && formatMsg(collectAutoScore.produceScore, "定时收集")
-            console.log("\n去看看战队\n")
-            await team()
-            console.log("\n去做主App任务\n")
-            await doAppTask()
-            if (puzzleFlag) {
-                console.log("\n去做做拼图任务")
-                const { doPuzzle } = safeRequire('./jd_travel_puzzle')
-                doPuzzle && await doPuzzle($, cookie)
-            }
+			await doAppTask()
         }
-    } catch (e) {
-        console.log(e)
-    }
-    if (helpFlag) {
-        try {
-            $.WxUA = getWxUA()
-            const WxHomeData = await doWxApi("getHomeData", { inviteId: "" })
-            $.WxSecretp = WxHomeData?.homeMainInfo?.secretp || $.secretp
-            console.log("\n去做微信小程序任务\n")
-            await doWxTask()
-        } catch (e) {
-            console.log(e)
-        }
-
-        try {
-            console.log("\n去做金融App任务\n")
-            $.sdkToken = "jdd01" + randomUUID({
-                formatData: "X".repeat(103),
-                charArr: [...Array(36).keys()].map(k => k.toString(36).toUpperCase())
-            }) + "0123456"
-            await doJrAppTask()
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    try {
-        await raise(true)
     } catch (e) {
         console.log(e)
     }
@@ -463,6 +455,7 @@ async function doAppTask() {
                 code: inviteId
             })
             helpPinArr.push($.UserName)
+			console.log(helpCodeArr)
         }
     }
     for (const { times, badgeAwardVos } of lotteryTaskVos || []) {
@@ -486,81 +479,6 @@ async function doAppTask() {
                     }
                 }
             }
-        }
-    }
-    const feedList = []
-    for (let mainTask of taskVos) {
-        // console.log(mainTask)
-        const { taskId, taskName, waitDuration, times: timesTemp, maxTimes, status } = mainTask
-        if (status === 2) continue
-        let times = timesTemp, flag = false
-        const other = mohuReadJson(mainTask, "Vos?$", -1, "taskToken")
-        if (other) {
-            const { taskToken } = other
-            if (!taskToken) continue
-            if (taskId === 1) {
-                continue
-            }
-            console.log(`当前正在做任务：${taskName}`)
-            const body = { taskId, taskToken, actionType: 1 }
-            if (taskId === 31) {
-                await doApi("pk_getHomeData")
-                await doApi("pk_getPkTaskDetail", null, null, false, true)
-                await doApi("pk_getMsgPopup")
-                delete body.actionType
-            }
-            const res = await doApi("collectScore", { taskId, taskToken, actionType: 1 }, null, true)
-            res?.score && (formatMsg(res.score, "任务收益"), true)/*  || console.log(res) */
-            continue
-        }
-        $.stopCard = false
-        for (let activity of mohuReadJson(mainTask, "Vo(s)?$", maxTimes, "taskToken") || []) {
-            if (!flag) flag = true
-            const { shopName, title, taskToken, status } = activity
-            if (status !== 1) continue
-            console.log(`当前正在做任务：${shopName || title}`)
-            const res = await doApi("collectScore", { taskId, taskToken, actionType: 1 }, null, true)
-            if ($.stopCard) break
-            if (waitDuration || res?.taskToken) {
-                await $.wait(waitDuration * 1000)
-                const res = await doApi("collectScore", { taskId, taskToken, actionType: 0 }, null, true)
-                res?.score && (formatMsg(res.score, "任务收益"), true)/*  || console.log(res) */
-            } else {
-                res?.score && (formatMsg(res.score, "任务收益"), true)/*  || console.log(res) */
-            }
-            times++
-            if (times >= maxTimes) break
-        }
-        if (flag) continue
-        feedList.push({
-            taskId: taskId.toString(),
-            taskName
-        })
-    }
-    for (let feed of feedList) {
-        const { taskId: id, taskName: name } = feed
-        const res = await doApi("getFeedDetail", { taskId: id.toString() })
-        if (!res) continue
-        for (let mainTask of mohuReadJson(res, "Vos?$", 1, "taskId") || []) {
-            const { score, taskId, taskBeginTime, taskEndTime, taskName, times: timesTemp, maxTimes, waitDuration } = mainTask
-            const t = Date.now()
-            let times = timesTemp
-            if (t >= taskBeginTime && t <= taskEndTime) {
-                console.log(`当前正在做任务：${taskName}`)
-                for (let productInfo of mohuReadJson(mainTask, "Vo(s)?$", maxTimes, "taskToken") || []) {
-                    const { taskToken, status } = productInfo
-                    if (status !== 1) continue
-                    const res = await doApi("collectScore", { taskId, taskToken, actionType: 1 }, null, true)
-                    times = res?.times ?? (times + 1)
-                    await $.wait(waitDuration * 1000)
-                    if (times >= maxTimes) {
-                        formatMsg(score, "任务收益")
-                        break
-                    }
-                }
-            }/*  else {
-            console.log(`任务：${taskName}：未到做任务时间`)
-        } */
         }
     }
 }
