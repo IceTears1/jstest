@@ -37,7 +37,22 @@ if ($.isNode()) {
 
 const JD_API_HOST = 'https://api.m.jd.com/api';
 //邀请码一天一变化，已确定
-$.shareId = [];
+$.shareId = [ 'cb11148f-7218-4de2-becc-766bb8f5a2c6',
+  'bac5660a-1aaa-4d6b-8bee-f4feb933252a',
+  'd9f0ce1c-3c9d-4499-b404-6b8adde85bce',
+  '86d8389a-4623-4426-a7ac-6ea89ed439a1',
+  'bd28cc21-eafa-4685-84b0-1251e6ca0d77',
+  '005d05d7-ae9f-4922-9e76-8603538bdde4',
+  'e2d48f02-81f0-4b81-aea8-8ba0c44139ec',
+  'a839a6a1-0d1c-4d76-987c-65ae323949eb',
+  '8b1ada28-297f-42a0-9df4-fe0b61774f94',
+  '511c839b-1705-4735-b0e9-81b3f25875af',
+  '9620e64d-b75d-4040-b7f7-1a664798c9e5',
+  '63222eac-00aa-4c63-b56b-43e67d0d2f61',
+  '7c9c7fed-4a4b-4e50-b1c0-5f57b875a074',
+  'e10775f8-c538-4282-a82a-4c0483bbb7a9',
+  'b80532a7-0c26-4d94-b03a-e0d0f590cb61',
+  '48ba323d-38fa-4bf7-8e2e-148be34af525'];
 !(async () => {
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
@@ -47,8 +62,8 @@ $.shareId = [];
       '活动地址: https://blindbox5g.jd.com\n' +
       '活动时间：2021-8-2到2021-10-29\n' +
       '更新时间：2021-8-8 19:00');
-  $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_shareCodes.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
-  await $.wait(1000)
+//   $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_shareCodes.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+//   await $.wait(1000)
   await updateShareCodesCDN('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_shareCodes.json')
   await $.wait(1000)
   await getShareCode()
@@ -84,7 +99,8 @@ $.shareId = [];
     if ($.isNode()) await notify.sendNotify($.name, allMessage);
     $.msg($.name, '', allMessage, {"open-url": "https://blindbox5g.jd.com"})
   }
-  $.shareId = [...($.shareId || []), ...($.updatePkActivityIdRes || []), ...($.zero205Code || [])];
+  //$.shareId = [...($.shareId || []), ...($.updatePkActivityIdRes || []), ...($.zero205Code || [])];
+  console.log($.shareId)
   for (let v = 0; v < cookiesArr.length; v++) {
     cookie = cookiesArr[v];
     $.index = v + 1;
@@ -461,7 +477,8 @@ function getShareCode() {
       url: "https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/jd_mohe.json",
       headers: {
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-      }
+      },
+      "timeout": 10000
     }, async (err, resp, data) => {
       try {
         if (err) {
