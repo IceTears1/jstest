@@ -171,6 +171,7 @@ function doInteractiveAssignment(encryptProjectId, encryptAssignmentId) {
           console.log(`doInteractiveAssignment api请求失败，请检查网路重试`)
         } else {
           if (safeGet(data)) {
+            console.log(data)
             data = JSON.parse(data);
             if (data.subCode == "0") {
               //console.log(`${data.rewardsInfo.successRewards[3][0].rewardName}`);
