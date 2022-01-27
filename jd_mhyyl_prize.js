@@ -30,6 +30,9 @@ let message = '';
     for (let i = 0; i < cookiesArr.length; i++) {
         $.index = i+1;
         await main(cookiesArr[i]);
+        await $.wait(1000)
+        
+        if (process.env.ckjinyong) await cardlist(cookiesArr[i])
     }
     if(message){
         message += `请尽快进APP填写地址`;
@@ -45,7 +48,7 @@ async function  main(ck) {
         console.log(`\n${usName},获取活动详情失败`);
         return ;
     }
-    console.log(`\n${usName},获取活动详情成功`);
+    console.log(`\n${$.index}:${usName},获取活动详情成功`);
     let showFlag = true;
     let dd = 0
     let kapian = 0
@@ -75,6 +78,28 @@ async function  main(ck) {
     }
     console.log(`获得卡片：${kapian}张`);
     console.log(`获得京豆：${dd}个`);
+}
+
+async function  cardlist(ck) {
+    let usName = decodeURIComponent(ck.match(/pt_pin=([^; ]+)(?=;?)/) && ck.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
+    let UA = `jdapp;iPhone;10.0.8;14.6;${randomWord(false,40,40)};network/wifi;JDEbook/openapp.jdreader;model/iPhone9,2;addressid/2214222493;appBuild/168841;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16E158;supportJDSHWK/1`;
+    let mainInfo = await takePost('{"apiMapping":"/api/card/list"}',ck,UA);
+    if(JSON.stringify(mainInfo) === '{}'){
+        console.log(`\n${usName},获取活动详情失败`);
+        return ;
+    }
+    console.log(`\n账号${$.index}:${usName},获取活动详情成功`);
+    //console.log(JSON.stringify(mainInfo));
+    var data = mainInfo.cardList
+    for (let i = 0; i < data.length; i++) {
+        console.log(`${data[i].cardName}：${data[i].count}`)
+        if ($.index < 5 && i === 7 && data[i].count < 1) {
+            await notify.sendNotify($.name,`账号${$.index}:${usName}的${data[i].cardName}已丢失`)
+        } else if ($.index > 6 && (i === 0 || i === 6) && data[i].count > 1) {
+            await notify.sendNotify($.name,`账号${$.index}:${usName}获得${data[i].cardName}`)
+        }
+    }
+   
 }
 
 async function takePost(info,ck,UA){
