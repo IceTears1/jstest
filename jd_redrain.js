@@ -171,12 +171,11 @@ function doInteractiveAssignment(encryptProjectId, encryptAssignmentId) {
           console.log(`doInteractiveAssignment api请求失败，请检查网路重试`)
         } else {
           if (safeGet(data)) {
-            console.log(data)
             data = JSON.parse(data);
+            console.log(data);
             if (data.subCode == "0") {
-              //console.log(`${data.rewardsInfo.successRewards[3][0].rewardName}`);
-              message += `领取成功，获得 ${data.rewardsInfo.successRewards[3][0].rewardName}`
-              allMessage += `京东账号${$.index}${$.nickName || $.UserName}\n领取成功，获得 ${data.rewardsInfo.successRewards[3][0].rewardName}${$.index !== cookiesArr.length ? '\n\n' : ''}`;
+              console.log(`${data.rewardsInfo.successRewards[3][0].quantity}京豆`);
+              allMessage += `京东账号${$.index}${$.nickName || $.UserName}\n领取成功，获得【${data.rewardsInfo.successRewards[3][0].quantity}】京豆${$.index !== cookiesArr.length ? '\n\n' : ''}`;
             } else {
               console.log(data);
             }

@@ -14,7 +14,7 @@ let args_xh = {
      * 每多少个账号发送一次通知，默认为2
      * 可通过环境变量控制 JD_BEAN_CHANGE_SENDNUM
      * */
-    sendNum: process.env.JD_BEAN_CHANGE_SENDNUM * 1 || 20,
+    sendNum: process.env.JD_BEAN_CHANGE_SENDNUM * 1 || 2,
 }
 let allMessage = '';
 let ReturnMessage = '';
@@ -95,8 +95,8 @@ if ($.isNode()) {
     }
 
     if ($.isNode() && allMessage != '') {
-        if (($.cookiesArr.length - ($.sentNum * args_xh.sendNum)) < args_xh.sendNum) {
-            console.log(`正在进行最后一次发送通知，发送数量：${($.cookiesArr.length - ($.sentNum * args_xh.sendNum))}`)
+        if ((cookiesArr.length - ($.sentNum * args_xh.sendNum)) < args_xh.sendNum) {
+            console.log(`正在进行最后一次发送通知，发送数量：${(cookiesArr.length - ($.sentNum * args_xh.sendNum))}`)
             await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
             allMessage = "";
         }
