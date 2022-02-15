@@ -10,10 +10,10 @@
 ==========================Quantumultx=========================
 [task_local]
 #jd免费水果
-10 5,17 * * * jd_fruit_friend.js, tag=东东农场好友删减奖励, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png, enabled=true
+40 4,19 * * * jd_fruit_friend.js, tag=东东农场好友删减奖励, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png, enabled=true
 =========================Loon=============================
 [Script]
-cron "10 5,17 * * *" script-path=jd_fruit_friend.js,tag=东东农场好友删减奖励
+cron "40 4,19 * * *" script-path=jd_fruit_friend.js,tag=东东农场好友删减奖励
 
 =========================Surge============================
 东东农场好友删减奖励 = type=cron,cronexp="10 5,17 * * *",wake-system=1,timeout=3600,script-path=jd_fruit_friend.js
@@ -114,8 +114,8 @@ async function jdFruit() {
     console.log(`任务执行异常，请检查执行日志 ‼️‼️`);
     $.logErr(e);
 	const errMsg = `京东账号${$.index} ${$.nickName || $.UserName}\n任务执行异常，请检查执行日志 ‼️‼️`;
-    if ($.isNode()) await notify.sendNotify(`${$.name}`, errMsg);
-    $.msg($.name, '', `${errMsg}`)
+    //if ($.isNode()) await notify.sendNotify(`${$.name}`, errMsg);
+    //$.msg($.name, '', `${errMsg}`)
   }
   //await showMsg();
 }
@@ -170,8 +170,8 @@ async function GetCollect() {
       console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}互助码】${$.farmInfo.farmUserPro.shareCode}`);
       newShareCodes.push($.farmInfo.farmUserPro.shareCode)
     } else {
-      console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}互助码】\n数据异常,使用City的互助码:4921b9fe76a340f695f9621b53f35cf5`);
-	  newShareCodes.push("4921b9fe76a340f695f9621b53f35cf5");
+      console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}互助码】\n数据异常,使用作者的互助码:84d724474fc944d9a36939838d1908c1`);
+	  newShareCodes.push("84d724474fc944d9a36939838d1908c1");
     }
   } catch (e) {
     $.logErr(e);
