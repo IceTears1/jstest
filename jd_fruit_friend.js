@@ -10,16 +10,19 @@
 ==========================Quantumultx=========================
 [task_local]
 #jd免费水果
-40 4,19 * * * jd_fruit_friend.js, tag=东东农场好友删减奖励, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png, enabled=true
+10 5,17 * * * jd_fruit_friend.js, tag=东东农场好友删减奖励, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png, enabled=true
 =========================Loon=============================
 [Script]
-cron "40 4,19 * * *" script-path=jd_fruit_friend.js,tag=东东农场好友删减奖励
+cron "10 5,17 * * *" script-path=jd_fruit_friend.js,tag=东东农场好友删减奖励
 
 =========================Surge============================
 东东农场好友删减奖励 = type=cron,cronexp="10 5,17 * * *",wake-system=1,timeout=3600,script-path=jd_fruit_friend.js
 
 =========================小火箭===========================
 东东农场好友删减奖励 = type=cron,script-path=jd_fruit_friend.js, cronexpr="10 5,17 * * *", timeout=3600, enable=true
+
+每号间隔（毫秒），默认0毫秒（0分钟）
+export fruit_sleep=20000
 
 */
 const $ = new Env('东东农场好友删减奖励');
@@ -88,6 +91,9 @@ let llhelp=true;
       $.retry = 0;
       await jdFruit();
     }
+		if ($.isNode()) {
+		process.env.fruit_sleep ? await $.wait(Number(process.env.fruit_sleep)) : ''
+		}
   }
   if ($.isNode() && allMessage && $.ctrTemp) {
     await notify.sendNotify(`${$.name}`, `${allMessage}`)
@@ -114,8 +120,8 @@ async function jdFruit() {
     console.log(`任务执行异常，请检查执行日志 ‼️‼️`);
     $.logErr(e);
 	const errMsg = `京东账号${$.index} ${$.nickName || $.UserName}\n任务执行异常，请检查执行日志 ‼️‼️`;
-    //if ($.isNode()) await notify.sendNotify(`${$.name}`, errMsg);
-    //$.msg($.name, '', `${errMsg}`)
+    if ($.isNode()) await notify.sendNotify(`${$.name}`, errMsg);
+    $.msg($.name, '', `${errMsg}`)
   }
   //await showMsg();
 }
@@ -170,8 +176,8 @@ async function GetCollect() {
       console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}互助码】${$.farmInfo.farmUserPro.shareCode}`);
       newShareCodes.push($.farmInfo.farmUserPro.shareCode)
     } else {
-      console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}互助码】\n数据异常,使用作者的互助码:84d724474fc944d9a36939838d1908c1`);
-	  newShareCodes.push("84d724474fc944d9a36939838d1908c1");
+      console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}互助码】\n数据异常,使用作者的互助码:94f3ba0769b04c94bbfca26139108702`);
+	  newShareCodes.push("94f3ba0769b04c94bbfca26139108702");
     }
   } catch (e) {
     $.logErr(e);
