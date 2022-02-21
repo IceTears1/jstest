@@ -1,19 +1,19 @@
 /*
-2.19-2.26 奢宠会员 瓜分百万京豆
+2.21-2.28 大牌联合 宠爱有礼
 新增开卡脚本,一次性脚本
 
 ————————————————
-入口：[ 2.19-2.26 奢宠会员 瓜分百万京豆 (https://lzdz1-isv.isvjcloud.com/dingzhi/customized/common/activity?activityId=unionkbblnt20220218dzlhkk&shareUuid=48636db9b45f483f870865b682800797)]
+入口：[ 2.21-2.28 大牌联合 宠爱有礼 (https://lzdz1-isv.isvjcloud.com/dingzhi/customized/common/activity?activityId=unionkbblnt20220221dzlhkk&shareUuid=1e1c83189fb34c13afbdd37943241c17)]
 
 
-cron:30 2,15 19-26 2 *
+cron:30 6,18 22-28 2 *
 ============Quantumultx===============
 [task_local]
-#2.19-2.26 奢宠会员 瓜分百万京豆
-30 2,15 19-26 2 * jd_opencardL76.js, tag=2.19-2.26 奢宠会员 瓜分百万京豆, enabled=true
+#2.21-2.28 大牌联合 宠爱有礼
+30 6,18 22-28 2 * jd_opencardL80.js, tag=2.21-2.28 大牌联合 宠爱有礼, enabled=true
 
 */
-const $ = new Env('2.19-2.26 奢宠会员 瓜分百万京豆');
+const $ = new Env('2.21-2.28 大牌联合 宠爱有礼');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [],
@@ -40,8 +40,8 @@ let activityCookie =''
     });
     return;
   }
-  $.activityId = "unionkbblnt20220218dzlhkk"
-  $.shareUuid = "b9ef1ff298cc444ebfd20d709655c317"
+  $.activityId = "unionkbblnt20220221dzlhkk"
+  $.shareUuid = "2f1d57d9471e4484a6e3882ebe94631b"
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/customized/common/activity?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
