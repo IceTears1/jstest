@@ -27,6 +27,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [], cookie = '', message;
+let IPError = false; // 403 ip黑
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -62,6 +63,10 @@ const JD_API_HOST = 'https://api.m.jd.com/', actCode = 'visa-card-001';
       }
       await jdGlobal()
       await $.wait(2*1000)
+      if (IPError){
+        console.log(`403 黑IP了，请换个IP`);
+        break;
+      }
     }
   }
 })()
@@ -110,14 +115,7 @@ async function signInit() {
     $.get(taskUrl('speedSignInit', {
       "activityId": "8a8fabf3cccb417f8e691b6774938bc2",
       "kernelPlatform": "RN",
-      "inviterId":[
-        "ghNQyGlIWbUdlPK/1zsTFQ==",
-        "FrDZBDwlRNX/Fet29mBTjg==",
-        "dX0t80OyY6c/49K0DgQRRfA==",
-        "jl555FG2wDz4KjwztQvjww==",
-        "U6lCo5WEZMTUabR8RPhsmU5yrUVGTyQoPdAatEc+880=",
-        "E9cx6cIwwOksEkmNi4Mv6Q=="
-      ][Math.floor((Math.random() * 5))]
+      "inviterId":"U44jAghdpW58FKgfqPdotA=="
     }), async (err, resp, data) => {
       try {
         if (err) {
@@ -203,6 +201,10 @@ async function taskList() {
                 } else {
                   console.log(`${task.taskInfo.mainTitle}已完成`)
                 }
+                if (IPError){
+                  console.error('API请求失败，停止执行')
+                  break
+                }
               }
             }
           }
@@ -225,6 +227,7 @@ async function doTask(taskId) {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
+          IPError = true
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -320,6 +323,7 @@ async function queryItem(activeType = 1) {
             } else {
               console.log(`商品任务开启失败，${data.message}`)
               $.canStartNewItem = false
+              IPError = true
             }
           }
         }
@@ -348,6 +352,7 @@ async function startItem(activeId, activeType) {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
+          IPError = true
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -673,26 +678,27 @@ function taskGetUrl(function_id, body) {
 }
 
 function invite2() {
-  let t = +new Date()
   let inviterIdArr = [
-    "1CRgWazqVItY8aaqpkLH0Gl/O+1OYbYMAaFSLHsfq0U=",
-    "T4xQP/egYosCHUTNHkHDqHCzpezw53UOgiGqM1J+FWc=",
-    "dsEn+XopxVSqrNq0TSRwBBrEwVj/+3qyg7H3FXESIiM=",
-    "d3jdjbeII5GbF1SpVL0LEAqjzzI84LpOZSHFM696Rlw=",
-    "10vhQ/yCrMFluS3MNHMWpA==",
+    "5V7vHE23qh2EkdBHXRFDuA==",
+    "Yvk/fMWJC/6lvcx1iUFnsw==",
+    "E9EvSFNuA1pahSQT0uSsXkW1v0j+QOHQbk8+peJYc0I=",
+    "wXX9SjXOdYMWe5Ru/1+x9A==",
+    "4AVQao+eH8Q8kvmXnWmkG8ef/fNr5fdejnD9+9Ugbec=",
+    "jbGBRBPo5DmwB9ntTCSVOGXuh1YQyccCuZpWwb3PlIc=",
+    "w22w0sZEccp/OWxg1d20RtsryQGfghc94PsLIBqeX0E="
   ]
   let inviterId = inviterIdArr[Math.floor((Math.random() * inviterIdArr.length))]
   let options = {
     url: "https://api.m.jd.com/",
-    body: `functionId=TaskInviteService&body=${JSON.stringify({"method":"participateInviteTask","data":{"channel":"1","encryptionInviterPin":encodeURIComponent(inviterId),"type":1}})}&appid=market-task-h5&uuid=&_t=${t}`,
+    body: `functionId=TaskInviteService&body=${JSON.stringify({"method":"participateInviteTask","data":{"channel":"1","encryptionInviterPin":encodeURIComponent(inviterId),"type":1}})}&appid=market-task-h5&uuid=&_t=${Date.now()}`,
     headers: {
       "Host": "api.m.jd.com",
       "Accept": "application/json, text/plain, */*",
       "Content-Type": "application/x-www-form-urlencoded",
-      "Origin": "https://gray.jd.com",
+      "Origin": "https://assignment.jd.com",
       "Accept-Language": "zh-CN,zh-Hans;q=0.9",
       "User-Agent": $.isNode() ? (process.env.JS_USER_AGENT ? process.env.JS_USER_AGENT : (require('./JS_USER_AGENTS').USER_AGENT)) : ($.getdata('JSUA') ? $.getdata('JSUA') : "'jdltapp;iPad;3.1.0;14.4;network/wifi;Mozilla/5.0 (iPad; CPU OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-      "Referer": "https://gray.jd.com/",
+      "Referer": "https://assignment.jd.com/",
       "Accept-Encoding": "gzip, deflate, br",
       "Cookie": cookie
     }
@@ -705,15 +711,13 @@ function invite2() {
 function invite() {
   let t = +new Date()
   let inviterIdArr = [
-    "1CRgWazqVItY8aaqpkLH0Gl/O+1OYbYMAaFSLHsfq0U=",
-    "T4xQP/egYosCHUTNHkHDqHCzpezw53UOgiGqM1J+FWc=",
-    "dsEn+XopxVSqrNq0TSRwBBrEwVj/+3qyg7H3FXESIiM=",
-    "d3jdjbeII5GbF1SpVL0LEAqjzzI84LpOZSHFM696Rlw=",
-    "10vhQ/yCrMFluS3MNHMWpA==",
-    "L4/d1QH7e2SBPpYj79RYEQ==",
-    "ogqTvb1WgFMQgBABOqIU9w==",
-    "U7frWc9I0oJ7BhQHlD2QmQJVXYb7jarf+iMSRqCUqFk=",
-    "52U4gN24clvcqjlXtguHDg=="
+    "5V7vHE23qh2EkdBHXRFDuA==",
+    "Yvk/fMWJC/6lvcx1iUFnsw==",
+    "E9EvSFNuA1pahSQT0uSsXkW1v0j+QOHQbk8+peJYc0I=",
+    "wXX9SjXOdYMWe5Ru/1+x9A==",
+    "4AVQao+eH8Q8kvmXnWmkG8ef/fNr5fdejnD9+9Ugbec=",
+    "jbGBRBPo5DmwB9ntTCSVOGXuh1YQyccCuZpWwb3PlIc=",
+    "w22w0sZEccp/OWxg1d20RtsryQGfghc94PsLIBqeX0E="
   ]
   let inviterId = inviterIdArr[Math.floor((Math.random() * inviterIdArr.length))]
   let options = {

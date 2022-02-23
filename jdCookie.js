@@ -1,67 +1,17 @@
 /*
+================================================================================
+魔改自 https://github.com/shufflewzc/faker2/blob/main/jdCookie.js
+修改内容：与task_before.sh配合，由task_before.sh设置要设置要做互助的活动的 ShareCodeConfigName 和 ShareCodeEnvName 环境变量，
+        然后在这里实际解析/ql/log/.ShareCode中该活动对应的配置信息（由code.sh生成和维护），注入到nodejs的环境变量中
+修改原因：原先的task_before.sh直接将互助信息注入到shell的env中，在ck超过45以上时，互助码环境变量过大会导致调用一些系统命令
+        （如date/cat）时报 Argument list too long，而在node中修改环境变量不会受这个限制，也不会影响外部shell环境，确保脚本可以正常运行
+魔改作者：风之凌殇
+================================================================================
+
 此文件为Node.js专用。其他用户请忽略
  */
 //此处填写京东账号cookie。
 let CookieJDs = [
-
-
-
-'pt_key=app_openAAJhySpRADCGXHUwzsE5p4_ghBVidZzVEzDZLSKNZqm4LLUfF_-ImB0o_3AyjdVOMdsiE5mPSMo;pt_pin=18014246678_p;',
-
-
-'pt_key=app_openAAJhySpSADDXd29qDzQXvSVmiwOlFZu36a5iylq0WiUy1yF8IQQblvVhY-lmXA26VTBlKDJSXo0;pt_pin=jd_FdDjJBENiJzA;',
-
-
-'pt_key=app_openAAJhySpTADBjweC0FYSh7w7-yehDzFit3stYiLCYD_jxMkNF5V1PBFfO3iMDuUOynQ4nvUjArXw;pt_pin=18915299015_p;',
-
-
-'pt_key=app_openAAJhySpSADCCEVq9r53AY8lCiO4O7CGZp6V2mTk8Greb6eRLra3dF0dPO-zrCcN5eAheJ5u9dr8;pt_pin=jd_41c752f800930;',
-
-
-'pt_key=app_openAAJhySpSADBEKD6IrJGPDTGzc5ZKF51VTvifIGgjtPwHq4MxjkvCAUMgotr4Fa9nB1tu8PMt1wY;pt_pin=jd_oKMcRZnuBXfM;',
-
-
-'pt_key=app_openAAJhySpTADAzAZfFLt-FM0zB-asuhvB_kK_DSbsV33J_ni_x_x-QoV90A2Wl-ACPqjbDenHNAoI;pt_pin=269569205;',
-
-
-'pt_key=app_openAAJhySpVADBE3IUiOg4q2tF0-7WFkGfXbUtYbIGJJG-RQdP06U-slsM342ZO5D7Bd_pY598SK4s;pt_pin=jd_718b10084be4f;',
-
-
-'pt_key=app_openAAJhySpWADDJYMT2E3k6mGfRJ7-5xksOJ1SNsANBCnJPfXuZ-ikUNCDsX0VCb4unhrLpYMblrr8;pt_pin=jd_6f4e83ff6ee5a;',
-
-
-'pt_key=AAJhv1u1ADCsevNkaM9U1Vw7riSmkTxfEtcngqDCfsaMbAw6xOivbvc1Fh66NMlOjnqGjuhScmI;pt_pin=jd_6ead2d080d1c1;',
-
-
-'pt_key=AAJhv1y1ADCwQ-KMJ7QekM5iQENJRXM3X1HXKuPQH8H73WVR6MEx92jgy-3lXbuM5ADVFFtEb34;pt_pin=jd_6a5ad4aa036da;',
-
-
-'pt_key=app_openAAJhySpWADDzXaZ8CpTEFjvNFae8tipTX-bi2lGmnO1Qq8KfpUrwdQ3X_hyKE-zUhEf8mvnb9N8;pt_pin=Anco-tan;',
-
-
-'pt_key=AAJhphJhADAvxkiMaXDvpw5AhE9iw_lGcTM7gZp3D8QFQWd7_kURPlW5126Mnes0t5V-4Fk4C3k;pt_pin=olovemax;',
-
-
-'pt_key=AAJhsdfRADCdpGIgkt_WbkeTrxg18cJsj3K-74YS-Wa7BOoO8QfODKapEg4tyH0ELnww9O1O89Y;pt_pin=%E6%9A%B4%E5%BE%92%E4%B8%80%E6%9D%A1;',
-
-
-'pt_key=app_openAAJhySpWADBObKAVk1B0TI9jN4DJk77jve-ioPydOb-3Uph7c0ZwDr8Gfwm7DOkBqSZn46KTOmM;pt_pin=jd_56d2a97a8a45e;',
-
-
-'pt_key=AAJhrXbQADDVNT98hVdIXD9K3Mo4PAIKTCWlOk9wIcEdmGATS8CdEklon3f68HYasusK6BINpGs;pt_pin=aqian087;',
-
-
-'pt_key=AAJhtzMGADAX79eqwBMvjRif-HPGb2nglcQya94JNzsYikSEpjRIbvLGnOZgSX9SzhQCZRMbSrQ;pt_pin=jd_407d12bebff84;',
-
-
-'pt_key=AAJhtzRJADA-9IoylGN3hgEaJHs93wxxiOkP_yyMoMfIjeB7QF4skGYPoJCYA6UwK9fM7BOGqas;pt_pin=jd_7657cfade9bce;',
-
-
-'pt_key=AAJhph1mADDPgi5UAGhlv4rdIVMW-HuCnJ-h95Sy5A1UCi982k6Vs2pMTuGfjXGmx4Yl5rCTwHA;pt_pin=jd_6474d22a51041;',
-
-
-'pt_key=AAJhphyAADAhWbsURrzriYAGmVQHdI2Mvdfout1NriaBhxV0tPpRdHDQPzbWR_y-9kKNId4dcFA;pt_pin=%E4%B9%90%E4%BA%8B%E6%97%A0%E6%9E%81%E9%99%90;',
-
 ]
 // 判断环境变量里面是否有京东ck
 if (process.env.JD_COOKIE) {
@@ -82,10 +32,70 @@ if (JSON.stringify(process.env).indexOf('GITHUB')>-1) {
 }
 CookieJDs = [...new Set(CookieJDs.filter(item => !!item))]
 console.log(`\n====================共${CookieJDs.length}个京东账号Cookie=========\n`);
-console.log(`==================脚本执行- 北京时间(UTC+8)：${new Date(new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000).toLocaleString()}=====================\n`)
+console.log(`==================脚本执行- 北京时间(UTC+8)：${new Date(new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000).toLocaleString('zh', {hour12: false}).replace(' 24:',' 00:')}=====================\n`)
 if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
 for (let i = 0; i < CookieJDs.length; i++) {
   if (!CookieJDs[i].match(/pt_pin=(.+?);/) || !CookieJDs[i].match(/pt_key=(.+?);/)) console.log(`\n提示:京东cookie 【${CookieJDs[i]}】填写不规范,可能会影响部分脚本正常使用。正确格式为: pt_key=xxx;pt_pin=xxx;（分号;不可少）\n`);
   const index = (i + 1 === 1) ? '' : (i + 1);
   exports['CookieJD' + index] = CookieJDs[i].trim();
+}
+
+// 以下为注入互助码环境变量（仅nodejs内起效）的代码
+function SetShareCodesEnv(nameConfig = "", envName = "") {
+    let rawCodeConfig = {}
+
+    // 读取互助码
+    shareCodeLogPath = `${process.env.QL_DIR}/log/.ShareCode/${nameConfig}.log`
+    let fs = require('fs')
+    if (fs.existsSync(shareCodeLogPath)) {
+        // 因为faker2目前没有自带ini，改用已有的dotenv来解析
+        // // 利用ini模块读取原始互助码和互助组信息
+        // let ini = require('ini')
+        // rawCodeConfig = ini.parse(fs.readFileSync(shareCodeLogPath, 'utf-8'))
+
+        // 使用env模块
+        require('dotenv').config({path: shareCodeLogPath})
+        rawCodeConfig = process.env
+    }
+
+    // 解析每个用户的互助码
+    codes = {}
+    Object.keys(rawCodeConfig).forEach(function (key) {
+        if (key.startsWith(`My${nameConfig}`)) {
+            codes[key] = rawCodeConfig[key]
+        }
+    });
+
+    // 解析每个用户要帮助的互助码组，将用户实际的互助码填充进去
+    let helpOtherCodes = {}
+    Object.keys(rawCodeConfig).forEach(function (key) {
+        if (key.startsWith(`ForOther${nameConfig}`)) {
+            helpCode = rawCodeConfig[key]
+            for (const [codeEnv, codeVal] of Object.entries(codes)) {
+                helpCode = helpCode.replace("${" + codeEnv + "}", codeVal)
+            }
+
+            helpOtherCodes[key] = helpCode
+        }
+    });
+
+    // 按顺序用&拼凑到一起，并放入环境变量，供目标脚本使用
+    let shareCodes = []
+    let totalCodeCount = Object.keys(helpOtherCodes).length
+    for (let idx = 1; idx <= totalCodeCount; idx++) {
+        shareCodes.push(helpOtherCodes[`ForOther${nameConfig}${idx}`])
+    }
+    let shareCodesStr = shareCodes.join('&')
+    process.env[envName] = shareCodesStr
+
+    console.info(`【风之凌殇】 友情提示：为避免ck超过45以上时，互助码环境变量过大而导致调用一些系统命令（如date/cat）时报 Argument list too long，改为在nodejs中设置 ${nameConfig} 的 互助码环境变量 ${envName}，共计 ${totalCodeCount} 组互助码，总大小为 ${shareCodesStr.length}`)
+}
+
+// 若在task_before.sh 中设置了要设置互助码环境变量的活动名称和环境变量名称信息，则在nodejs中处理，供活动使用
+let nameConfig = process.env.ShareCodeConfigName
+let envName = process.env.ShareCodeEnvName
+if (nameConfig && envName) {
+    SetShareCodesEnv(nameConfig, envName)
+} else {
+    console.debug(`OKYYDS 友情提示：您的脚本正常运行中`)
 }
