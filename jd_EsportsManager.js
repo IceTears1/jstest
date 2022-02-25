@@ -70,8 +70,8 @@ let tasks = [], shareCodes = [{
             if (r !== 200)
                 continue
 
-            await $.wait(2000);
-            await main();
+            //await $.wait(2000);
+            //await main();
             await $.wait(3000)
         }
     }
@@ -139,7 +139,6 @@ function getShareCode(token) {
                     'tid': token,
                     'uid': data.body.openid
                 })
-						console.log(shareCodes)
                 console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${shareCodes[$.index - 1].uid}\n`);
 
             } catch (e) {

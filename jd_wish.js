@@ -25,59 +25,10 @@ let message = '', allMessage = '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-let appIdArr = ['1FFVQyqw','1GVFUx6g', '1E1xZy6s'];
-let appNameArr = ['1111点心动','JOY年尾之旅', 'PLUS生活特权'];
+let appIdArr = ['1FFVQyqw','1EFRWxKuG', '1E1xZy6s'];
+let appNameArr = ['1111点心动','许愿抽好礼', 'PLUS生活特权'];
 let appId, appName;
-$.shareCode = [{
-    code: 'T018v_VzQRob8VLRJxKb1ADjRXlq-7zx55awQ',
-    appId: '1FFVQyqw',
-    use: '18014246678_p'
-  },
-  {
-    code: 'T0205KkcNkptry6lVWSt7r17DjRXlq-7zx55awQ',
-    appId: '1FFVQyqw',
-    use: 'jd_FdDjJBENiJzA'
-  },
-  {
-    code: 'T018v_V6QRsb_F3XIR-b1ADjRXlq-7zx55awQ',
-    appId: '1FFVQyqw',
-    use: '18915299015_p'
-  },
-  {
-    code: 'T0225KkcRB9K8lHVdhL0lP4JdADjRXlq-7zx55awQ',
-    appId: '1FFVQyqw',
-    use: 'jd_41c752f800930'
-  },
-  {
-    code: 'T0205KkcH2Vkpja9fl-G_KF3DjRXlq-7zx55awQ',
-    appId: '1FFVQyqw',
-    use: 'jd_oKMcRZnuBXfM'
-  },
-  {
-    code: 'T012vPt6RRgQ91TSDjRXlq-7zx55awQ',
-    appId: '1FFVQyqw',
-    use: '269569205'
-  },
-  {
-    code: 'T0225KkcRx8Rp1XXIBLwxqIOIgDjRXlq-7zx55awQ',
-    appId: '1FFVQyqw',
-    use: 'jd_718b10084be4f'
-  },
-  {
-    code: 'T0225KkcRktIoVaDIBL0wPZZdQCTJQmq67yR55awQ',
-    appId: '1E1NXxq0',
-    use: 'jd_6ead2d080d1c1'
-  },
-  {
-    code: 'T0225KkcRktIoVaDIBL0wPZZdQDjRXlq-7zx55awQ',
-    appId: '1FFVQyqw',
-    use: 'jd_6ead2d080d1c1'
-  },
-  {
-    code: 'T011z6MgHwNdpAoCTJQmq67yR55awQ',
-    appId: '1E1NXxq0',
-    use: 'Anco-tan'
-  }];
+$.shareCode = [];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -121,7 +72,8 @@ if ($.isNode()) {
     if ($.isNode()) await notify.sendNotify($.name, allMessage);
     $.msg($.name, '', allMessage)
   }
- 
+ // let res = await getAuthorShareCode('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/wish.json')
+ // $.shareCode = [...$.shareCode, ...(res || [])]
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
