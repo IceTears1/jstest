@@ -3,7 +3,7 @@
 
 
 """
-cron: 23 10 * * *
+cron: 35 10 * * *
 new Env('京东金融天天试手气');
 """
 
@@ -85,7 +85,7 @@ def randomuserAgent():
         return UserAgent
 
 def JDSignValidator(url):
-    with open('JDSignValidator.js', 'r', encoding='utf-8') as f:
+    with open('JDJRSignValidator.js', 'r', encoding='utf-8') as f:
         jstext = f.read()
     js = execjs.compile(jstext)
     result = js.call('getBody', url)
@@ -147,7 +147,7 @@ def draw(activityid,eid,fp):
     except:
         printf('出错啦，出错原因为:'+json.loads(response.text)['failDesc']+'\n\n')
     
-    time.sleep(5)
+    time.sleep(10)
     
 if __name__ == '__main__':
     printf('游戏入口:京东金融-白条-天天试手气\n')
@@ -175,6 +175,6 @@ if __name__ == '__main__':
         info=JDSignValidator('https://prodev.m.jd.com/mall/active/498THTs5KGNqK5nEaingGsKEi6Ao/index.html')
         eid=json.loads(geteid(info[1],info[2]).split('_*')[1])['eid']
         fp=info[0]
-        draw('Q72966994128142102X259KS',eid,fp)
+        draw('a9O2k2U042U208160626503920Q3',eid,fp)
         if sendNotifyflag:
             send('京东白条抽奖通知',username+'抽到'+str(prizeAward)+'的优惠券了，速去京东金融-白条-天天试手气查看')
