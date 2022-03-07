@@ -25,10 +25,35 @@ let message = '', allMessage = '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-let appIdArr = ['1FFVQyqw','1EFRWxKuG', '1E1xZy6s'];
-let appNameArr = ['1111点心动','许愿抽好礼', 'PLUS生活特权'];
+let appIdArr = ['1FFVQyqw','1EFRQwA','1EFRWxKuG', '1E1xZy6s'];
+let appNameArr = ['1111点心动','疯狂砸金蛋','许愿抽好礼', 'PLUS生活特权'];
 let appId, appName;
-$.shareCode = [];
+$.shareCode = [{
+    code: 'T0205KkcH2Vkpja9fl-G_KF3CjVXnIaW5kRrbA',
+    appId: '1EFRQwA',
+    use: 'jd_oKMcRZnuBXfM'
+  },
+  {
+    code: 'T0205KkcNkptry6lVWSt7r17CjVXnIaW5kRrbA',
+    appId: '1EFRQwA',
+    use: 'jd_FdDjJBENiJzA'
+  },
+  {
+    code: 'T012vPt6RRgQ91TSCjVXnIaW5kRrbA',
+    appId: '1EFRQwA',
+    use: '269569205'
+  },
+  {
+    code: 'T018v_V6QRsb_F3XIR-b1ACjVXnIaW5kRrbA',
+    appId: '1EFRQwA',
+    use: '18915299015_p'
+  },
+  {
+    code: 'T0225KkcRB9K8lHVdhL0lP4JdACjVXnIaW5kRrbA',
+    appId: '1EFRQwA',
+    use: 'jd_41c752f800930'
+  }
+];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -72,8 +97,8 @@ if ($.isNode()) {
     if ($.isNode()) await notify.sendNotify($.name, allMessage);
     $.msg($.name, '', allMessage)
   }
- // let res = await getAuthorShareCode('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/wish.json')
- // $.shareCode = [...$.shareCode, ...(res || [])]
+  //let res = await getAuthorShareCode('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/wish.json')
+  //$.shareCode = [...$.shareCode, ...(res || [])]
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -224,6 +249,7 @@ async function healthyDay_getHomeData(type = true) {
                         "appId": appId,
                         "use": $.UserName
                       })
+					console.log($.shareCode)
                     }
                   }
                 } else {

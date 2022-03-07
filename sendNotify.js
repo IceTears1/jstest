@@ -1,20 +1,37 @@
 /*
- * @Author: lxk0301 https://gitee.com/lxk0301
- * @Date: 2020-08-19 16:12:40
- * @Last Modified by: whyour
- * @Last Modified time: 2021-5-1 15:00:54
  * sendNotify 推送通知功能
  * @param text 通知头
  * @param desp 通知体
  * @param params 某些推送通知方式点击弹窗可跳转, 例：{ url: 'https://abc.com' }
  * @param author 作者仓库等信息  例：`本通知 By：https://github.com/whyour/qinglong`
+ 部分变量设置
+## 拆分通知
+export BEANCHANGE_PERSENT="10"
+## 如果通知标题在此变量里面存在(&隔开),则用屏蔽不发送通知
+export NOTIFY_SKIP_LIST="京东CK检测&京东资产变动"
+## 当接收到发送CK失效通知和Ninja 运行通知时候执行子线程任务
+export NOTIFY_CKTASK="jd_CheckCK.js"
+## 如果此变量(&隔开)的关键字在通知内容里面存在,则屏蔽不发送通知.
+export NOTIFY_SKIP_TEXT="忘了种植&异常"
+## 屏蔽任务脚本的ck失效通知
+export NOTIFY_NOCKFALSE="true"
+## 服务器空数据等错误不触发通知
+export CKNOWARNERROR="true"
+## 屏蔽青龙登陆成功通知，登陆失败不屏蔽
+export NOTIFY_NOLOGINSUCCESS="true"
+## 通知底部显示
+export NOTIFY_AUTHOR="来源于：https://github.com/KingRan/KR"
+## 增加NOTIFY_AUTHOR_BLANK 环境变量，控制不显示底部信息
+export NOTIFY_AUTHOR_BLANK="true"
+## 增加NOTIFY_AUTOCHECKCK为true才开启通知脚本内置的自动禁用过期ck
+export NOTIFY_AUTOCHECKCK=“true”
  */
 //详细说明参考 https://github.com/ccwav/QLScript2.
 const querystring = require('querystring');
 const exec = require('child_process').exec;
 const $ = new Env();
 const timeout = 15000; //超时时间(单位毫秒)
-console.log("加载sendNotify，当前版本: 20220217");
+console.log("加载sendNotify，当前版本: 20220306");
 // =======================================go-cqhttp通知设置区域===========================================
 //gobot_url 填写请求地址http://127.0.0.1/send_private_msg
 //gobot_token 填写在go-cqhttp文件设置的访问密钥
@@ -172,10 +189,9 @@ if (process.env.NOTIFY_SHOWNAMETYPE) {
     if (ShowRemarkType == "4")
         console.log("检测到显示备注名称，格式为: 备注");
 }
-async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By ccwav Mod', strsummary = "") {
-    console.log(`开始发送通知...`); 
-	
-	//NOTIFY_FILTERBYFILE代码来自Ca11back.
+async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By https://github.com/KingRan/KR',strsummary="") {
+    console.log(`开始发送通知...`);
+
     if (process.env.NOTIFY_FILTERBYFILE) {
         var no_notify = process.env.NOTIFY_FILTERBYFILE.split('&');
         if (module.parent.filename) {
@@ -191,7 +207,6 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By cc
             }
         }
     }
-	
     try {
         //Reset 变量
         UseGroupNotify = 1;
@@ -394,7 +409,7 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By cc
         }
         if (strtext.indexOf("cookie已失效") != -1 || strdesp.indexOf("重新登录获取") != -1 || strtext == "Ninja 运行通知") {
             if (Notify_NoCKFalse == "true" && text != "Ninja 运行通知") {
-                console.log(`检测到NOTIFY_NOCKFALSE变量为true,不发送ck失效通知...`);
+				console.log(`检测到NOTIFY_NOCKFALSE变量为true,不发送ck失效通知...`);
                 return;
             }
         }
@@ -1364,7 +1379,7 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By cc
                 }
 
                 if (allCode) {
-                    desp += '\n' + '\n' + "ccwav格式化后的互助码:" + '\n' + allCode;
+                    desp += '\n' + '\n' + "格式化后的互助码:" + '\n' + allCode;
                 }
             }
         }
@@ -1440,14 +1455,15 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By cc
                         try {
                             //额外处理1，nickName包含星号
                             $.nickName = $.nickName.replace(new RegExp(`[*]`, 'gm'), "[*]");
+
                             text = text.replace(new RegExp(`${$.UserName}|${$.nickName}`, 'gm'), $.Remark);
+
                             if (text == "京东资产变动" || text == "京东资产变动#2" || text == "京东资产变动#3" || text == "京东资产变动#4") {
                                 var Tempinfo = getQLinfo(cookie, envs[i].created, envs[i].timestamp, envs[i].remarks);
                                 if (Tempinfo) {
                                     $.Remark += Tempinfo;
                                 }
                             }
-
                             desp = desp.replace(new RegExp(`${$.UserName}|${$.nickName}`, 'gm'), $.Remark);
                             strsummary = strsummary.replace(new RegExp(`${$.UserName}|${$.nickName}`, 'gm'), $.Remark);
                             //额外处理2，nickName不包含星号，但是确实是手机号
@@ -1457,7 +1473,7 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By cc
                                 //console.log("额外处理2:"+tempname);
                                 text = text.replace(new RegExp(tempname, 'gm'), $.Remark);
                                 desp = desp.replace(new RegExp(tempname, 'gm'), $.Remark);
-                                strsummary = strsummary.replace(new RegExp(tempname, 'gm'), $.Remark);
+								strsummary = strsummary.replace(new RegExp(tempname, 'gm'), $.Remark);
                             }
 
                         } catch (err) {
@@ -1476,7 +1492,7 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By cc
             }
             console.log("处理完成，开始发送通知...");
             if (strAllNotify) {
-                desp = strAllNotify + "\n" + desp;
+                desp = strAllNotify+"\n" + desp;
             }
         }
     } catch (error) {
@@ -1541,7 +1557,7 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By cc
             tgBotNotify(text, desp), //telegram 机器人
             ddBotNotify(text, desp), //钉钉机器人
             qywxBotNotify(text, desp), //企业微信机器人
-            qywxamNotify(text, desp, strsummary), //企业微信应用消息推送
+            qywxamNotify(text, desp,strsummary), //企业微信应用消息推送
             iGotNotify(text, desp, params), //iGot
             gobotNotify(text, desp), //go-cqhttp
             gotifyNotify(text, desp), //gotify
@@ -1554,7 +1570,7 @@ function getuuid(strRemark, PtPin) {
     if (strRemark) {
         var Tempindex = strRemark.indexOf("@@");
         if (Tempindex != -1) {
-            console.log(PtPin + ": 检测到NVJDC的一对一格式,瑞思拜~!");
+            console.log(PtPin+": 检测到NVJDC的一对一格式,瑞思拜~!");
             var TempRemarkList = strRemark.split("@@");
             for (let j = 1; j < TempRemarkList.length; j++) {
                 if (TempRemarkList[j]) {
@@ -1587,7 +1603,7 @@ function getQLinfo(strCK, intcreated, strTimestamp, strRemark) {
     var strCheckCK = strCK.match(/pt_key=([^; ]+)(?=;?)/) && strCK.match(/pt_key=([^; ]+)(?=;?)/)[1];
     var strPtPin = decodeURIComponent(strCK.match(/pt_pin=([^; ]+)(?=;?)/) && strCK.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
     var strReturn = "";
-    if (strCheckCK.substring(0, 4) == "AAJh") {
+    if (strCheckCK.substring(0, 3) == "AAJ") {
         var DateCreated = new Date(intcreated);
         var DateTimestamp = new Date(strTimestamp);
         var DateToday = new Date();
@@ -1618,6 +1634,7 @@ function getQLinfo(strCK, intcreated, strTimestamp, strRemark) {
         }
 
     }
+
     return strReturn
 }
 
@@ -1972,57 +1989,58 @@ function BarkNotify(text, desp, params = {}) {
 }
 
 function tgBotNotify(text, desp) {
-    return new Promise((resolve) => {
-        if (TG_BOT_TOKEN && TG_USER_ID) {
-            const options = {
-                url: `https://${TG_API_HOST}/bot${TG_BOT_TOKEN}/sendMessage`,
-                body: `chat_id=${TG_USER_ID}&text=${text}\n\n${desp}&disable_web_page_preview=true`,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                timeout,
-            };
-            if (TG_PROXY_HOST && TG_PROXY_PORT) {
-                const tunnel = require('tunnel');
-                const agent = {
-                    https: tunnel.httpsOverHttp({
-                        proxy: {
-                            host: TG_PROXY_HOST,
-                            port: TG_PROXY_PORT * 1,
-                            proxyAuth: TG_PROXY_AUTH,
-                        },
-                    }),
-                };
-                Object.assign(options, {
-                    agent
-                });
+  return new Promise(resolve => {
+    if (TG_BOT_TOKEN && TG_USER_ID) {
+      const options = {
+        url: `https://${TG_API_HOST}/bot${TG_BOT_TOKEN}/sendMessage`,
+        json: {
+            chat_id: `${TG_USER_ID}`,
+            text: `${text}\n\n${desp}`,
+            disable_web_page_preview:true,
+          },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout
+      }
+      if (TG_PROXY_HOST && TG_PROXY_PORT) {
+        const tunnel = require("tunnel");
+        const agent = {
+          https: tunnel.httpsOverHttp({
+            proxy: {
+              host: TG_PROXY_HOST,
+              port: TG_PROXY_PORT * 1,
+              proxyAuth: TG_PROXY_AUTH
             }
-            $.post(options, (err, resp, data) => {
-                try {
-                    if (err) {
-                        console.log('telegram发送通知消息失败！！\n');
-                        console.log(err);
-                    } else {
-                        data = JSON.parse(data);
-                        if (data.ok) {
-                            console.log('Telegram发送通知消息成功🎉。\n');
-                        } else if (data.error_code === 400) {
-                            console.log('请主动给bot发送一条消息并检查接收用户ID是否正确。\n');
-                        } else if (data.error_code === 401) {
-                            console.log('Telegram bot token 填写错误。\n');
-                        }
-                    }
-                } catch (e) {
-                    $.logErr(e, resp);
-                }
-                finally {
-                    resolve(data);
-                }
-            });
-        } else {
-            resolve();
+          })
         }
-    });
+        Object.assign(options, {agent})
+      }
+      $.post(options, (err, resp, data) => {
+        try {
+          if (err) {
+            console.log('telegram发送通知消息失败！！\n')
+            console.log(err);
+          } else {
+            data = JSON.parse(data);
+            if (data.ok) {
+              console.log('Telegram发送通知消息成功�。\n')
+            } else if (data.error_code === 400) {
+              console.log('请主动给bot发送一条消息并检查接收用户ID是否正确。\n')
+            } else if (data.error_code === 401) {
+              console.log('Telegram bot token 填写错误。\n')
+            }
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
+        }
+      })
+    } else {     
+      resolve()
+    }
+  })
 }
 
 function ddBotNotify(text, desp) {
@@ -2168,7 +2186,7 @@ function ChangeUserId(desp) {
     }
 }
 
-function qywxamNotify(text, desp, strsummary = "") {
+function qywxamNotify(text, desp, strsummary="") {
     return new Promise((resolve) => {
         if (QYWX_AM) {
             const QYWX_AM_AY = QYWX_AM.split(',');
@@ -2186,7 +2204,7 @@ function qywxamNotify(text, desp, strsummary = "") {
             $.post(options_accesstoken, (err, resp, data) => {
                 html = desp.replace(/\n/g, '<br/>');
                 html = `<font size="3">${html}</font>`;
-                if (strsummary == "") {
+                if (strsummary=="") {
                     strsummary = desp;
                 }
                 var json = JSON.parse(data);
@@ -2431,7 +2449,7 @@ function wxpusherNotifyByOne(text, desp, strsummary = "") {
             }
 
             if (strsummary.length > 96) {
-                strsummary = strsummary.substring(0, 95) + "...";
+                strsummary = strsummary.substring(0, 95)+"...";
             }
             let uids = [];
             for (let i of WP_UIDS_ONE.split(";")) {
