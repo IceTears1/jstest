@@ -48,9 +48,9 @@ $.appId = "e395f"
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  //let res = await getAuthorShareCode('https://gitee.com/KingRan521/JD-Scripts/blob/master/shareCodes/jxlhb.json')
-  //if (res && res.activeId) $.activeId = res.activeId;
-//  $.authorMyShareIds = [...((res && res.codes) || [])];
+  let res = await getAuthorShareCode('https://gitee.com/KingRan521/JD-Scripts/blob/master/shareCodes/jxlhb.json')
+  if (res && res.activeId) $.activeId = res.activeId;
+  $.authorMyShareIds = [...((res && res.codes) || [])];
   $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
   await requestAlgo()
   await $.wait(1000)
@@ -100,7 +100,20 @@ $.appId = "e395f"
         continue
       }
     }
-    
+    if ($.canHelp && ($.authorMyShareIds && $.authorMyShareIds.length)) {
+      console.log(`\n【${$.UserName}】有剩余助力机会，开始助力作者\n`)
+      for (let j = 0; j < $.authorMyShareIds.length && $.canHelp; j++) {
+        console.log(`【${$.UserName}】去助力作者的邀请码：${$.authorMyShareIds[j]}`);
+        $.max = false;
+        await enrollFriend($.authorMyShareIds[j]);
+        await $.wait(5000);
+        if ($.max) {
+          $.authorMyShareIds.splice(j, 1)
+          j--
+          continue
+        }
+      }
+    }
   }
   //拆红包
   for (let i = 0; i < cookiesArr.length; i++) {
@@ -125,9 +138,12 @@ $.appId = "e395f"
       $.done();
     })
 async function main() {
+  $.openFail=false
   await joinActive();
   await $.wait(2000);
+  if (!$.openFail){
   await getUserInfo();
+  }
 }
 //参与活动
 function joinActive() {
@@ -142,6 +158,9 @@ function joinActive() {
           if (data.iRet === 0) {
             console.log(`活动开启成功\n`);
           } else {
+            if (data.iRet === 2016){
+                $.openFail=true
+            }
             console.log(`活动开启失败：${data.sErrMsg}\n`);
           }
         }
@@ -181,8 +200,8 @@ function getUserInfo() {
                   strUserPin: data.Data.strUserPin,
                   userName: $.UserName
                 })
-					  console.log($.packetIdArr) 
               }
+			console.log($.packetIdArr)
             }
             if (data.Data.strUserPin) {
               codeInfo[$.UserName] = data.Data.strUserPin
