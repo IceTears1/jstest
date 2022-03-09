@@ -128,7 +128,7 @@ async function signInit() {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-            //console.log(data)
+            console.log(data)
           }
         }
       } catch (e) {
