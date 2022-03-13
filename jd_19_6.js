@@ -1,56 +1,58 @@
-
 /*
-京东通天塔--签到
-脚本更新时间：2021-12-17 14:20
-脚本兼容: Node.js
-===========================
-[task_local]
-#京东通天塔--签到
-3 1,11 * * * jd_m_sign.js, tag=京东通天塔--签到, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
- */
+极速版抢卷
 
-const $ = new Env('京东通天塔--签到');
+============Quantumultx===============
+[task_local]
+#极速版抢卷
+58 59 6,9,14,17,20 * * * https://raw.githubusercontent.com/KingRan/KR/main/jd_19_6.js, tag=极速版抢卷, enabled=true
+================Loon==============
+[Script]
+cron "58 59 6,9,14,17,20 * * *" script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_19_6.js,tag=极速版抢卷
+===============Surge=================
+极速版抢卷 = type=cron,cronexp="58 59 6,9,14,17,20 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_19_6.js
+============小火箭=========
+极速版抢卷 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_19_6.js, cronexpr="58 59 6,9,14,17,20 * * *", timeout=3600, enable=true
+ */
+const $ = new Env('抢极速版全品卷19-6');
+const moment = require('moment');
+//进容器安装依赖： npm install -g moment
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
+const randomCount = $.isNode() ? 30 : 5;
 //IOS等用户直接用NobyDa的jd cookie
-let cookiesArr = [], cookie = '', message = '';
-$.shareCodes = []
+let cookiesArr = [], cookie = '', message;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
   })
-  if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => { };
+  if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {
+  };
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
-const JD_API_HOST = 'https://api.m.jd.com/client.action';
+const JD_API_HOST = 'https://api.m.jd.com/client.action?';
+let wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 !(async () => {
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return;
   }
-  for (let i = 0; i < cookiesArr.length; i++) {
-    if (cookiesArr[i]) {
-      cookie = cookiesArr[i];
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-      $.index = i + 1;
-      $.isLogin = true;
-      $.nickName = '';
-      await TotalBean();
-      console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-      if (!$.isLogin) {
-        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
-        if ($.isNode()) {
-          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-        }
-        continue
+  await wait(100)
+  for (let j = 0; j < randomCount; ++j)
+    for (let i = 0;  i < 7; i++) {
+      if (cookiesArr[i]) {
+        cookie = cookiesArr[i];
+        $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+        $.index = i + 1;
+        console.log(`*********京东账号${$.index} ${$.UserName}*********`)
+        $.isLogin = true;
+        $.nickName = '';
+        message = '';
+        await qiang();
       }
-      await jdsign();
-      // await showMsg();
     }
-  }
 })()
   .catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -59,152 +61,97 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
     $.done();
   })
 
-
-async function jdsign() {
-  try {
-    console.log(`签到开始........`)
-    await getInfo("https://pro.m.jd.com/mall/active/3S28janPLYmtFxypu37AYAGgivfp/index.html");//拍拍二手签到
-    await $.wait(2000)
-    await getInfo("https://pro.m.jd.com/mall/active/kPM3Xedz1PBiGQjY4ZYGmeVvrts/index.html");//陪伴
-    await $.wait(2000)
-    await getInfo("https://pro.m.jd.com/mall/active/3SC6rw5iBg66qrXPGmZMqFDwcyXi/index.html");//京东图书
-    await $.wait(2000)
-    await getInfo("https://prodev.m.jd.com/mall/active/hPJiMgUQmc34bamrApLUBRUy82W/index.html");//3.31结束    
-//     await getInfo("https://pro.m.jd.com/mall/active/ZrH7gGAcEkY2gH8wXqyAPoQgk6t/index.html");//箱包签到
-//     await $.wait(1000)
-//     await getInfo("https://pro.m.jd.com/mall/active/4RXyb1W4Y986LJW8ToqMK14BdTD/index.html");//鞋靴馆签到
-
-//     await $.wait(1000)
-//     await getInfo("https://pro.m.jd.com/mall/active/3joSPpr7RgdHMbcuqoRQ8HbcPo9U/index.html");//生活特权签到
-  } catch (e) {
-    $.logErr(e)
-  }
-
+async function qiang() {
+  await exchange()
 }
 
-async function getInfo(url) {
+function exchange() {
   return new Promise(resolve => {
-    $.get({
-      url,
-      headers: {
-        Cookie: cookie,
-        'User-Agent': 'JD4iPhone/167650 (iPhone; iOS 13.7; Scale/3.00)'
-      }
-    }, async (err, resp, data) => {
-      try {
-        $.encryptProjectId = resp.body.match(/"encryptProjectId\\":\\"(.*?)\\"/)[1];
-        $.encryptAssignmentId = resp.body.match(/"encryptAssignmentId\\":\\"(.*?)\\"/)[1];
-        await doInteractiveAssignment($.encryptProjectId, $.encryptAssignmentId);
-        resolve();
-      } catch (e) {
-        console.log(e)
-      }
-    })
-  })
-}
-
-// 签到
-async function doInteractiveAssignment(encryptProjectId, AssignmentId) {
-  return new Promise(async (resolve) => {
-    $.post(taskUrl("doInteractiveAssignment", { "encryptProjectId": encryptProjectId, "encryptAssignmentId": AssignmentId, "sourceCode": "aceaceqingzhan", "itemId": "1", "actionType": "", "completionFlag": "true", "ext": {} }), async (err, resp, data) => {
+    $.post(taskUrl('functionId=lite_newBabelAwardCollection'), (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`doInteractiveAssignment API请求失败，请检查网路重试`)
+          console.log(`${$.name} user/exchange/bean API请求失败，请检查网路重试\n`)
         } else {
+          console.log(moment().format("YYYY-MM-DD HH:mm:ss.SSS"));
+          console.log(data);
           if (safeGet(data)) {
-            data = JSON.parse(data)
-            if (data.subCode == '0' && data.rewardsInfo) {
-              // console.log(data.rewardsInfo);
-              if (data.rewardsInfo.successRewards['3'] && data.rewardsInfo.successRewards['3'].length != 0) {
-                console.log(`${data.rewardsInfo.successRewards['3'][0].rewardName},获得${data.rewardsInfo.successRewards['3'][0].quantity}京豆`);
-              } else if (data.rewardsInfo.failRewards.length != 0) {
-                console.log(`失败：${data.rewardsInfo.failRewards[0].msg}`);
-              }
-            } else if (data.subCode == '1403' || data.subCode == '1703') {
-              console.log(data.msg);
-            } else {
-              console.log(data.msg);
-            }
+            data = JSON.parse(data);
+            console.log(`抢券结果：${JSON.stringify(data)}\n`)
           }
         }
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve(data)
+        resolve();
       }
     })
   })
 }
 
-function taskUrl(functionId, body = {}) {
+function taskUrl(function_id, body = {}) {
   return {
-    url: `${JD_API_HOST}?functionId=${functionId}&body=${encodeURI(JSON.stringify(body))}&appid=babelh5&sign=11&t=${(new Date).getTime()}`,
+    url: `https://api.m.jd.com/client.action?functionId=lite_newBabelAwardCollection`,
     headers: {
-      'Host': 'api.m.jd.com',
-      'Accept': 'application/json, text/plain, */*',
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Origin': 'https://pro.m.jd.com',
-      'Accept-Language': 'zh-cn',
-      'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-      'Referer': 'https://pro.m.jd.com',
-      'Accept-Encoding': 'gzip, deflate, br',
-      'Cookie': cookie
-    }
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "zh-cn",
+      "Connection": "keep-alive",
+      "Content-Type": "application/x-www-form-urlencoded",
+      'origin': 'https://pro.m.jd.com',
+      "Referer": "https://pro.m.jd.com/jdlite/active/3H885vA4sQj6ctYzzPVix4iiYN2P/index.html?lng=106.476617&lat=29.502674&sid=fbc43764317f538b90e0f9ab43c8285w&un_area=4_50952_106_0",
+      "Cookie": cookie,
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+    },
+    body: "body=%7B%22activityId%22%3A%22vN4YuYXS1mPse7yeVPRq4TNvCMR%22%2C%22scene%22%3A%221%22%2C%22args%22%3A%22key%3D559C198F83CBF1D793C9CD8897A92C18F98661A99E0E88D4F7B3940DD96721B7E4385B29B20822D37D3994F74442D475_bingo%2CroleId%3D97EA407DBD290058DD2445A38BDEAA95_bingo%2CstrengthenKey%3D7234093DC9375F51DDB7D38147D7AD82EAEB0938B43AC37CCC32084DCB1D13220B0BC72B40D2A533AECDE44C56DDD2A6_bingo%22%2C%22platform%22%3A%221%22%2C%22orgType%22%3A%222%22%2C%22openId%22%3A%22-1%22%2C%22pageClickKey%22%3A%22-1%22%2C%22eid%22%3A%22EI7EMAW4ZLYP7BA2NPR3ZRDMA62D4SQSQ4OOFANS47F4GEBK2DN3LPSAVISERLPHUS75YZCZUXNDFNIQKRL6PXLHCE%22%2C%22fp%22%3A%2270f2dc96f49aff6d2f3b4853a9f14aec%22%2C%22shshshfp%22%3A%22ee4e5230303de14a90f528be37f6cac1%22%2C%22shshshfpa%22%3A%22f62b6f85-ed1a-19a9-a983-5386fd853f3e-1633620784%22%2C%22shshshfpb%22%3A%22s5ANXcvD4c4lgaATnZ%2Fdzaw%3D%3D%22%2C%22childActivityUrl%22%3A%22https%253A%252F%252Fpro.m.jd.com%252Fjdlite%252Factive%252FvN4YuYXS1mPse7yeVPRq4TNvCMR%252Findex.html%253Flng%253D106.476461%2526lat%253D29.502654%2526sid%253Dc0bd62a7a67b30b66ea8792ba0d6709w%2526un_area%253D4_50952_106_0%22%2C%22userArea%22%3A%22-1%22%2C%22client%22%3A%22-1%22%2C%22clientVersion%22%3A%22-1%22%2C%22uuid%22%3A%22-1%22%2C%22osVersion%22%3A%22-1%22%2C%22brand%22%3A%22-1%22%2C%22model%22%3A%22-1%22%2C%22networkType%22%3A%22-1%22%2C%22jda%22%3A%22122270672.16425253116601960425755.1642525311.1647103120.1647154596.287%22%2C%22sdkToken%22%3A%22%22%2C%22token%22%3A%22JN5HWIKH6JURG3DOC6BHD42SKFZKXHBZPTXBPEQARAL6ZUL3TFXOVJYSHOKVENECMPGY6R3S6IMKK%22%2C%22jstub%22%3A%22EAJ5CVOEGF3PHTIUYNLPKI4BQQBBINY3UFNPLDHFX46AYZPOZUWUSRMWI73UBKMYFXIERXMMVMK32GHCUTPC5ASZEMRFSFMUJHCRP7Q%22%2C%22pageClick%22%3A%22Babel_Coupon%22%2C%22couponSource%22%3A%22ace%22%2C%22couponSourceDetail%22%3A%22-100%22%2C%22channel%22%3A%22%E9%80%9A%E5%A4%A9%E5%A1%94%E4%BC%9A%E5%9C%BA%22%2C%22batchId%22%3A%22843424078%22%2C%22headArea%22%3A%22605715ec560d6508f7403b91b677d79c%22%2C%22sceId%22%3A%22TTTh5%22%2C%22rstr%22%3A%2275293885%22%2C%22sstr%22%3A%221647154807770~16JE9yISbtJMDFIWEZ2aTAxMQ%3D%3D.eW5yQVh9bH5GW31qfwhbejV%2BDFwqFCkYF3l0cVpfZGk4RBd5JjVDKAYAJQAtfDtyGg4pGRIYM2c8PBcedWU4.9b1fc10e~6%2C1~500AA031177C21E187362A38E885A259671D6417~06s1gvr~C~SRZGVBYMbWweF0ZaXxsObRRVAxgKdx58cRoHcx5AHkAQFRZSAxwKcx5xeRVjcxpQHkEQGBBdAxsOdx5weRhqfBhXGkUQaB4WVUtaFAwDHhdBRxADFgcABQUEBwAKCQICBwIHAAoCEBUWQVNVEA8QQEZNQEJQRFQXHhZFXFUUDBNUU0ZARk1BVxQdEEVWWhADbwQPHQYBChgDARgBGgAeAG8YEFNeFAwCHhdRRxADFg4BBAECAw1QDwAPBlUEVgNVBwlVD1MGAQQDAgEKAFBSEx4XXEQQAxZfZlldW1cWHhtAFAwABAEFBQcNDAYBBgUFHhZYUhYMFFAQGRBSQlsWDBRCB3R8bFFPcAJVBV5SU3VmV24ZUktTQg8JEBUWWEATCBdzREJVURZ1Xl9FR0BXSxgWf19RGxAYEFdVQBQLEAQDBgEbGBRFUkAXCG8FCgIaAgAGaB4WQFYWDG0TW2VaW1xcDBoEEx4XW3thGxgUBwUcDRAYEAoaDhgAAhceFgMIBgUUHRBUUA1UXw0OBwEGVlMFVglRDwAHAVNXBQBbAwYDUlMFBgRTXwYEAFRRFx4WUxtpGhRYXVQQDhBfUlBQV1RBRhYeG1VcFAsQQBAYEFpdFAwTRQYcABwKFhoUUlRqRBYIGwQHFB0QV1YWCBtGV1hVXVgPAwcLDQUOCQcXHhZfUxYMbQAeBR4EbxUWVFpeVRcIFlMbGBRbQlUXCBZTG0k%3D~18qjggq%22%2C%22mitemAddrId%22%3A%22%22%2C%22geo%22%3A%7B%22lng%22%3A%22106.476461%22%2C%22lat%22%3A%2229.502654%22%7D%2C%22addressId%22%3A%22%22%2C%22posLng%22%3A%22%22%2C%22posLat%22%3A%22%22%2C%22focus%22%3A%22%22%2C%22innerAnchor%22%3A%22%22%2C%22cv%22%3A%222.0%22%7D&screen=1242*2016&client=wh5&clientVersion=1.0.0&sid=c0bd62a7a67b30b66ea8792ba0d6709w&uuid=16425253116601960425755.77.1647154806513&area=4_50952_106_0"
   }
 }
 
 function TotalBean() {
   return new Promise(async resolve => {
     const options = {
-      url: "https://wq.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2",
-      headers: {
-        Host: "wq.jd.com",
-        Accept: "*/*",
-        Connection: "keep-alive",
-        Cookie: cookie,
-        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+      "url": `https://wq.jd.com/user/info/QueryJDUserInfo?sceneval=2`,
+      "headers": {
+        "Accept": "application/json,text/plain, */*",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept-Encoding": "gzip, deflate, br",
         "Accept-Language": "zh-cn",
-        "Referer": "https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&",
-        "Accept-Encoding": "gzip, deflate, br"
+        "Connection": "keep-alive",
+        "Cookie": cookie,
+        "Referer": "https://wqs.jd.com/my/jingdou/my.shtml?sceneval=2",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
       }
     }
-    $.get(options, (err, resp, data) => {
+    $.post(options, (err, resp, data) => {
       try {
         if (err) {
-          $.logErr(err)
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
             data = JSON.parse(data);
-            if (data['retcode'] === 1001) {
+            if (data['retcode'] === 13) {
               $.isLogin = false; //cookie过期
-              return;
+              return
             }
-            if (data['retcode'] === 0 && data.data && data.data.hasOwnProperty("userInfo")) {
-              $.nickName = data.data.userInfo.baseInfo.nickname;
+            if (data['retcode'] === 0) {
+              $.nickName = (data['base'] && data['base'].nickname) || $.UserName;
+            } else {
+              $.nickName = $.UserName
             }
           } else {
-            console.log('京东服务器返回空数据');
+            console.log(`京东服务器返回空数据`)
           }
         }
       } catch (e) {
-        $.logErr(e)
+        $.logErr(e, resp)
       } finally {
         resolve();
       }
     })
   })
 }
-function showMsg() {
-  return new Promise(resolve => {
-    if (!jdNotify) {
-      $.msg($.name, '', `${message}`);
-    } else {
-      $.log(`京东账号${$.index}${$.nickName}\n${message}`);
-    }
-    resolve()
-  })
-}
+
 function safeGet(data) {
   try {
     if (typeof JSON.parse(data) == "object") {
