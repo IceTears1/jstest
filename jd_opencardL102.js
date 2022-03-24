@@ -10,11 +10,11 @@
 请求太频繁会被黑ip
 过10分钟再执行
 
-cron:55 9,14,16,20 23-31,1-10 3,4 *
+cron:55 9,14 23-31,1-10 3,4 *
 ============Quantumultx===============
 [task_local]
 #3.23-4.10 动感乐活，约惠精彩
-30 9,14,16,20 23-31,1-10 3,4 * jd_opencardL102.js, tag=3.23-4.10 动感乐活，约惠精彩, enabled=true
+55 9,14 23-31,1-10 3,4 * jd_opencardL102.js, tag=3.23-4.10 动感乐活，约惠精彩, enabled=true
 
 */
 
@@ -50,9 +50,11 @@ let activityCookie =''
     return;
   }
   $.activityId = "dz5ba3b5b44e35b7d350806a736090"
+  
         authorCodeList = [
             '5c7a301669124ba4b0fc34bbc5641642',
         ]
+    
   $.shareUuid = authorCodeList[Math.floor((Math.random() * authorCodeList.length))]
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/divi/active/activity?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   for (let i = 0; i < cookiesArr.length; i++) {
@@ -194,6 +196,7 @@ async function run() {
         await takePostRequest('addCart');
     }
     console.log('浏览会场')
+	await $.wait(parseInt(Math.random() * 1000 + 3000, 10))
     await takePostRequest('mainActive1');
 	await $.wait(parseInt(Math.random() * 1000 + 3000, 10))
 	await takePostRequest('mainActive2');
@@ -222,7 +225,7 @@ async function run() {
     }
     await $.wait(parseInt(Math.random() * 2000 + 5000, 10))
       if($.index % 3 == 0) console.log('休息一下，别被黑ip了\n可持续发展')
-      if($.index % 3 == 0) await $.wait(parseInt(Math.random() * 5000 + 30000, 10))
+      if($.index % 3 == 0) await $.wait(parseInt(Math.random() * 5000 + 60000, 10))
   } catch (e) {
     console.log(e)
   }
