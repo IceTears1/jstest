@@ -17,7 +17,7 @@ cron:55 3,16 21-27 3 *
 ============Quantumultx===============
 [task_local]
 #3.21-3.27 春日风尚 入会焕新
-55 3,16,21 21-27 3 * jd_opencardL99.js, tag=3.21-3.27 春日风尚 入会焕新, enabled=true
+55 3,16 21-27 3 * jd_opencardL99.js, tag=3.21-3.27 春日风尚 入会焕新, enabled=true
 
 */
 const $ = new Env("3.21-3.27 春日风尚 入会焕新");
@@ -47,11 +47,12 @@ if ($.isNode()) {
         $.msg($.name, "【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取", "https://bean.m.jd.com/bean/signIndex.action", { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
-
+  authorCodeList = await getAuthorCodeList('https://gitee.com/KingRan521/JD-Scripts/raw/master/shareCodes/opencard99.json')
+  if ($.getAuthorCodeListerr === false) {
       authorCodeList = [
-          'c5fe05ec9ed245dc80a364cf7e4dc6b1',
+          'ee9c70d1abca4b1ab21ec1ed0a51dcb9',
       ]
-  
+  }
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i];
@@ -80,7 +81,7 @@ if ($.isNode()) {
             $.activityShopId = "48034";
             $.activityUrl = `https://lzdz1-isv.isvjcloud.com/dingzhi/march/fashionUnion/activity/${$.authorNum}?activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=${encodeURIComponent($.secretPin)}&shopid=${$.activityShopId}&sid=&un_area=`;
             await member();
-            await $.wait(1000);
+            await $.wait(5000);
             if ($.bean > 0) {
                 message += `\n【京东账号${$.index}】${$.nickName || $.UserName} \n       └ 获得 ${$.bean} 京豆。`;
             }
@@ -109,12 +110,15 @@ async function member() {
     await getFirstLZCK();
     await getToken();
     await task("dz/common/getSimpleActInfoVo", `activityId=${$.activityId}`, 1);
-    if ($.token) {
+    await $.wait(1000);
+	if ($.token) {
         await getMyPing();
         if ($.secretPin) {
             console.log("去助力 -> " + $.authorCode);
-            await taskaccessLog("common/accessLogWithAD", `venderId=${$.activityShopId}&code=99&pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}&pageUrl=${$.activityUrl}&subType=app&adSource=null`, 1);
-            await task("wxActionCommon/getUserInfo", `pin=${encodeURIComponent($.secretPin)}`, 1);
+            await $.wait(1000);
+			await taskaccessLog("common/accessLogWithAD", `venderId=${$.activityShopId}&code=99&pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}&pageUrl=${$.activityUrl}&subType=app&adSource=null`, 1);
+            await $.wait(1000);
+			await task("wxActionCommon/getUserInfo", `pin=${encodeURIComponent($.secretPin)}`, 1);
             if ($.index === 1) {
                 await task("/march/fashionUnion/activityContent", `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&pinImg=&nick=${encodeURIComponent($.pin)}&shareUuid=${encodeURIComponent($.authorCode)}`, 0, 1);
             } else {
@@ -122,9 +126,12 @@ async function member() {
             }
             $.log("关注店铺");
             await task("march/fashionUnion/saveTask", `activityId=${$.activityId}&actorUuid=${$.actorUuid}&pin=${encodeURIComponent($.secretPin)}&taskType=23&taskValue=1&shareUuid=${encodeURIComponent($.authorCode)}`);
-            await task("march/fashionUnion/saveTask", `activityId=${$.activityId}&actorUuid=${$.actorUuid}&pin=${encodeURIComponent($.secretPin)}&taskType=21&taskValue=&shareUuid=${encodeURIComponent($.authorCode)}`);
-            await task("taskact/common/drawContent", `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}`);
-            await task("march/fashionUnion/initOpenCard", `pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}`);
+            await $.wait(1000);
+			await task("march/fashionUnion/saveTask", `activityId=${$.activityId}&actorUuid=${$.actorUuid}&pin=${encodeURIComponent($.secretPin)}&taskType=21&taskValue=&shareUuid=${encodeURIComponent($.authorCode)}`);
+            await $.wait(1000);
+			await task("taskact/common/drawContent", `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}`);
+            await $.wait(1000);
+			await task("march/fashionUnion/initOpenCard", `pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}`);
             $.log("加入店铺会员");
             if ($.openCardList) {
                 for (const vo of $.openCardList) {
@@ -143,8 +150,10 @@ async function member() {
             }
             await task("march/fashionUnion/initOpenCard", `pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}`);
             console.log("去助力 -> " + $.authorCode);
-            await task("linkgame/assist/status", `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&shareUuid=${$.authorCode}`);
+            await $.wait(1000);
+			await task("linkgame/assist/status", `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&shareUuid=${$.authorCode}`);
             await task("linkgame/assist", `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&shareUuid=${$.authorCode}`);
+			await $.wait(1000);
 
             await task("march/fashionUnion/draw", `pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}`);
             // await task('linkgame/help/list', `pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}`)
