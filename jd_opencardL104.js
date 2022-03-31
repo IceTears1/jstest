@@ -9,11 +9,11 @@
 请求太频繁会被黑ip
 过10分钟再执行
   
-cron:30 17,20 25-31,1 3,4 *
+cron:30 17 25-31,1 3,4 *
 ============Quantumultx===============
 [task_local]
 #3.25-4.1 雅培瓜分红包
-30 17,20 25-31,1 3,4 * jd_opencardL104.js, tag=3.25-4.1 雅培瓜分红包, enabled=true
+30 17 25-31,1 3,4 * jd_opencardL104.js, tag=3.25-4.1 雅培瓜分红包, enabled=true
 
 */
 
@@ -49,7 +49,7 @@ let activityCookie =''
     return;
   }
   $.activityId = "dz721d61fe736531344021e810179d"
-  $.shareUuid = "18b5f9d63d2945b7a53dad3a0bc966d9"
+   $.shareUuid = "18b5f9d63d2945b7a53dad3a0bc966d9"
   console.log(`【入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/yapei/redenvelope/activity/activity?activityId=${$.activityId}&shareUuid=${$.shareUuid}】`)
   let shareUuidArr = ["18b5f9d63d2945b7a53dad3a0bc966d9","1e9103b53e404eaca23b3fe2bddfa08b","935a553160c14ecd8b90a35f44104e67"]
   let s = Math.floor((Math.random()*4))
