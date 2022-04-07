@@ -26,25 +26,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 let isLoginInfo = {}, blockAccountInfo = {};
-$.shareCodes = [  '639b5bc792454f859ceb398c2b75e918',
-  '0d896b2ae98f46d89725d7503f5b3360',
-  '37dca5d3ec394b5eb17234792d6ee83b',
-  '687477f8807e4ebe92cccc877b458c6e',
-  '2fdf008889454703b82f8db399a22b8d',
-  'cf3fdfb3f89744a18585348f7fcb3b47',
-  'fbe2067fae7f4a31ac8ec5c958f3322b',
-  'bfd0ee6cad7e4085ac58ca18d961f679',
-  'f2587d5fe50446d286fcf49c659f258b',
-  'f7992bbed24e4230a6669f539d0fbaca',
-  '3f3a4d95316c4cdfa8a02293da015792',
-  '8dec8573f46d44be975d34e69ec3ad2a',
-  '932feafd5747458dac17a9c5f625e536',
-  '5bcf3ec0fc0440c987556c6b293ad31c',
-  '6ff6e36084ad446bada7b1b4eccd0140',
-  '506d86aad375440098a36dfd2b222b72',
-  '3919e58977f247989255e7e8740b38be',
-  '4408fbfe4aac4450933963914f45beb5',
-  'b9ee39e38f3644d0bd81e472bcf51d73'];
+$.shareCodes = [ ];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
